@@ -1,0 +1,133 @@
+set nocompatible
+set encoding=utf-8
+set t_Co=256
+
+set rtp+=~/.dotfiles/submodules/Vundle.vim/
+set rtp+=~/.dotfiles/submodules/powerline/powerline/bindings/vim/
+call vundle#rc()
+
+"Bundle 'gmarik/vundle'
+
+" Begin Vundle Packages
+"Bundle 'daveisadork/powerline', {'rtp': 'powerline/bindings/vim/'}
+Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/nerdtree'
+Bundle 'klen/python-mode'
+Bundle 'jcf/vim-latex'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'jiangmiao/auto-pairs'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-repeat'
+Bundle 'Yggdroot/indentLine'
+Bundle 'davidhalter/jedi-vim'
+Bundle 'ervandew/supertab'
+" End Vundle Packages
+
+" Powerline Setup
+set laststatus=2
+let g:Powerline_symbols = "fancy"
+
+" NerdTree Setup
+map <C-o> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
+
+" Python-mode
+" Activate rope
+" Keys:
+" K             Show python docs
+" <Ctrl-Space>  Rope autocomplete
+" <Ctrl-c>g     Rope goto definition
+" <Ctrl-c>d     Rope show documentation
+" <Ctrl-c>f     Rope find occurrences
+" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
+" [[            Jump on previous class or function (normal, visual, operator modes)
+" ]]            Jump on next class or function (normal, visual, operator modes)
+" [M            Jump on previous class or method (normal, visual, operator modes)
+" ]M            Jump on next class or method (normal, visual, operator modes)
+let g:pymode_rope = 0
+
+" Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'pep257', 'mccabe']
+" Auto check on save
+let g:pymode_lint_write = 1
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 0
+"let g:pymode_breakpoint_key = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
+
+filetype indent on
+augroup vimrc_autocmds
+    autocmd!
+    " highlight characters past column 80
+    autocmd FileType python highlight Excess ctermbg=Black guibg=Black
+    autocmd FileType python match Excess /\%80v.*/
+    autocmd FileType python set nowrap
+    autocmd FileType css,html,ruby,eruby,yaml set ai sw=2 sts=2 et
+    autocmd FileType python setlocal completeopt+=longest,menuone
+
+    " rename tmux window
+    autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+augroup END
+
+" <Tab> and <Shift-Tab> to indent/unindent selected text
+vnoremap <S-Tab> <gv
+vnoremap <Tab> >gv
+
+" If the current buffer has never been saved, it will have no name,
+" call the file browser to save it, otherwise just save it.
+command -nargs=0 -bar Update if &modified 
+                           \|   if empty(bufname('%'))
+                           \|       browse confirm write
+                           \|   else
+                           \|       confirm write
+                           \|   endif
+                           \|endif
+
+" UI config
+syntax enable
+set background=dark
+
+set guifont=Sauce\ Code\ Powerline:h14
+set go=egmLt
+set cursorline
+set colorcolumn=80
+set number
+
+" Tabs and indention
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
+set softtabstop=4
+set backspace=2
+let g:indentLine_enabled = 0
+" let g:indentLine_color_term = 234
+let g:indentLine_leadingSpaceEnabled = 1
+let g:indentLine_leadingSpaceChar = '·'
+set list lcs=tab:⤚—
+set showtabline=2 " Always display the tabline, even if there is only one tab
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
+set mouse=a
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" Try loading the solarized them, call the vundle install routine if it fails
+try
+    colorscheme solarized
+catch /^Vim\%((\a\+)\)\=:E185/
+    PluginInstall
+    colorscheme solarized
+endtry

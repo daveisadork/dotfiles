@@ -1,0 +1,12 @@
+[submodule "submodules/powerline"]
+	path = submodules/powerline
+	url = git@github.com:daveisadork/powerline.git
+[submodule "submodules/dircolors-solarized"]
+	path = submodules/dircolors-solarized
+	url = https://github.com/seebi/dircolors-solarized.git
+[submodule "submodules/oh-my-zsh"]
+	path = submodules/oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh
+[submodule "submodules/Vundle.vim"]
+	path = submodules/Vundle.vim
+	url = https://github.com/gmarik/Vundle.vim.git
