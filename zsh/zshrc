@@ -1,3 +1,27 @@
+if [[ `uname` == 'Linux'  ]]
+then
+    export LINUX=1
+    export GNU_USERLAND=1
+else
+    export LINUX=
+fi
+
+if [[ `uname` == 'Darwin'  ]]
+then
+    export OSX=1
+else
+    export OSX=
+fi
+
+# Detect Homebrew GNU userland installation
+if [[ "$OSX" == "1"  ]]
+then
+    if [[ -e /usr/local/opt/coreutils  ]]
+    then
+        export GNU_USERLAND=1
+    fi
+fi
+
 export PYTHONPATH=$HOME/.local/lib/python/site-packages
 export DOTFILES=$HOME/.dotfiles
 module_path=($module_path /usr/local/lib/zpython)
@@ -14,10 +38,10 @@ export ZSH=$DOTFILES/submodules/oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
 
 ZSH_TMUX_AUTOSTART="true"
-ZSH_TMUX_AUTOSTART_ONCE="false"
+ZSH_TMUX_AUTOSTART_ONCE="true"
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
@@ -57,14 +81,25 @@ CASE_SENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+if [[ "$OSX" == "1"  ]]
+then
+    plugins=(aws bower brew brew-cask colored-man dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools osx node npm pip python sublime sudo supervisor tmux web-search zsh_reload)
+else
+    plugins=(aws bower colored-man command-not-found dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools node npm pip python sudo supervisor tmux ubuntu zsh_reload)
+fi
 
-plugins=(aws bower brew brew-cask colored-man dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jira jsontools osx node npm pip python sublime sudo supervisor tmux web-search zsh_reload)
 # User configuration
-
-export PATH="$HOME/.local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin"
+if [[ "$OSX" == "1" ]]
+then
+    export PATH="$HOME/.local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt/FDK/Tools/osx"
+else
+    export PATH="$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+fi
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+
+alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -115,8 +150,30 @@ export GIT_EDITOR=vim
 export VISUAL=vim
 export EDITOR=vim
 
-export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_CERT_PATH=/Users/dave/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=1
+if [[ -e "/usr/local/bin/boot2docker" ]]
+then
+    export DOCKER_HOST="tcp://192.168.59.103:2376"
+    export DOCKER_CERT_PATH="$HOME/.boot2docker/certs/boot2docker-vm"
+    export DOCKER_TLS_VERIFY=1
+fi
+
+
+bindkey -v
+export KEYTIMEOUT=1
 
 source "$DOTFILES/submodules/powerline/powerline/bindings/zsh/powerline.zsh"
+source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
+
+# Google Cloud SDK stuff
+# export CLOUDSDK_PYTHON=/usr/bin/python
+unalias gcd # unalias gcd so we can use the google cloud datastore gcd tool
+export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/application_default_credentials.json"
+source "$HOME/.gcloud/google-cloud-sdk/path.zsh.inc"
+source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
+export DATASTORE_HOST="http://localhost:8080"
+
+# iTerm2 Shell Integration
+if [[ "$ITERM_SESSION_ID" != ""  ]]
+then
+    source "$HOME/.iterm2_shell_integration.zsh"
+fi
