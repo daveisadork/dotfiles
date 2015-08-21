@@ -1,5 +1,14 @@
 {
 	"segment_data": {
+        "mode": {
+            "args": {
+                "default": "viins",
+                "override": {
+                    "vicmd": "NORMAL",
+                    "viins": "INSERT"
+                }
+            }
+        },
 		"hostname": {
 			"args": {
 				"only_if_ssh": true
