@@ -10,3 +10,9 @@
 [submodule "submodules/Vundle.vim"]
 	path = submodules/Vundle.vim
 	url = https://github.com/gmarik/Vundle.vim.git
+[submodule "submodules/zsh-autoenv"]
+	path = submodules/zsh-autoenv
+	url = https://github.com/Tarrasch/zsh-autoenv
+[submodule "submodules/irssi-colors-solarized"]
+	path = submodules/irssi-colors-solarized
+	url = https://github.com/huyz/irssi-colors-solarized
