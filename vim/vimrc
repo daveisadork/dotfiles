@@ -1,6 +1,7 @@
 set nocompatible
 set encoding=utf-8
 set t_Co=256
+set timeoutlen=1000 ttimeoutlen=0
 
 set rtp+=~/.dotfiles/submodules/Vundle.vim/
 set rtp+=~/.dotfiles/submodules/powerline/powerline/bindings/vim/
@@ -10,19 +11,47 @@ call vundle#rc()
 
 " Begin Vundle Packages
 "Bundle 'daveisadork/powerline', {'rtp': 'powerline/bindings/vim/'}
-Bundle 'tpope/vim-fugitive'
-Bundle 'scrooloose/nerdtree'
-Bundle 'klen/python-mode'
-Bundle 'jcf/vim-latex'
+
+" Visual stuff
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'Yggdroot/indentLine'
+
+" Utility stuff
+Bundle 'editorconfig/editorconfig-vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-git'
+Bundle 'scrooloose/nerdtree'
+Bundle 'kien/ctrlp.vim'
 Bundle 'jiangmiao/auto-pairs'
-Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
-Bundle 'Yggdroot/indentLine'
-Bundle 'davidhalter/jedi-vim'
+
+" Completion stuff
 Bundle 'ervandew/supertab'
+Bundle 'Valloric/YouCompleteMe'
+
+" Python stuff
+Bundle 'klen/python-mode'
+Bundle 'davidhalter/jedi-vim'
+
+" JavaScript stuff
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'pangloss/vim-javascript'
+Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'marijnh/tern_for_vim'
+
+" CSS/SCSS stuff
+Bundle 'hail2u/vim-css3-syntax'
+Bundle 'cakebaker/scss-syntax.vim'
+
+" Other languages
+Bundle 'jcf/vim-latex'
+Bundle 'lambdatoast/elm.vim'
+
 " End Vundle Packages
+
+" Editorconfig
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " Powerline Setup
 set laststatus=2
@@ -79,6 +108,15 @@ augroup vimrc_autocmds
     autocmd FileType css,html,ruby,eruby,yaml set ai sw=2 sts=2 et
     autocmd FileType python setlocal completeopt+=longest,menuone
 
+    " These are the tweaks I apply to YCM's config, you don't need them but they
+    " might help.
+    " YCM gives you popups and splits by default that some people might not
+    " like, so these should tidy it up a bit for you.
+    autocmd Filetype javascript let g:ycm_add_preview_to_completeopt=0
+    autocmd Filetype javascript let g:ycm_confirm_extra_conf=0
+    autocmd Filetype javascript set completeopt-=preview
+    autocmd Filetype javascript let g:used_javascript_libs = 'angularjs,angularui'
+
     " rename tmux window
     autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
 augroup END
@@ -106,6 +144,8 @@ set go=egmLt
 set cursorline
 set colorcolumn=80
 set number
+
+set diffopt+=vertical
 
 " Tabs and indention
 set tabstop=4
