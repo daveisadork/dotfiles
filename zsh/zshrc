@@ -92,6 +92,7 @@ fi
 if [[ "$OSX" == "1" ]]
 then
     export PATH="$HOME/.local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt/FDK/Tools/osx"
+    if brew command command-not-found-init > /dev/null; then eval "$(brew command-not-found-init)"; fi
 else
     export PATH="$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
 fi
@@ -150,11 +151,13 @@ export GIT_EDITOR=vim
 export VISUAL=vim
 export EDITOR=vim
 
-if [[ -e "/usr/local/bin/boot2docker" ]]
+if [[ -e "/usr/local/bin/docker-machine" ]]
 then
-    export DOCKER_HOST="tcp://192.168.59.103:2376"
-    export DOCKER_CERT_PATH="$HOME/.boot2docker/certs/boot2docker-vm"
-    export DOCKER_TLS_VERIFY=1
+    eval "$(docker-machine env dev)"
+    # export DOCKER_TLS_VERIFY="1"
+    # export DOCKER_HOST="tcp://192.168.99.100:2376"
+    # export DOCKER_CERT_PATH="$HOME/.docker/machine/machines/dev"
+    # export DOCKER_MACHINE_NAME="dev"
 fi
 
 
