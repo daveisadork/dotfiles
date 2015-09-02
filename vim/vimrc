@@ -99,8 +99,20 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_folding = 0
 
 filetype indent on
+
+fun! STFU_lint()
+    let loclist = g:PymodeLocList.current()
+    if !loclist.is_empty()
+        :on
+    endif
+endfunction
+
 augroup vimrc_autocmds
     autocmd!
+
+    " auto close the stupid pymode lint buffer on :q
+    autocmd BufUnload *.py call STFU_lint()
+
     " highlight characters past column 80
     autocmd FileType python highlight Excess ctermbg=Black guibg=Black
     autocmd FileType python match Excess /\%80v.*/
