@@ -78,7 +78,7 @@ let g:pymode_rope = 0
 
 " Linting
 let g:pymode_lint = 1
-let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'pep257', 'mccabe']
+let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
 " Auto check on save
 let g:pymode_lint_write = 1
 
@@ -163,6 +163,9 @@ set showtabline=2 " Always display the tabline, even if there is only one tab
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set mouse=a
 let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" This does pbcopy/pbpaste integration
+set clipboard=unnamed
 
 " Try loading the solarized them, call the vundle install routine if it fails
 try
