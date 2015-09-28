@@ -7,46 +7,49 @@ set rtp+=~/.dotfiles/submodules/Vundle.vim/
 set rtp+=~/.dotfiles/submodules/powerline/powerline/bindings/vim/
 call vundle#rc()
 
-"Bundle 'gmarik/vundle'
+" Plugin 'gmarik/vundle'
 
 " Begin Vundle Packages
-"Bundle 'daveisadork/powerline', {'rtp': 'powerline/bindings/vim/'}
+" Plugin 'daveisadork/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+Plugin 'scrooloose/syntastic'
 
 " Visual stuff
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'Yggdroot/indentLine'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'Yggdroot/indentLine'
 
 " Utility stuff
-Bundle 'editorconfig/editorconfig-vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-git'
-Bundle 'scrooloose/nerdtree'
-Bundle 'kien/ctrlp.vim'
-Bundle 'jiangmiao/auto-pairs'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-repeat'
+Plugin 'editorconfig/editorconfig-vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-git'
+Plugin 'scrooloose/nerdtree'
+Plugin 'kien/ctrlp.vim'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
 
 " Completion stuff
-Bundle 'ervandew/supertab'
-Bundle 'Valloric/YouCompleteMe'
+Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
 
 " Python stuff
-Bundle 'klen/python-mode'
-Bundle 'davidhalter/jedi-vim'
+Plugin 'klen/python-mode'
+Plugin 'davidhalter/jedi-vim'
 
 " JavaScript stuff
-Bundle 'jelera/vim-javascript-syntax'
-Bundle 'pangloss/vim-javascript'
-Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'marijnh/tern_for_vim'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'marijnh/tern_for_vim'
+Plugin 'Shutnik/jshint2.vim'
 
 " CSS/SCSS stuff
-Bundle 'hail2u/vim-css3-syntax'
-Bundle 'cakebaker/scss-syntax.vim'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'cakebaker/scss-syntax.vim'
 
 " Other languages
-Bundle 'jcf/vim-latex'
-Bundle 'lambdatoast/elm.vim'
+Plugin 'jcf/vim-latex'
+Plugin 'lambdatoast/elm.vim'
 
 " End Vundle Packages
 
@@ -98,20 +101,26 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 " Don't autofold code
 let g:pymode_folding = 0
 
+" let jshint2_save = 1
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 filetype indent on
 
-fun! STFU_lint()
-    let loclist = g:PymodeLocList.current()
-    if !loclist.is_empty()
-        :on
-    endif
-endfunction
+" Auto-close the quickfix buffer if it's the only remaining buffer
+aug QFClose
+    au!
+    au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
+aug END
 
 augroup vimrc_autocmds
     autocmd!
-
-    " auto close the stupid pymode lint buffer on :q
-    autocmd BufUnload *.py call STFU_lint()
 
     " highlight characters past column 80
     autocmd FileType python highlight Excess ctermbg=Black guibg=Black
@@ -127,7 +136,7 @@ augroup vimrc_autocmds
     autocmd Filetype javascript let g:ycm_add_preview_to_completeopt=0
     autocmd Filetype javascript let g:ycm_confirm_extra_conf=0
     autocmd Filetype javascript set completeopt-=preview
-    autocmd Filetype javascript let g:used_javascript_libs = 'angularjs,angularui'
+    autocmd Filetype javascript let g:used_javascript_libs = 'angularjs,angularui,angularuirouter,jquery'
 
     " rename tmux window
     autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))

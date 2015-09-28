@@ -147,17 +147,24 @@ alias less='less -R'
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
+alias virtualenv='virtualenv -p `which python`'
+
 export GIT_EDITOR=vim
 export VISUAL=vim
 export EDITOR=vim
 
 if [[ -e "/usr/local/bin/docker-machine" ]]
 then
-    eval "$(docker-machine env dev)"
-    # export DOCKER_TLS_VERIFY="1"
-    # export DOCKER_HOST="tcp://192.168.99.100:2376"
-    # export DOCKER_CERT_PATH="$HOME/.docker/machine/machines/dev"
-    # export DOCKER_MACHINE_NAME="dev"
+    if [[ -e "`which dinghy`" ]]
+    then
+        alias dinghy="reattach-to-user-namespace dinghy"
+        eval "$(dinghy shellinit)"
+    else
+        docker-machine status dev | grep -q Running
+        if [ $? -eq 0 ]; then
+            eval "$(docker-machine env dev)"
+        fi
+    fi
 fi
 
 
