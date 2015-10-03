@@ -24,6 +24,7 @@ fi
 
 export PYTHONPATH=$HOME/.local/lib/python/site-packages
 export DOTFILES=$HOME/.dotfiles
+
 module_path=($module_path /usr/local/lib/zpython)
 
 unalias run-help
@@ -34,11 +35,16 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 
 # Path to your oh-my-zsh installation.
 export ZSH=$DOTFILES/submodules/oh-my-zsh
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-# ZSH_THEME="robbyrussell"
+# ZSH_THEME="powerline"
+# POWERLINE_HIDE_HOST_NAME="true"
+# POWERLINE_NO_BLANK_LINE="true"
+# POWERLINE_DISABLE_RPROMPT="true"
+
 
 ZSH_TMUX_AUTOSTART="true"
 ZSH_TMUX_AUTOSTART_ONCE="true"
@@ -81,9 +87,11 @@ CASE_SENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
 if [[ "$OSX" == "1"  ]]
 then
-    plugins=(aws bower brew brew-cask colored-man dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools osx node npm pip python sublime sudo supervisor tmux web-search zsh_reload)
+    plugins=(brew brew-cask colored-man docker gitfast gitignore gnu-utils httpie osx pip python sudo tmux)
+    #    plugins=(aws bower brew brew-cask colored-man dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools osx node npm pip python sublime sudo supervisor tmux web-search zsh_reload)
 else
     plugins=(aws bower colored-man command-not-found dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools node npm pip python sudo supervisor tmux ubuntu zsh_reload)
 fi
@@ -92,7 +100,33 @@ fi
 if [[ "$OSX" == "1" ]]
 then
     export PATH="$HOME/.local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt/FDK/Tools/osx"
-    if brew command command-not-found-init > /dev/null; then eval "$(brew command-not-found-init)"; fi
+    homebrew_command_not_found_handle() {
+        local cmd="$1"
+        if test -z "$CONTINUOUS_INTEGRATION" && test -n "$MC_SID" -o ! -t 1 ; then
+            [ -n "$BASH_VERSION" ] && \
+                TEXTDOMAIN=command-not-found echo $"$cmd: command not found"
+            return 127
+        fi
+        local txt="$(brew which-formula --explain $cmd 2>/dev/null)"
+        if [ -z "$txt" ]; then
+            [ -n "$BASH_VERSION" ] && \
+                TEXTDOMAIN=command-not-found echo $"$cmd: command not found"
+        else
+            echo "$txt"
+        fi
+        return 127
+    }
+    if [ -n "$BASH_VERSION" ]; then
+        command_not_found_handle() {
+            homebrew_command_not_found_handle $*
+            return $?
+        }
+    elif [ -n "$ZSH_VERSION" ]; then
+        command_not_found_handler() {
+            homebrew_command_not_found_handle $*
+            return $?
+        }
+    fi
 else
     export PATH="$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
 fi
@@ -127,6 +161,7 @@ alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
 #alias zshconfig="mate ~/.zshrc"
 #alias ohmyzsh="mate ~/.oh-my-zsh"
 
+
 # enable color support of ls and also add handy aliases
 test -r ~/.dir_colors && eval "$(dircolors -b ~/.dir_colors)" || eval "$(dircolors -b)"
 alias ls='ls -F --color=auto'
@@ -147,7 +182,9 @@ alias less='less -R'
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
-alias virtualenv='virtualenv -p `which python`'
+alias vim='mvim -v'
+
+# alias virtualenv='virtualenv -p `which python`'
 
 export GIT_EDITOR=vim
 export VISUAL=vim
@@ -158,7 +195,12 @@ then
     if [[ -e "`which dinghy`" ]]
     then
         alias dinghy="reattach-to-user-namespace dinghy"
+        # The shellinit thing is crazy slow if the VM isn't running
         eval "$(dinghy shellinit)"
+        # export DOCKER_HOST=tcp://:2376
+        # export DOCKER_CERT_PATH=/Users/dave/.docker/machine/machines/dinghy
+        # export DOCKER_TLS_VERIFY=1
+        # export DOCKER_MACHINE_NAME=dinghy
     else
         docker-machine status dev | grep -q Running
         if [ $? -eq 0 ]; then
@@ -167,17 +209,17 @@ then
     fi
 fi
 
-
 bindkey -v
 export KEYTIMEOUT=1
 
-source "$DOTFILES/submodules/powerline/powerline/bindings/zsh/powerline.zsh"
+# source "$DOTFILES/submodules/powerline/powerline/bindings/zsh/powerline.zsh"
 source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
 
 # Google Cloud SDK stuff
 # export CLOUDSDK_PYTHON=/usr/bin/python
-unalias gcd # unalias gcd so we can use the google cloud datastore gcd tool
+# unalias gcd # unalias gcd so we can use the google cloud datastore gcd tool
 export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/application_default_credentials.json"
+
 source "$HOME/.gcloud/google-cloud-sdk/path.zsh.inc"
 source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
 export DATASTORE_HOST="http://localhost:8080"
@@ -187,3 +229,5 @@ if [[ "$ITERM_SESSION_ID" != ""  ]]
 then
     source "$HOME/.iterm2_shell_integration.zsh"
 fi
+
+source $DOTFILES/zsh/shell_prompt.zsh

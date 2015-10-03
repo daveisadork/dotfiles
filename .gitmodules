@@ -16,3 +16,6 @@
 [submodule "submodules/irssi-colors-solarized"]
 	path = submodules/irssi-colors-solarized
 	url = https://github.com/huyz/irssi-colors-solarized
+[submodule "submodules/tpm"]
+	path = submodules/tpm
+	url = https://github.com/tmux-plugins/tpm

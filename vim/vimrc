@@ -1,10 +1,11 @@
 set nocompatible
 set encoding=utf-8
 set t_Co=256
-set timeoutlen=1000 ttimeoutlen=0
+set timeoutlen=500 ttimeoutlen=0
+let g:python_host_prog = '/usr/local/bin/python'
 
 set rtp+=~/.dotfiles/submodules/Vundle.vim/
-set rtp+=~/.dotfiles/submodules/powerline/powerline/bindings/vim/
+" set rtp+=~/.dotfiles/submodules/powerline/powerline/bindings/vim/
 call vundle#rc()
 
 " Plugin 'gmarik/vundle'
@@ -15,6 +16,7 @@ call vundle#rc()
 Plugin 'scrooloose/syntastic'
 
 " Visual stuff
+Plugin 'bling/vim-airline'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'Yggdroot/indentLine'
 
@@ -35,6 +37,7 @@ Plugin 'Valloric/YouCompleteMe'
 " Python stuff
 Plugin 'klen/python-mode'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'jmcantrell/vim-virtualenv'
 
 " JavaScript stuff
 Plugin 'jelera/vim-javascript-syntax'
@@ -51,14 +54,26 @@ Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'jcf/vim-latex'
 Plugin 'lambdatoast/elm.vim'
 
+" Other random shit
+Plugin 'edkolev/promptline.vim'
+Plugin 'edkolev/tmuxline.vim'
+
 " End Vundle Packages
 
 " Editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " Powerline Setup
-set laststatus=2
+" set laststatus=2
 let g:Powerline_symbols = "fancy"
+
+" Airline Setup
+set laststatus=2
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled=1
+let g:airline_theme='solarline'
+let g:airline#extensions#tabline#tab_nr_type=1
+let g:airline#extensions#tabline#buffer_nr_show=1
 
 " NerdTree Setup
 map <C-o> :NERDTreeToggle<CR>
@@ -160,7 +175,7 @@ command -nargs=0 -bar Update if &modified
 syntax enable
 set background=dark
 
-set guifont=Sauce\ Code\ Powerline:h14
+set guifont=Sauce\ Code\ Powerline:h12
 set go=egmLt
 set cursorline
 set colorcolumn=80
@@ -185,6 +200,12 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 set mouse=a
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
+" Performance stuff
+set synmaxcol=256
+set ttyfast " u got a fast terminal
+set ttyscroll=10
+set lazyredraw " to avoid scrolling problems
+
 " This does pbcopy/pbpaste integration
 set clipboard=unnamed
 
@@ -195,3 +216,19 @@ catch /^Vim\%((\a\+)\)\=:E185/
     PluginInstall
     colorscheme solarized
 endtry
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:promptline_preset = {
+    \'a'    : [ promptline#slices#python_virtualenv() ],
+    \'b'    : [ '$USER' ],
+    \'c'    : [ '%~' ],
+    \'x'    : [ promptline#slices#vcs_branch() ],
+    \'y'    : [],
+    \'z'    : [],
+    \'warn' : [ promptline#slices#last_exit_code() ],
+    \'options': {
+        \'left_sections' : [ 'b', 'a', 'x', 'c', 'y', 'z', 'warn' ],
+        \'right_sections': []}}
+
+let g:tmuxline_preset='solarline'
+let g:tmuxline_theme='airline'
