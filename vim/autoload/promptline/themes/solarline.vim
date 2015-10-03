@@ -4,7 +4,7 @@ fun! promptline#themes#solarline#get()
         \'b'      : [7, 4],
         \'c'      : [7, 10],
         \'x'      : [7, 6],
-        \'y'      : [7, 236],
+        \'y'      : [7, 13],
         \'z'      : [7, 236],
         \'warn'   : [7, 1]}
 endfun

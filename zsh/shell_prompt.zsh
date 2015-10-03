@@ -1,6 +1,13 @@
 #
 # This shell prompt config file was created by promptline.vim
 #
+function __promptline_host {
+  local only_if_ssh="1"
+
+  if [ ! $only_if_ssh -o -n "${SSH_CLIENT}" ]; then
+    if [[ -n ${ZSH_VERSION-} ]]; then print %m; elif [[ -n ${FISH_VERSION-} ]]; then hostname -s; else printf "%s" \\h; fi
+  fi
+}
 
 function __promptline_last_exit_code {
 
@@ -39,6 +46,7 @@ function __promptline_ps1 {
   slice_prefix="${y_bg}${sep}${y_fg}${y_bg}${space}" slice_suffix="$space${y_sep_fg}" slice_joiner="${y_fg}${y_bg}${alt_sep}${space}" slice_empty_prefix="${y_fg}${y_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "y" slices
+  __promptline_wrapper "$(__promptline_host)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
 
   # section "z" header
   slice_prefix="${z_bg}${sep}${z_fg}${z_bg}${space}" slice_suffix="$space${z_sep_fg}" slice_joiner="${z_fg}${z_bg}${alt_sep}${space}" slice_empty_prefix="${z_fg}${z_bg}${space}"
@@ -71,6 +79,12 @@ function __promptline_vcs_branch {
 function __promptline_left_prompt {
   local slice_prefix slice_empty_prefix slice_joiner slice_suffix is_prompt_empty=1
 
+  # section "y" header
+  slice_prefix="${y_bg}${sep}${y_fg}${y_bg}${space}" slice_suffix="$space${y_sep_fg}" slice_joiner="${y_fg}${y_bg}${alt_sep}${space}" slice_empty_prefix="${y_fg}${y_bg}${space}"
+  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
+  # section "y" slices
+  __promptline_wrapper "$(__promptline_host)" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
+
   # section "b" header
   slice_prefix="${b_bg}${sep}${b_fg}${b_bg}${space}" slice_suffix="$space${b_sep_fg}" slice_joiner="${b_fg}${b_bg}${alt_sep}${space}" slice_empty_prefix="${b_fg}${b_bg}${space}"
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
@@ -94,11 +108,6 @@ function __promptline_left_prompt {
   [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
   # section "c" slices
   __promptline_wrapper "%~" "$slice_prefix" "$slice_suffix" && { slice_prefix="$slice_joiner"; is_prompt_empty=0; }
-
-  # section "y" header
-  slice_prefix="${y_bg}${sep}${y_fg}${y_bg}${space}" slice_suffix="$space${y_sep_fg}" slice_joiner="${y_fg}${y_bg}${alt_sep}${space}" slice_empty_prefix="${y_fg}${y_bg}${space}"
-  [ $is_prompt_empty -eq 1 ] && slice_prefix="$slice_empty_prefix"
-  # section "y" slices
 
   # section "z" header
   slice_prefix="${z_bg}${sep}${z_fg}${z_bg}${space}" slice_suffix="$space${z_sep_fg}" slice_joiner="${z_fg}${z_bg}${alt_sep}${space}" slice_empty_prefix="${z_fg}${z_bg}${space}"
@@ -159,8 +168,8 @@ function __promptline {
   local x_bg="${wrap}48;5;6${end_wrap}"
   local x_sep_fg="${wrap}38;5;6${end_wrap}"
   local y_fg="${wrap}38;5;7${end_wrap}"
-  local y_bg="${wrap}48;5;236${end_wrap}"
-  local y_sep_fg="${wrap}38;5;236${end_wrap}"
+  local y_bg="${wrap}48;5;13${end_wrap}"
+  local y_sep_fg="${wrap}38;5;13${end_wrap}"
   local z_fg="${wrap}38;5;7${end_wrap}"
   local z_bg="${wrap}48;5;236${end_wrap}"
   local z_sep_fg="${wrap}38;5;236${end_wrap}"
