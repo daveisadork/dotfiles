@@ -27,7 +27,6 @@ export DOTFILES=$HOME/.dotfiles
 
 module_path=($module_path /usr/local/lib/zpython)
 
-unalias run-help
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
@@ -182,7 +181,10 @@ alias less='less -R'
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
-alias vim='mvim -v'
+if [[ -e `which mvim` ]]
+then
+    alias vim='mvim -v'
+fi
 
 # alias virtualenv='virtualenv -p `which python`'
 
