@@ -12,7 +12,7 @@ fun! tmuxline#presets#solarline#get()
   call bar.right.add_right_sep()
   call bar.right.add('y', '%Y-%m-%d')
   call bar.right.add_right_sep()
-  call bar.right.add('z', '%H:%M %p')
+  call bar.right.add('z', '%I:%M %p')
   " call bar.right.add_right_sep()
 
 
