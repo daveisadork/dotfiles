@@ -5,13 +5,11 @@ set timeoutlen=500 ttimeoutlen=0
 let g:python_host_prog = '/usr/local/bin/python'
 
 set rtp+=~/.dotfiles/submodules/Vundle.vim/
-" set rtp+=~/.dotfiles/submodules/powerline/powerline/bindings/vim/
 call vundle#rc()
 
 " Plugin 'gmarik/vundle'
 
 " Begin Vundle Packages
-" Plugin 'daveisadork/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 Plugin 'scrooloose/syntastic'
 
@@ -45,6 +43,7 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'Shutnik/jshint2.vim'
+Plugin 'elzr/vim-json'
 
 " CSS/SCSS stuff
 Plugin 'hail2u/vim-css3-syntax'
@@ -53,6 +52,7 @@ Plugin 'cakebaker/scss-syntax.vim'
 " Other languages
 Plugin 'jcf/vim-latex'
 Plugin 'lambdatoast/elm.vim'
+Plugin '4Evergreen4/vim-hardy'
 
 " Other random shit
 Plugin 'edkolev/promptline.vim'
@@ -62,10 +62,6 @@ Plugin 'edkolev/tmuxline.vim'
 
 " Editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-
-" Powerline Setup
-" set laststatus=2
-let g:Powerline_symbols = "fancy"
 
 " Airline Setup
 set laststatus=2
@@ -144,10 +140,9 @@ augroup vimrc_autocmds
     autocmd FileType css,html,ruby,eruby,yaml set ai sw=2 sts=2 et
     autocmd FileType python setlocal completeopt+=longest,menuone
 
-    " These are the tweaks I apply to YCM's config, you don't need them but they
-    " might help.
-    " YCM gives you popups and splits by default that some people might not
-    " like, so these should tidy it up a bit for you.
+    " These are the tweaks I apply to YCM's config, you don't need them but
+    " they might help. YCM gives you popups and splits by default that some
+    " people might not like, so these should tidy it up a bit for you.
     autocmd Filetype javascript let g:ycm_add_preview_to_completeopt=0
     autocmd Filetype javascript let g:ycm_confirm_extra_conf=0
     autocmd Filetype javascript set completeopt-=preview
@@ -177,9 +172,15 @@ set background=dark
 
 set guifont=Sauce\ Code\ Powerline:h12
 set go=egmLt
+
+" Set up display stuff
 set cursorline
 set colorcolumn=80
 set number
+
+" Turn off that stupid quote hiding in JSON
+set conceallevel=0
+let g:vim_json_syntax_conceal = 0
 
 set diffopt+=vertical
 
@@ -191,7 +192,6 @@ set expandtab
 set softtabstop=4
 set backspace=2
 let g:indentLine_enabled = 0
-" let g:indentLine_color_term = 234
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_leadingSpaceChar = '·'
 set list lcs=tab:⤚—
