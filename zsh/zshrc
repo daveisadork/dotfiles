@@ -2,6 +2,7 @@ if [[ `uname` == 'Linux'  ]]
 then
     export LINUX=1
     export GNU_USERLAND=1
+    export SHELL="/usr/bin/zsh"
 else
     export LINUX=
 fi
@@ -9,6 +10,7 @@ fi
 if [[ `uname` == 'Darwin'  ]]
 then
     export OSX=1
+    export SHELL="/usr/local/bin/zsh"
 else
     export OSX=
 fi
@@ -44,8 +46,8 @@ export ZSH=$DOTFILES/submodules/oh-my-zsh
 # POWERLINE_DISABLE_RPROMPT="true"
 
 
-ZSH_TMUX_AUTOSTART="true"
-ZSH_TMUX_AUTOSTART_ONCE="true"
+# ZSH_TMUX_AUTOSTART="true"
+# ZSH_TMUX_AUTOSTART_ONCE="true"
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
@@ -183,17 +185,18 @@ export LESSOPEN='|~/.lessfilter %s'
 if [[ -e `which mvim` ]]
 then
     alias vim='mvim -v'
+    export GIT_EDITOR="mvim -v"
+    export VISUAL="mvim -v"
+    export EDITOR="mvim -v"
+else
+    export GIT_EDITOR=vim
+    export VISUAL=vim
+    export EDITOR=vim
 fi
-
-# alias virtualenv='virtualenv -p `which python`'
-
-export GIT_EDITOR=vim
-export VISUAL=vim
-export EDITOR=vim
 
 if [[ -e "/usr/local/bin/docker-machine" ]]
 then
-    if [[ -e "`which dinghy`" ]]
+    if [[ -e "/usr/local/bin/dinghy" ]]
     then
         alias dinghy="reattach-to-user-namespace dinghy"
         # The shellinit thing is crazy slow if the VM isn't running
