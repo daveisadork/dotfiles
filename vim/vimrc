@@ -2,7 +2,7 @@ set nocompatible
 set encoding=utf-8
 set t_Co=256
 set timeoutlen=500 ttimeoutlen=0
-let g:python_host_prog = '/usr/local/bin/python'
+" let g:python_host_prog = '/usr/local/bin/python'
 
 set rtp+=~/.dotfiles/submodules/Vundle.vim/
 call vundle#rc()
@@ -17,6 +17,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'Yggdroot/indentLine'
+Plugin 'luochen1990/rainbow'
 
 " Utility stuff
 Plugin 'editorconfig/editorconfig-vim'
@@ -30,12 +31,12 @@ Plugin 'tpope/vim-repeat'
 
 " Completion stuff
 Plugin 'ervandew/supertab'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 
 " Python stuff
 Plugin 'klen/python-mode'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'jmcantrell/vim-virtualenv'
+" Plugin 'jmcantrell/vim-virtualenv'
 
 " JavaScript stuff
 Plugin 'jelera/vim-javascript-syntax'
@@ -44,6 +45,7 @@ Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'elzr/vim-json'
+Plugin 'mustache/vim-mustache-handlebars'
 
 " CSS/SCSS stuff
 Plugin 'hail2u/vim-css3-syntax'
@@ -54,6 +56,7 @@ Plugin 'jcf/vim-latex'
 Plugin 'lambdatoast/elm.vim'
 Plugin 'stephpy/vim-yaml'
 Plugin '4Evergreen4/vim-hardy'
+Plugin 'derekwyatt/vim-scala'
 
 " Other random shit
 Plugin 'edkolev/promptline.vim'
@@ -110,6 +113,9 @@ let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
+" Enable rainbow parentheses
+let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+
 " Don't autofold code
 let g:pymode_folding = 0
 
@@ -122,6 +128,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['python']
 
 filetype indent on
 
