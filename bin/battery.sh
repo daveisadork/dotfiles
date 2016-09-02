@@ -24,7 +24,7 @@ echo $PMSET | grep -q 'AC Power'
 if [ $? -eq 0  ]
 then
     AC_POWER=1
-    echo $PMSET | grep -q 'charging'
+    echo $PMSET | egrep -q '(finishing charge|charging)'
     if [ $? -eq 0  ]
     then
         CHARGING=1
