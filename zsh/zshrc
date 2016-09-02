@@ -3,6 +3,7 @@ then
     export LINUX=1
     export GNU_USERLAND=1
     export SHELL="/usr/bin/zsh"
+    export TMUX_PATH="/usr/bin/tmux"
 else
     export LINUX=
 fi
@@ -11,6 +12,7 @@ if [[ `uname` == 'Darwin'  ]]
 then
     export OSX=1
     export SHELL="/usr/local/bin/zsh"
+    export TMUX_PATH="/usr/local/bin/tmux"
 else
     export OSX=
 fi
@@ -25,6 +27,16 @@ then
 fi
 
 export DOTFILES=$HOME/.dotfiles
+
+export TMUX_VERSION=`$TMUX_PATH -V | grep -o '[0-9]\.[0-9]*'`
+if [[ $TMUX_VERSION -ge "2.1" ]]
+then
+    export TMUX_CONFIG="$DOTFILES/tmux/tmux-21.conf"
+else
+    export TMUX_CONFIG="$DOTFILES/tmux/tmux-20.conf"
+fi
+
+source "$DOTFILES/zsh/private.zsh"
 
 module_path=($module_path /usr/local/lib/zpython)
 
@@ -90,7 +102,7 @@ CASE_SENSITIVE="true"
 
 if [[ "$OSX" == "1"  ]]
 then
-    plugins=(brew brew-cask colored-man docker gitfast gitignore gnu-utils httpie osx pip python sudo tmux)
+    plugins=(brew brew-cask colored-man docker gitfast gitignore gnu-utils httpie osx pip python sudo tmux zsh-completions)
     #    plugins=(aws bower brew brew-cask colored-man dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools osx node npm pip python sublime sudo supervisor tmux web-search zsh_reload)
 else
     plugins=(aws bower colored-man command-not-found dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools node npm pip python sudo supervisor tmux ubuntu zsh_reload)
@@ -133,6 +145,8 @@ fi
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+
+autoload -U compinit && compinit
 
 alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
 
@@ -201,10 +215,6 @@ then
         alias dinghy="reattach-to-user-namespace dinghy"
         # The shellinit thing is crazy slow if the VM isn't running
         eval "$(dinghy shellinit)"
-        # export DOCKER_HOST=tcp://:2376
-        # export DOCKER_CERT_PATH=/Users/dave/.docker/machine/machines/dinghy
-        # export DOCKER_TLS_VERIFY=1
-        # export DOCKER_MACHINE_NAME=dinghy
     else
         docker-machine status dev | grep -q Running
         if [ $? -eq 0 ]; then
@@ -216,6 +226,8 @@ fi
 bindkey -v
 export KEYTIMEOUT=1
 
+export PHANTOMJS_BIN=`which phantomjs`
+
 # source "$DOTFILES/submodules/powerline/powerline/bindings/zsh/powerline.zsh"
 source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
 
@@ -223,6 +235,9 @@ source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
 export CLOUDSDK_PYTHON=`which python`
 source "$HOME/.gcloud/google-cloud-sdk/path.zsh.inc"
 source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
+
+export NVM_DIR=~/.nvm
+. $(brew --prefix nvm)/nvm.sh
 
 # iTerm2 Shell Integration
 if [[ "$ITERM_SESSION_ID" != ""  ]]
