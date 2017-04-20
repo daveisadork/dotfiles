@@ -37,7 +37,7 @@ Plug 'Valloric/YouCompleteMe'
 
 " Python stuff
 Plug 'klen/python-mode', { 'for': 'python' }
-" Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim'
 " Plug 'jmcantrell/vim-virtualenv'
 
 " JavaScript stuff
@@ -152,6 +152,8 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:jedi#show_call_signatures_delay = 0
 let g:jedi#popup_on_dot = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#completions_enabled = 0
 
 augroup vimrc_autocmds
     autocmd!
@@ -200,6 +202,7 @@ set go=egmLt
 " set cursorline
 set colorcolumn=80
 set number
+set ruler
 
 " Turn off that stupid quote hiding in JSON
 set conceallevel=0
@@ -226,8 +229,8 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 " Performance stuff
 set synmaxcol=120
 set ttyfast " u got a fast terminal
-" set ttyscroll=200
-set lazyredraw " to avoid scrolling problems
+" set ttyscroll=9
+" set lazyredraw " to avoid scrolling problems
 
 " This does pbcopy/pbpaste integration
 set clipboard=unnamed
@@ -244,6 +247,8 @@ set wildmenu
 set wildmode=list:longest
 set ignorecase 
 set smartcase
+set scrolloff=3
+runtime macros/matchit.vim
 
 " Highlight search terms...
 " set hlsearch
