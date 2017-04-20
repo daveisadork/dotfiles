@@ -1,26 +1,21 @@
 set nocompatible
 set encoding=utf-8
+set timeoutlen=500 ttimeoutlen=0
+call plug#begin('~/.config/nvim/plugged')
 if has("termguicolors")
     set termguicolors
+    let g:python_host_prog = '/usr/local/bin/python'
+    Plug 'frankier/neovim-colors-solarized-truecolor-only'
 else
     set t_Co=256
+    let g:python_host_prog = '/usr/bin/python'
+    Plug 'altercation/vim-colors-solarized'
 endif
-set timeoutlen=500 ttimeoutlen=0
-let g:python_host_prog = '/usr/local/bin/python'
-call plug#begin('~/.config/nvim/plugged')
-" set rtp+=~/.dotfiles/submodules/Vundle.vim/
-" call vundle#rc()
-
-" Plugin 'gmarik/vundle'
-
-" Begin Vundle Packages
 
 Plug 'scrooloose/syntastic'
 
 " Visual stuff
 Plug 'bling/vim-airline'
-" Plug 'altercation/vim-colors-solarized'
-Plug 'frankier/neovim-colors-solarized-truecolor-only'
 " Plug 'Yggdroot/indentLine'
 Plug 'luochen1990/rainbow'
 Plug 'lilydjwg/colorizer'
