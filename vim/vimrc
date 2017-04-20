@@ -16,7 +16,7 @@ Plug 'scrooloose/syntastic'
 " Visual stuff
 Plug 'bling/vim-airline'
 Plug 'altercation/vim-colors-solarized'
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 Plug 'luochen1990/rainbow'
 Plug 'lilydjwg/colorizer'
 
@@ -246,7 +246,7 @@ set ignorecase
 set smartcase
 
 " Highlight search terms...
-set hlsearch
+" set hlsearch
 set incsearch " ...dynamically as they are typed."
 
 
