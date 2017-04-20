@@ -1,7 +1,10 @@
 set nocompatible
 set encoding=utf-8
-" set t_Co=256
-set termguicolors
+if has("termguicolors")
+    set termguicolors
+else
+    set t_Co=256
+endif
 set timeoutlen=500 ttimeoutlen=0
 let g:python_host_prog = '/usr/local/bin/python'
 call plug#begin('~/.config/nvim/plugged')
