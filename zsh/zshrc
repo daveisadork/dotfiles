@@ -29,11 +29,14 @@ fi
 export DOTFILES=$HOME/.dotfiles
 
 export TMUX_VERSION=`$TMUX_PATH -V | grep -o '[0-9]\.[0-9]*'`
-if [[ $TMUX_VERSION -ge "2.1" ]]
+if [[ $TMUX_VERSION -le "2.0" ]]
+then
+    export TMUX_CONFIG="$DOTFILES/tmux/tmux-20.conf"
+elif [[ $TMUX_VERSION -eq "2.1" ]]
 then
     export TMUX_CONFIG="$DOTFILES/tmux/tmux-21.conf"
 else
-    export TMUX_CONFIG="$DOTFILES/tmux/tmux-20.conf"
+    export TMUX_CONFIG="$DOTFILES/tmux/tmux-22.conf"
 fi
 
 source "$DOTFILES/zsh/private.zsh"
@@ -197,7 +200,13 @@ alias less='less -R'
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
-if [[ -e `which mvim` ]]
+if [[ -e `which nvim` ]]
+then
+    alias vim=nvim
+    export GIT_EDITOR=nvim
+    export VISUAL=nvim
+    export EDITOR=nvim
+elif [[ -e `which mvim` ]]
 then
     alias vim='mvim -v'
     export GIT_EDITOR="mvim -v"
