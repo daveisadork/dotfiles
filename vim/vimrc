@@ -3,66 +3,69 @@ set encoding=utf-8
 set t_Co=256
 set timeoutlen=500 ttimeoutlen=0
 " let g:python_host_prog = '/usr/local/bin/python'
-
-set rtp+=~/.dotfiles/submodules/Vundle.vim/
-call vundle#rc()
+call plug#begin('~/.vim/plugged')
+" set rtp+=~/.dotfiles/submodules/Vundle.vim/
+" call vundle#rc()
 
 " Plugin 'gmarik/vundle'
 
 " Begin Vundle Packages
 
-Plugin 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 
 " Visual stuff
-Plugin 'bling/vim-airline'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'Yggdroot/indentLine'
-Plugin 'luochen1990/rainbow'
+Plug 'bling/vim-airline'
+Plug 'altercation/vim-colors-solarized'
+Plug 'Yggdroot/indentLine'
+Plug 'luochen1990/rainbow'
+Plug 'lilydjwg/colorizer'
 
 " Utility stuff
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-git'
-Plugin 'scrooloose/nerdtree'
-Plugin 'kien/ctrlp.vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
+Plug 'editorconfig/editorconfig-vim'
+" Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-git'
+" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'kien/ctrlp.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-repeat'
+" Plug 'airblade/vim-gitgutter'
 
 " Completion stuff
-Plugin 'ervandew/supertab'
-" Plugin 'Valloric/YouCompleteMe'
+Plug 'ervandew/supertab'
+Plug 'Valloric/YouCompleteMe'
 
 " Python stuff
-Plugin 'klen/python-mode'
-Plugin 'davidhalter/jedi-vim'
-" Plugin 'jmcantrell/vim-virtualenv'
+Plug 'klen/python-mode', { 'for': 'python' }
+" Plug 'davidhalter/jedi-vim'
+" Plug 'jmcantrell/vim-virtualenv'
 
 " JavaScript stuff
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
-Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'marijnh/tern_for_vim'
-Plugin 'Shutnik/jshint2.vim'
-Plugin 'elzr/vim-json'
-Plugin 'mustache/vim-mustache-handlebars'
+Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+Plug 'marijnh/tern_for_vim', { 'for': 'javascript' }
+Plug 'Shutnik/jshint2.vim', { 'for': 'javascript' }
+Plug 'elzr/vim-json'
+Plug 'mustache/vim-mustache-handlebars'
 
 " CSS/SCSS stuff
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'cakebaker/scss-syntax.vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'cakebaker/scss-syntax.vim'
 
 " Other languages
-Plugin 'jcf/vim-latex'
-Plugin 'lambdatoast/elm.vim'
-Plugin 'stephpy/vim-yaml'
-Plugin '4Evergreen4/vim-hardy'
-Plugin 'derekwyatt/vim-scala'
+" Plug 'jcf/vim-latex'
+" Plug 'lambdatoast/elm.vim'
+Plug 'stephpy/vim-yaml'
+" Plug '4Evergreen4/vim-hardy'
+" Plug 'derekwyatt/vim-scala'
 
 " Other random shit
-Plugin 'edkolev/promptline.vim'
-Plugin 'edkolev/tmuxline.vim'
+Plug 'edkolev/promptline.vim'
+Plug 'edkolev/tmuxline.vim'
 
 " End Vundle Packages
+call plug#end()
 
 " Editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
@@ -93,6 +96,8 @@ let NERDTreeIgnore = ['\.pyc$']
 " [M            Jump on previous class or method (normal, visual, operator modes)
 " ]M            Jump on next class or method (normal, visual, operator modes)
 let g:pymode_rope = 0
+let g:pymode_rope_lookup_project = 0
+let g:pymode_rope_complete_on_dot = 0
 
 " Linting
 let g:pymode_lint = 1
@@ -130,6 +135,8 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['python']
 
+filetype on
+filetype plugin on
 filetype indent on
 
 " Auto-close the quickfix buffer if it's the only remaining buffer
@@ -137,6 +144,14 @@ aug QFClose
     au!
     au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
 aug END
+
+" Completion junk
+let g:ycm_python_binary_path = 'python'
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:jedi#show_call_signatures_delay = 0
+let g:jedi#popup_on_dot = 0
 
 augroup vimrc_autocmds
     autocmd!
@@ -151,9 +166,9 @@ augroup vimrc_autocmds
     " These are the tweaks I apply to YCM's config, you don't need them but
     " they might help. YCM gives you popups and splits by default that some
     " people might not like, so these should tidy it up a bit for you.
-    autocmd Filetype javascript let g:ycm_add_preview_to_completeopt=0
+    " autocmd Filetype javascript let g:ycm_add_preview_to_completeopt=0
     autocmd Filetype javascript let g:ycm_confirm_extra_conf=0
-    autocmd Filetype javascript set completeopt-=preview
+    " autocmd Filetype javascript set completeopt-=preview
     autocmd Filetype javascript let g:used_javascript_libs = 'angularjs,angularui,angularuirouter,jquery'
 
     " rename tmux window
@@ -178,11 +193,11 @@ command -nargs=0 -bar Update if &modified
 syntax enable
 set background=dark
 
-set guifont=Sauce\ Code\ Powerline:h12
+set guifont=Source\ Code\ Pro:h12
 set go=egmLt
 
 " Set up display stuff
-set cursorline
+" set cursorline
 set colorcolumn=80
 set number
 
@@ -198,7 +213,7 @@ set shiftwidth=4
 set smarttab
 set expandtab
 set softtabstop=4
-set backspace=2
+set backspace=indent,eol,start
 let g:indentLine_enabled = 0
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_leadingSpaceChar = '·'
@@ -209,19 +224,37 @@ set mouse=a
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " Performance stuff
-set synmaxcol=256
+set synmaxcol=120
 set ttyfast " u got a fast terminal
-set ttyscroll=10
+" set ttyscroll=200
 set lazyredraw " to avoid scrolling problems
 
 " This does pbcopy/pbpaste integration
 set clipboard=unnamed
 
+" persistent undo
+set undofile
+set undodir=~/.vimundo
+
+" Other random junk from http://items.sjbach.com/319/configuring-vim-right
+set hidden  " switch buffers without having to save
+let mapleader = ","  " Make leader useful on osx
+set history=1000  " command history"
+set wildmenu
+set wildmode=list:longest
+set ignorecase 
+set smartcase
+
+" Highlight search terms...
+set hlsearch
+set incsearch " ...dynamically as they are typed."
+
+
 " Try loading the solarized them, call the vundle install routine if it fails
 try
     colorscheme solarized
 catch /^Vim\%((\a\+)\)\=:E185/
-    PluginInstall
+    PlugInstall
     colorscheme solarized
 endtry
 
