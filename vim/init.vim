@@ -1,14 +1,25 @@
 set nocompatible
 set encoding=utf-8
 set timeoutlen=500 ttimeoutlen=0
-call plug#begin('~/.config/nvim/plugged')
-if has("termguicolors")
+
+if has('nvim')
+    if $LINUX
+        let g:python_host_prog = '/usr/bin/python'
+    else
+        let g:python_host_prog = '/usr/local/bin/python'
+    endif
+    call plug#begin('~/.vim/plugged-nvim')
+else
+    call plug#begin('~/.vim/plugged')
+endif
+
+if has('nvim') && has("termguicolors")
     set termguicolors
-    let g:python_host_prog = '/usr/local/bin/python'
+    let g:solarized_termtrans=1
+    let g:solarized_degrade=0
     Plug 'frankier/neovim-colors-solarized-truecolor-only'
 else
     set t_Co=256
-    let g:python_host_prog = '/usr/bin/python'
     Plug 'altercation/vim-colors-solarized'
 endif
 
@@ -24,7 +35,7 @@ Plug 'lilydjwg/colorizer'
 Plug 'editorconfig/editorconfig-vim'
 " Plug 'tpope/vim-fugitive'
 " Plug 'tpope/vim-git'
-" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'kien/ctrlp.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
@@ -40,7 +51,7 @@ Plug 'Valloric/YouCompleteMe'
 
 " Python stuff
 Plug 'klen/python-mode', { 'for': 'python' }
-Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 " Plug 'jmcantrell/vim-virtualenv'
 
 " JavaScript stuff
@@ -49,23 +60,24 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'marijnh/tern_for_vim', { 'for': 'javascript' }
 Plug 'Shutnik/jshint2.vim', { 'for': 'javascript' }
-Plug 'elzr/vim-json'
-Plug 'mustache/vim-mustache-handlebars'
+Plug 'elzr/vim-json', { 'for': 'json' }
+" Plug 'mustache/vim-mustache-handlebars'
 
 " CSS/SCSS stuff
-Plug 'hail2u/vim-css3-syntax'
-Plug 'cakebaker/scss-syntax.vim'
+Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
+Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
 
 " Other languages
-" Plug 'jcf/vim-latex'
+Plug 'jcf/vim-latex', { 'for': 'tex' }
 " Plug 'lambdatoast/elm.vim'
-Plug 'stephpy/vim-yaml'
+Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 " Plug '4Evergreen4/vim-hardy'
 " Plug 'derekwyatt/vim-scala'
 
 " Other random shit
+Plug 'edkolev/tmuxline.vim'
 Plug 'edkolev/promptline.vim'
-" Plug 'edkolev/tmuxline.vim'
+Plug 'osyo-manga/vim-over'
 
 " End Vundle Packages
 call plug#end()
@@ -134,7 +146,7 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['python']
 
@@ -202,7 +214,7 @@ set guifont=Source\ Code\ Pro:h12
 set go=egmLt
 
 " Set up display stuff
-" set cursorline
+set cursorline
 set colorcolumn=80
 set number
 set ruler
@@ -256,8 +268,6 @@ runtime macros/matchit.vim
 " Highlight search terms...
 " set hlsearch
 set incsearch " ...dynamically as they are typed."
-let g:solarized_termtrans=1
-let g:solarized_degrade=0
 
 " Try loading the solarized them, call the vundle install routine if it fails
 try
