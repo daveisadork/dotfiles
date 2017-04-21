@@ -13,7 +13,7 @@ else
     call plug#begin('~/.vim/plugged')
 endif
 
-if has('nvim') && has("termguicolors")
+if has('nvim') && has("termguicolors") && $OSX
     set termguicolors
     let g:solarized_termtrans=1
     let g:solarized_degrade=0
@@ -242,10 +242,15 @@ set mouse=a
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " Performance stuff
-set synmaxcol=120
-set ttyfast " u got a fast terminal
-" set ttyscroll=9
-" set lazyredraw " to avoid scrolling problems
+set synmaxcol=120 " Disable syntax highlighting past 120 chars 
+if $SSH_TTY
+    set lazyredraw " to avoid scrolling problems
+else
+    set ttyfast " u got a fast terminal
+    if !has('nvim')
+        set ttyscroll=200
+    endif
+endif
 
 " This does pbcopy/pbpaste integration
 set clipboard=unnamed
