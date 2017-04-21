@@ -13,7 +13,7 @@ else
     call plug#begin('~/.vim/plugged')
 endif
 
-if has('nvim') && has("termguicolors") && $OSX
+if has('nvim') && has('termguicolors') && $TRUE_COLOR
     set termguicolors
     let g:solarized_termtrans=1
     let g:solarized_degrade=0
@@ -214,7 +214,6 @@ set guifont=Source\ Code\ Pro:h12
 set go=egmLt
 
 " Set up display stuff
-set cursorline
 set colorcolumn=80
 set number
 set ruler
@@ -243,9 +242,10 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " Performance stuff
 set synmaxcol=120 " Disable syntax highlighting past 120 chars 
-if $SSH_TTY
+if $REMOTE_SESSION
     set lazyredraw " to avoid scrolling problems
 else
+    set cursorline
     set ttyfast " u got a fast terminal
     if !has('nvim')
         set ttyscroll=200

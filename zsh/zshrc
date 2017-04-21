@@ -3,7 +3,12 @@ then
     export LINUX=1
     export GNU_USERLAND=1
     export SHELL="/usr/bin/zsh"
-    export TMUX_PATH="/usr/bin/tmux"
+    if [[ -e "/usr/bin/tmux-next" ]]
+    then
+        export TMUX_PATH="/usr/bin/tmux-next"
+    else
+        export TMUX_PATH="/usr/bin/tmux"
+    fi
 else
     export LINUX=
 fi
@@ -15,6 +20,13 @@ then
     export TMUX_PATH="/usr/local/bin/tmux"
 else
     export OSX=
+fi
+
+if [[ "$SSH_CONNECTION" ]]
+then
+    export REMOTE_SESSION=1
+else
+    export REMOTE_SESSION=
 fi
 
 # Detect Homebrew GNU userland installation
@@ -29,7 +41,7 @@ fi
 export DOTFILES=$HOME/.dotfiles
 
 export TMUX_VERSION=`$TMUX_PATH -V | grep -o '[0-9]\.[0-9]*'`
-if [[ $TMUX_VERSION -le "2.0" ]]
+if [[ $TMUX_VERSION && $TMUX_VERSION -le "2.0" ]]
 then
     export TMUX_CONFIG="$DOTFILES/tmux/tmux-20.conf"
 elif [[ $TMUX_VERSION -eq "2.1" ]]
@@ -38,6 +50,8 @@ then
 else
     export TMUX_CONFIG="$DOTFILES/tmux/tmux-22.conf"
 fi
+
+export TRUE_COLOR=`$TMUX_PATH info | grep Tc | grep -o true`
 
 source "$DOTFILES/zsh/private.zsh"
 
