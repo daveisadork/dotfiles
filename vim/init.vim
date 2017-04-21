@@ -3,10 +3,12 @@ set encoding=utf-8
 set timeoutlen=500 ttimeoutlen=0
 
 if has('nvim')
-    if $LINUX
-        let g:python_host_prog = '/usr/bin/python'
-    else
-        let g:python_host_prog = '/usr/local/bin/python'
+    if has("unix")
+        let s:uname = system("uname")
+        let g:python_host_prog='/usr/bin/python'
+        if s:uname == "Darwin\n"
+            let g:python_host_prog='/usr/local/bin/python'
+        endif
     endif
     call plug#begin('~/.vim/plugged-nvim')
 else
