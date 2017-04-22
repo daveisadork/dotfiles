@@ -22,3 +22,6 @@
 [submodule "submodules/zsh-autosuggestions"]
 	path = submodules/zsh-autosuggestions
 	url = git://github.com/zsh-users/zsh-autosuggestions
+[submodule "submodules/zsh-syntax-highlighting"]
+	path = submodules/zsh-syntax-highlighting
+	url = git://github.com/zsh-users/zsh-syntax-highlighting.git

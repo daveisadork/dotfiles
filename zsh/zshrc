@@ -119,11 +119,11 @@ CASE_SENSITIVE="true"
 
 if [[ "$OSX" == "1"  ]]
 then
-    plugins=(brew brew-cask colored-man docker gitfast gitignore gnu-utils httpie osx pip python sudo tmux zsh-autosuggestions zsh-completions)
+    plugins=(brew brew-cask colored-man docker gitfast gitignore gnu-utils httpie osx pip python sudo tmux zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
     #    plugins=(aws bower brew brew-cask colored-man dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools osx node npm pip python sublime sudo supervisor tmux web-search zsh_reload)
 
 else
-    plugins=(aws bower colored-man command-not-found dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools node npm pip python sudo supervisor tmux ubuntu zsh-autosuggestions zsh-completions zsh_reload)
+    plugins=(aws bower colored-man command-not-found dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools node npm pip python sudo supervisor tmux ubuntu zsh-autosuggestions zsh-completions zsh_reload zsh-syntax-highlighting)
 fi
 
 # User configuration
