@@ -162,16 +162,6 @@ aug QFClose
     au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
 aug END
 
-" Completion junk
-let g:ycm_python_binary_path = 'python'
-let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:jedi#show_call_signatures_delay = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#completions_enabled = 0
-
 augroup vimrc_autocmds
     autocmd!
 
@@ -180,8 +170,8 @@ augroup vimrc_autocmds
     autocmd FileType python match Excess /\%80v.*/
     autocmd FileType python set nowrap
     autocmd FileType css,html,ruby,eruby,yaml set ai sw=2 sts=2 et
-    autocmd FileType python setlocal completeopt+=longest,menuone
-
+    " autocmd FileType python setlocal completeopt+=longest,menuone
+    autocmd FileType python setlocal completeopt=menuone,menu,longest,preview
     " These are the tweaks I apply to YCM's config, you don't need them but
     " they might help. YCM gives you popups and splits by default that some
     " people might not like, so these should tidy it up a bit for you.
@@ -193,10 +183,6 @@ augroup vimrc_autocmds
     " rename tmux window
     autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
 augroup END
-
-" <Tab> and <Shift-Tab> to indent/unindent selected text
-vnoremap <S-Tab> <gv
-vnoremap <Tab> >gv
 
 " If the current buffer has never been saved, it will have no name,
 " call the file browser to save it, otherwise just save it.
@@ -283,6 +269,20 @@ catch /^Vim\%((\a\+)\)\=:E185/
     PlugInstall
     colorscheme solarized
 endtry
+
+" Completion junk
+let g:jedi#completions_enabled = 0
+let g:jedi#show_call_signatures_delay = 0
+let g:jedi#auto_vim_configuration = 0
+
+let g:ycm_python_binary_path = 'python'
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_complete_in_strings = 0
+
+nnoremap <leader>d :YcmCompleter GoTo<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:promptline_preset = {
