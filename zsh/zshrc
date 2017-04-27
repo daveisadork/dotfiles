@@ -256,7 +256,7 @@ export PHANTOMJS_BIN=`which phantomjs`
 source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
 
 # Google Cloud SDK stuff
-export CLOUDSDK_PYTHON=`which python`
+# export CLOUDSDK_PYTHON=`which python`
 source "$HOME/.gcloud/google-cloud-sdk/path.zsh.inc"
 source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
 

@@ -171,7 +171,7 @@ augroup vimrc_autocmds
     autocmd FileType python set nowrap
     autocmd FileType css,html,ruby,eruby,yaml set ai sw=2 sts=2 et
     " autocmd FileType python setlocal completeopt+=longest,menuone
-    autocmd FileType python setlocal completeopt=menuone,menu,longest,preview
+    " autocmd FileType python setlocal completeopt=menuone,menu,longest,preview
     " These are the tweaks I apply to YCM's config, you don't need them but
     " they might help. YCM gives you popups and splits by default that some
     " people might not like, so these should tidy it up a bit for you.
@@ -228,6 +228,10 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 set mouse=a
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
+" <Tab> and <Shift-Tab> to indent/unindent selected text
+vnoremap <S-Tab> <gv
+vnoremap <Tab> >gv
+
 " Performance stuff
 set synmaxcol=120 " Disable syntax highlighting past 120 chars 
 if $REMOTE_SESSION
@@ -274,14 +278,22 @@ endtry
 let g:jedi#completions_enabled = 0
 let g:jedi#show_call_signatures_delay = 0
 let g:jedi#auto_vim_configuration = 0
+let g:jedi#goto_command = ""
+let g:jedi#goto_assignments_command = ""
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = ""
+let g:jedi#completions_command = ""
+let g:jedi#rename_command = "<leader>r"
 
-let g:ycm_python_binary_path = 'python'
+" let g:ycm_python_binary_path = 'python'
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_complete_in_strings = 0
 
 nnoremap <leader>d :YcmCompleter GoTo<CR>
+nnoremap <leader>n :YcmCompleter GoToReferences<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
