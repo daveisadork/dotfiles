@@ -11,6 +11,7 @@ if has('nvim')
         endif
     endif
     call plug#begin('~/.vim/plugged-nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
     call plug#begin('~/.vim/plugged')
 endif
@@ -49,11 +50,19 @@ Plug 'tpope/vim-characterize'
 
 " Completion stuff
 Plug 'ervandew/supertab'
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Shougo/echodoc.vim'
+
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'zchee/deoplete-jedi'
+else
+    Plug 'Valloric/YouCompleteMe'
+endif
 
 " Python stuff
 Plug 'klen/python-mode', { 'for': 'python' }
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'tell-k/vim-autopep8', { 'for': 'python' }
 " Plug 'jmcantrell/vim-virtualenv'
 
 " JavaScript stuff
@@ -276,24 +285,32 @@ endtry
 
 " Completion junk
 let g:jedi#completions_enabled = 0
-let g:jedi#show_call_signatures_delay = 0
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#goto_command = ""
-let g:jedi#goto_assignments_command = ""
-let g:jedi#goto_definitions_command = ""
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = ""
-let g:jedi#completions_command = ""
-let g:jedi#rename_command = "<leader>r"
+let g:jedi#show_call_signatures_delay = 999
 
-" let g:ycm_python_binary_path = 'python'
-let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_complete_in_strings = 0
 
-nnoremap <leader>d :YcmCompleter GoTo<CR>
-nnoremap <leader>n :YcmCompleter GoToReferences<CR>
+if has('nvim')
+    set guicursor=
+    set completeopt-=preview
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#sources#jedi#show_docstring = 0
+else
+    let g:jedi#auto_vim_configuration = 0
+    let g:jedi#goto_command = ""
+    let g:jedi#goto_assignments_command = ""
+    let g:jedi#goto_definitions_command = ""
+    let g:jedi#documentation_command = "K"
+    let g:jedi#usages_command = ""
+    let g:jedi#completions_command = ""
+    let g:jedi#rename_command = "<leader>r"
+
+    " let g:ycm_python_binary_path = 'python'
+    let g:ycm_add_preview_to_completeopt = 1
+    let g:ycm_autoclose_preview_window_after_completion = 1
+    let g:ycm_autoclose_preview_window_after_insertion = 1
+    let g:ycm_complete_in_strings = 0
+    nnoremap <leader>d :YcmCompleter GoTo<CR>
+    nnoremap <leader>n :YcmCompleter GoToReferences<CR>
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
