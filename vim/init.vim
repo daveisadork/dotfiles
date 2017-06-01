@@ -11,19 +11,25 @@ if has('nvim')
         endif
     endif
     call plug#begin('~/.vim/plugged-nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
     call plug#begin('~/.vim/plugged')
 endif
+
+if has('nvim')
+    Plug 'iCyMind/NeoSolarized'
+else
+    Plug 'altercation/vim-colors-solarized'
+endif
+
 
 if has('nvim') && has('termguicolors') && $TRUE_COLOR
     set termguicolors
     let g:solarized_termtrans=1
     let g:solarized_degrade=0
-    Plug 'frankier/neovim-colors-solarized-truecolor-only'
+    " Plug 'iCyMind/NeoSolarized'
 else
     set t_Co=256
-    Plug 'altercation/vim-colors-solarized'
+    " Plug 'altercation/vim-colors-solarized'
 endif
 
 Plug 'scrooloose/syntastic'
@@ -277,10 +283,18 @@ set incsearch " ...dynamically as they are typed."
 
 " Try loading the solarized them, call the vundle install routine if it fails
 try
-    colorscheme solarized
+    if has('nvim')
+        colorscheme NeoSolarized
+    else
+        colorscheme solarized
+    endif
 catch /^Vim\%((\a\+)\)\=:E185/
     PlugInstall
-    colorscheme solarized
+    if has('nvim')
+        colorscheme NeoSolarized
+    else
+        colorscheme solarized
+    endif
 endtry
 
 " Completion junk
