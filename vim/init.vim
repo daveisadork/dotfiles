@@ -55,9 +55,12 @@ Plug 'ervandew/supertab'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi'
+    Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 else
     Plug 'Valloric/YouCompleteMe'
 endif
+
+Plug 'marijnh/tern_for_vim', { 'do': 'npm install -g tern' , 'for': 'javascript' }
 
 " Python stuff
 Plug 'klen/python-mode', { 'for': 'python' }
@@ -69,8 +72,7 @@ Plug 'tell-k/vim-autopep8', { 'for': 'python' }
 Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-Plug 'marijnh/tern_for_vim', { 'for': 'javascript' }
-Plug 'Shutnik/jshint2.vim', { 'for': 'javascript' }
+" Plug 'Shutnik/jshint2.vim', { 'for': 'javascript' }
 Plug 'elzr/vim-json', { 'for': 'json' }
 " Plug 'mustache/vim-mustache-handlebars'
 
@@ -160,6 +162,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['python']
+let g:syntastic_javascript_checkers=['eslint']
 
 filetype on
 filetype plugin on
@@ -191,6 +194,8 @@ augroup vimrc_autocmds
 
     " rename tmux window
     autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+    autocmd FileType javascript nnoremap <leader>d :TernDef<CR>
+    autocmd FileType javascript nnoremap K :TernDoc<CR>
 augroup END
 
 " If the current buffer has never been saved, it will have no name,
@@ -287,6 +292,21 @@ endtry
 let g:jedi#completions_enabled = 0
 let g:jedi#show_call_signatures_delay = 999
 
+" Use deoplete.
+
+" Use tern_for_vim.
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+" let g:tern_show_argument_hints='on_hold'
+let g:tern_map_keys=0
+let g:tern_request_timeout = 3
+
+"Add extra filetypes
+let g:tern#filetypes = [
+                \ 'jsx',
+                \ 'javascript.jsx',
+                \ 'vue'
+                \ ]
 
 if has('nvim')
     set guicursor=
