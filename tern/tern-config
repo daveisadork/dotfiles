@@ -1,0 +1,25 @@
+{
+  "ecmaVersion": 6,
+  "libs": [
+    "browser",
+    "ecmascript",
+    "jquery"
+  ],
+  "dontLoad": [
+    "./node_modules/**"
+  ],
+  "plugins": {
+    "angular": {},
+    "es_modules": {},
+    "jsx": {},
+    "node": {},
+    "requirejs": {},
+    "webpack": {
+      "configPath": "./webpack.config.js"
+    },
+    "doc_comment": {
+      "fullDocs": true,
+      "strong": true
+    }
+  }
+}
