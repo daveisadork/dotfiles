@@ -61,11 +61,14 @@ Plug 'ervandew/supertab'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi'
-    Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+    Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' , 'for': 'javascript' }
+    Plug 'steelsojka/deoplete-flow', { 'do': 'npm install -g flow-bin' , 'for': 'javascript' }
+    let g:deoplete#sources#flow#flow_bin = 'flow' 
 else
     Plug 'Valloric/YouCompleteMe'
 endif
 
+" Plug 'flowtype/vim-flow', { 'do': 'npm install -g flow-bin' , 'for': 'javascript' }
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install -g tern' , 'for': 'javascript' }
 
 " Python stuff
@@ -314,6 +317,9 @@ let g:tern#arguments = ["--persistent"]
 " let g:tern_show_argument_hints='on_hold'
 let g:tern_map_keys=0
 let g:tern_request_timeout = 3
+
+let g:flow#enable = 1
+let g:flow#autoclose = 1
 
 "Add extra filetypes
 let g:tern#filetypes = [
