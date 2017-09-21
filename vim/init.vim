@@ -5,9 +5,11 @@ set timeoutlen=500 ttimeoutlen=0
 if has('nvim')
     if has("unix")
         let s:uname = system("uname")
-        let g:python_host_prog='/usr/bin/python'
+        let g:python3_host_prog='/usr/local/bin/python3'
+        let g:python_host_prog='/usr/local/bin/python2'
         if s:uname == "Darwin\n"
-            let g:python_host_prog='/usr/local/bin/python'
+            let g:python3_host_prog='/usr/local/bin/python3'
+            let g:python_host_prog='/usr/local/bin/python2'
         endif
     endif
     call plug#begin('~/.vim/plugged-nvim')
@@ -32,7 +34,7 @@ else
     " Plug 'altercation/vim-colors-solarized'
 endif
 
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 
 " Visual stuff
 Plug 'bling/vim-airline'
@@ -59,22 +61,28 @@ Plug 'ervandew/supertab'
 " Plug 'Shougo/echodoc.vim'
 
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'zchee/deoplete-jedi'
-    Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' , 'for': 'javascript' }
-    Plug 'steelsojka/deoplete-flow', { 'do': 'npm install -g flow-bin' , 'for': 'javascript' }
-    let g:deoplete#sources#flow#flow_bin = 'flow' 
+    Plug 'roxma/python-support.nvim'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'w0rp/ale'
+    " Plug 'Shougo/denite.nvim'
+    " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'roxma/nvim-completion-manager'
+    " Plug 'zchee/deoplete-jedi'
+    " Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' , 'for': 'javascript' }
+    " Plug 'steelsojka/deoplete-flow', { 'do': 'npm install -g flow-bin' , 'for': 'javascript' }
+    " let g:deoplete#sources#flow#flow_bin = 'flow' 
 else
     Plug 'Valloric/YouCompleteMe'
 endif
 
-" Plug 'flowtype/vim-flow', { 'do': 'npm install -g flow-bin' , 'for': 'javascript' }
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install -g tern' , 'for': 'javascript' }
+Plug 'flowtype/vim-flow', { 'for': 'javascript' }
+" Plug 'marijnh/tern_for_vim', { 'do': 'npm install -g tern' , 'for': 'javascript' }
 
 " Python stuff
 Plug 'klen/python-mode', { 'for': 'python' }
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-Plug 'tell-k/vim-autopep8', { 'for': 'python' }
+" Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+" Plug 'tell-k/vim-autopep8', { 'for': 'python' }
 " Plug 'jmcantrell/vim-virtualenv'
 
 " JavaScript stuff
@@ -104,6 +112,16 @@ Plug 'osyo-manga/vim-over'
 " End Vundle Packages
 call plug#end()
 
+
+let g:LanguageClient_serverCommands = {
+    \ 'python': ['pyls'],
+    \ 'javascript': ['~/Projects/javascript-typescript-langserver/lib/language-server-stdio.js'],
+    \ }
+
+" Automatically start language servers.
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_diagnosticsEnable = 0
+
 " Editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
@@ -114,6 +132,15 @@ let g:airline#extensions#tabline#enabled=1
 let g:airline_theme='solarline'
 let g:airline#extensions#tabline#tab_nr_type=1
 let g:airline#extensions#tabline#buffer_nr_show=1
+let g:airline#extensions#ale#enabled = 1
+
+
+" Ale setup
+let g:ale_sign_column_always = 0
+let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
+let g:ale_sign_info = 'ℹ'
 
 " NerdTree Setup
 map <C-o> :NERDTreeToggle<CR>
@@ -164,7 +191,7 @@ let g:pymode_folding = 0
 " let jshint2_save = 1
 
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -172,6 +199,12 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['python']
 let g:syntastic_javascript_checkers=['eslint']
+
+" set shortmess+=c
+let g:cm_sources_enable = 1
+let g:cm_sources_override = {
+    \ 'LanguageClient_python': {'enable':0}
+    \ }
 
 filetype on
 filetype plugin on
@@ -186,9 +219,9 @@ aug END
 augroup vimrc_autocmds
     autocmd!
 
-    " highlight characters past column 80
-    autocmd FileType python highlight Excess ctermbg=Black guibg=Black
-    autocmd FileType python match Excess /\%80v.*/
+    " highlight characters past column 79
+    " autocmd FileType python highlight Excess ctermbg=Black guibg=Black
+    " autocmd FileType python match Excess /\%79v.*/
     autocmd FileType python set nowrap
     autocmd FileType css,html,ruby,eruby,yaml set ai sw=2 sts=2 et
     " autocmd FileType python setlocal completeopt+=longest,menuone
@@ -203,8 +236,8 @@ augroup vimrc_autocmds
 
     " rename tmux window
     autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
-    autocmd FileType javascript nnoremap <leader>d :TernDef<CR>
-    autocmd FileType javascript nnoremap K :TernDoc<CR>
+    " autocmd FileType javascript nnoremap <leader>d :TernDef<CR>
+    " autocmd FileType javascript nnoremap K :TernDoc<CR>
 augroup END
 
 " If the current buffer has never been saved, it will have no name,
@@ -225,7 +258,7 @@ set guifont=Source\ Code\ Pro:h12
 set go=egmLt
 
 " Set up display stuff
-set colorcolumn=80
+" set colorcolumn=70
 set number
 set ruler
 
@@ -332,7 +365,12 @@ if has('nvim')
     set guicursor=
     set completeopt-=preview
     let g:deoplete#enable_at_startup = 1
-    let g:deoplete#sources#jedi#show_docstring = 0
+    let g:LanguageClient_autoStart = 1
+    nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+    nnoremap <leader>d :call LanguageClient_textDocument_definition()<CR>
+    nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+    nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+    " let g:deoplete#sources#jedi#show_docstring = 0
 else
     let g:jedi#auto_vim_configuration = 0
     let g:jedi#goto_command = ""

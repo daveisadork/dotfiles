@@ -277,3 +277,5 @@ fi
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 
 source $DOTFILES/zsh/shell_prompt.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
