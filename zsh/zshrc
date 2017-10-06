@@ -125,11 +125,10 @@ then
 else
     plugins=(aws bower colored-man command-not-found dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools node npm pip python sudo supervisor tmux ubuntu zsh-autosuggestions zsh-completions zsh_reload zsh-syntax-highlighting)
 fi
-
 # User configuration
 if [[ "$OSX" == "1" ]]
 then
-    export PATH="$HOME/.local/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt/FDK/Tools/osx"
+    export PATH="$HOME/.local/bin:/usr/local/opt/python/libexec/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt/FDK/Tools/osx"
     homebrew_command_not_found_handle() {
         local cmd="$1"
         if test -z "$CONTINUOUS_INTEGRATION" && test -n "$MC_SID" -o ! -t 1 ; then
@@ -230,21 +229,6 @@ else
     export GIT_EDITOR=vim
     export VISUAL=vim
     export EDITOR=vim
-fi
-
-if [[ -e "/usr/local/bin/docker-machine" ]]
-then
-    if [[ -e "/usr/local/bin/dinghy" ]]
-    then
-        alias dinghy="reattach-to-user-namespace dinghy"
-        # The shellinit thing is crazy slow if the VM isn't running
-        eval "$(dinghy shellinit)"
-    else
-        docker-machine status dev | grep -q Running
-        if [ $? -eq 0 ]; then
-            eval "$(docker-machine env dev)"
-        fi
-    fi
 fi
 
 # bindkey -v
