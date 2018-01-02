@@ -1,7 +1,13 @@
+" Basic setup
 set nocompatible
 set encoding=utf-8
 set timeoutlen=500 ttimeoutlen=0
+set nowrap
+filetype on
+filetype plugin on
+filetype indent on
 
+" Environment detection/setup
 if has('nvim')
     if has("unix")
         let s:uname = system("uname")
@@ -12,97 +18,89 @@ if has('nvim')
             let g:python_host_prog='/usr/local/bin/python2'
         endif
     endif
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins                                                                     "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Use different plugin directories for neovim and vim
+if has('nvim')
     call plug#begin('~/.vim/plugged-nvim')
 else
     call plug#begin('~/.vim/plugged')
 endif
 
+" Use neovim specific solarized
 if has('nvim')
     Plug 'iCyMind/NeoSolarized'
 else
     Plug 'altercation/vim-colors-solarized'
 endif
 
+" Test running
+Plug 'janko-m/vim-test'
 
-if has('nvim') && has('termguicolors') && $TRUE_COLOR
-    set termguicolors
-    let g:solarized_termtrans=1
-    let g:solarized_degrade=0
-    " Plug 'iCyMind/NeoSolarized'
-else
-    set t_Co=256
-    " Plug 'altercation/vim-colors-solarized'
-endif
-
-" Plug 'scrooloose/syntastic'
-" Plug 'janko-m/vim-test'
-
-" Visual stuff
+" Airline/tmux/zsh
 Plug 'bling/vim-airline'
-" Plug 'Yggdroot/indentLine'
-Plug 'luochen1990/rainbow'
+Plug 'edkolev/promptline.vim'
+Plug 'edkolev/tmuxline.vim'
+
+" Code visualization stuff
 Plug 'lilydjwg/colorizer'
+Plug 'luochen1990/rainbow'
 
 " Utility stuff
+" Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-git'
-" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-" Plug 'kien/ctrlp.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-characterize'
-" Plug 'tpope/vim-repeat'
-" Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-surround'
 
-" Completion stuff
+" Completion and search stuff
 Plug 'ervandew/supertab'
-" Plug 'Shougo/echodoc.vim'
-Plug 'othree/csscomplete.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+" Plug 'mileszs/ack.vim'
+" Plug 'numkil/ag.nvim'
+Plug 'mhinz/vim-grepper'
 
 if has('nvim')
-    Plug 'roxma/python-support.nvim'
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
-    Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'w0rp/ale'
-    " Plug 'Shougo/denite.nvim'
-    " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'roxma/nvim-completion-manager'
-    Plug 'roxma/ncm-github'
     " Plug 'roxma/nvim-cm-tern',  {'do': 'npm install'}
-    Plug 'roxma/ncm-flow'
     Plug 'Shougo/neco-syntax'
     Plug 'Shougo/neco-vim'
+    " Plug 'daveisadork/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'make release'}
+    Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
+    Plug 'roxma/ncm-flow'
+    Plug 'roxma/ncm-github'
     Plug 'roxma/ncm-rct-complete'
-    " Plug 'zchee/deoplete-jedi'
-    " Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' , 'for': 'javascript' }
-    " Plug 'steelsojka/deoplete-flow', { 'do': 'npm install -g flow-bin' , 'for': 'javascript' }
-    " let g:deoplete#sources#flow#flow_bin = 'flow' 
+    Plug 'roxma/nvim-completion-manager'
+    Plug 'roxma/python-support.nvim'
 else
     Plug 'Valloric/YouCompleteMe'
 endif
 
-Plug 'flowtype/vim-flow', { 'for': 'javascript' }
-" Plug 'marijnh/tern_for_vim', { 'do': 'npm install -g tern' , 'for': 'javascript' }
+" General Syntax stuff
+Plug 'w0rp/ale'
 
 " Python stuff
 Plug 'klen/python-mode', { 'for': 'python' }
-" Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-" Plug 'tell-k/vim-autopep8', { 'for': 'python' }
-" Plug 'jmcantrell/vim-virtualenv'
-" Plug 'alfredodeza/pytest.vim', { 'for': 'python' }
+Plug 'Glench/Vim-Jinja2-Syntax'
 
 " JavaScript stuff
-" Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 " Plug 'Shutnik/jshint2.vim', { 'for': 'javascript' }
-Plug 'elzr/vim-json', { 'for': 'json' }
+" Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
 " Plug 'mustache/vim-mustache-handlebars'
+Plug 'elzr/vim-json', { 'for': 'json' }
+Plug 'flowtype/vim-flow', { 'for': 'javascript' }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'leafgarland/typescript-vim'
 
 " CSS/SCSS stuff
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
@@ -110,30 +108,37 @@ Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
 
 " Other languages
 Plug 'jcf/vim-latex', { 'for': 'tex' }
-" Plug 'lambdatoast/elm.vim'
+Plug 'lambdatoast/elm.vim'
 Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
-" Plug '4Evergreen4/vim-hardy'
-" Plug 'derekwyatt/vim-scala'
+Plug 'JamshedVesuna/vim-markdown-preview', { 'for': 'markdown' }
 
-" Other random shit
-Plug 'edkolev/tmuxline.vim'
-Plug 'edkolev/promptline.vim'
-Plug 'osyo-manga/vim-over'
-
-" End Vundle Packages
+" End Plug Packages
 call plug#end()
 
-
+" LanguageClient-neovim setup
 let g:LanguageClient_serverCommands = {
-    \ 'python': ['pyls'],
+    \ 'python': ['~/.dotfiles/bin/pyls.sh'],
     \ 'javascript': ['node', '~/.dotfiles/node/node_modules/.bin/javascript-typescript-stdio'],
+    \ 'typescript': ['node', '~/.dotfiles/node/node_modules/.bin/javascript-typescript-stdio'],
+    \ 'css': ['node', '~/.dotfiles/node/node_modules/.bin/css-language-server', '--stdio'],
     \ 'dockerfile': ['node', '~/.dotfiles/node/node_modules/.bin/docker-langserver', '--stdio'],
+    \ 'yaml': ['node', '~/.dotfiles/node/node_modules/.bin/docker-langserver', '--stdio'],
+    \ 'c': ['cquery', '--language-server'],
+    \ 'cpp': ['cquery', '--language-server'],
+    \ 'objc': ['cquery', '--language-server'],
     \ }
+
+let g:LanguageClient_rootMarkers = {
+    \ 'python': ['setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile', 'main.py', 'tox.ini'],
+    \ }
+
+let g:LanguageClient_loadSettings = 1
+let g:LanguageClient_settingsPath = '/Users/dave/.config/nvim/settings.json'
 
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
-let g:LanguageClient_diagnosticsEnable = 0
 
+let g:LanguageClient_diagnosticsEnable = 0
 " Editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
@@ -146,52 +151,17 @@ let g:airline#extensions#tabline#tab_nr_type=1
 let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#ale#enabled = 1
 
-
-" Ale setup
-let g:ale_linters = {'javascript': ['eslint']}
-let g:ale_python_flake8_executable = 'python'
-let g:ale_python_flake8_options = '-m flake8'
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
-let g:ale_sign_info = 'ℹ'
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 1
-let g:ale_open_list = 1
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-" NerdTree Setup
-" map <C-o> :NERDTreeToggle<CR>
-" let NERDTreeIgnore = ['\.pyc$']
-
-" Python-mode
-" Activate rope
-" Keys:
-" K             Show python docs
-" <Ctrl-Space>  Rope autocomplete
-" <Ctrl-c>g     Rope goto definition
-" <Ctrl-c>d     Rope show documentation
-" <Ctrl-c>f     Rope find occurrences
-" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
-" [[            Jump on previous class or function (normal, visual, operator modes)
-" ]]            Jump on next class or function (normal, visual, operator modes)
-" [M            Jump on previous class or method (normal, visual, operator modes)
-" ]M            Jump on next class or method (normal, visual, operator modes)
+" python-mode setup
+" Just disable everything but the nicer syntax and virtualenv
 let g:pymode_rope = 0
 let g:pymode_rope_lookup_project = 0
 let g:pymode_rope_complete_on_dot = 0
-
-" Linting
 let g:pymode_lint = 0
-let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
-" Auto check on save
 let g:pymode_lint_write = 0
+let g:pymode_breakpoint = 0
+
 " Support virtualenv
 let g:pymode_virtualenv = 1
-
-" Enable breakpoints plugin
-let g:pymode_breakpoint = 0
-"let g:pymode_breakpoint_key = '<leader>b'
 
 " syntax highlighting
 let g:pymode_syntax = 1
@@ -205,23 +175,51 @@ let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 " Don't autofold code
 let g:pymode_folding = 0
 
-" let jshint2_save = 1
 
+" Syntax/linting setup
 set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['python']
-let g:syntastic_javascript_checkers=['eslint']
+
+" Ale setup
+let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_python_flake8_executable = $HOME . '/.dotfiles/bin/flake8.sh'
+let g:ale_python_flake8_use_global = 1
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
+let g:ale_sign_info = 'ℹ'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_open_list = 1
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+" s:compute_working_directory() {{{2
+function! s:compute_working_directory() abort
+    let repopath = finddir('.git', '.;')
+    if empty(repopath)
+        let repopath = findfile('requirements.txt', '.;')
+    endif
+    if !empty(repopath)
+        let repopath = fnamemodify(repopath, ':h')
+        return fnameescape(repopath)
+    endif
+    let cwd = getcwd()
+    let bufdir = expand('%:p:h')
+    if stridx(bufdir, cwd) != 0
+      return fnameescape(bufdir)
+    endif
+    let bufdir = expand('%:p:h')
+    return fnameescape(bufdir)
+endfunction
 
 
-" fzf
-nnoremap <C-o> :Files<CR>
+let g:search_root = s:compute_working_directory()
+
+
+" fzf setup
+" nnoremap <C-o> :Files<CR>
 nnoremap <C-p> :GFiles<CR>
-nnoremap <C-i> :GFiles?<CR>
+" nnoremap <C-i> :GFiles?<CR>
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -237,7 +235,25 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-" neovim-completion-manager setup
+" Ag/Ack setup
+let g:ag_working_path_mode="r"
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+" nnoremap <silent> <C-p> :call fzf#vim#files(g:search_root)<CR>
+let g:ag_highlight = 1
+let g:ag_autoclose = 1
+
+let g:ack_autoclose = 1
+let g:ack_highlight = 1
+let g:ack_use_cword_for_empty_search = 1
+" nnoremap <C-g> :Ack<CR>
+let g:grepper = {}
+let g:grepper.quickfix = 0
+let g:grepper.dir = 'repo,filecwd'
+nnoremap <silent> <C-g> :Grepper -cword -noprompt<cr>
+
+" Completion setup
 " set shortmess+=c
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 let g:cm_sources_enable = 1
@@ -245,9 +261,9 @@ let g:cm_sources_override = {
     \ 'LanguageClient_python': {'enable':0}
     \ }
 
-filetype on
-filetype plugin on
-filetype indent on
+" Completion junk
+let g:jedi#completions_enabled = 0
+let g:jedi#show_call_signatures_delay = 999
 
 " Auto-close the quickfix buffer if it's the only remaining buffer
 aug QFClose
@@ -257,25 +273,18 @@ aug END
 
 augroup vimrc_autocmds
     autocmd!
-
+    autocmd FileType php LanguageClientStart
     " highlight characters past column 79
     " autocmd FileType python highlight Excess guifg=DarkRed ctermfg=DarkRed ctermbg=Black guibg=Black
     " autocmd FileType python match Excess /\%80v.*/
     " autocmd FileType python set colorcolumn=80
-    autocmd FileType python set nowrap
+    autocmd FileType python,css,html,eruby,yaml,javascript,json,php set nowrap
     autocmd FileType css,html,ruby,eruby,yaml,javascript,json set ai sw=2 sts=2 et
     " autocmd FileType python setlocal completeopt+=longest,menuone
     " autocmd FileType python setlocal completeopt=menuone,menu,longest,preview
-    " These are the tweaks I apply to YCM's config, you don't need them but
-    " they might help. YCM gives you popups and splits by default that some
-    " people might not like, so these should tidy it up a bit for you.
-    " autocmd Filetype javascript let g:ycm_add_preview_to_completeopt=0
-    " autocmd Filetype javascript set completeopt-=preview
 
     " rename tmux window
-    autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
-    " autocmd FileType javascript nnoremap <leader>d :TernDef<CR>
-    " autocmd FileType javascript nnoremap K :TernDoc<CR>
+    autocmd BufEnter,BufFilePost,BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
 augroup END
 
 " If the current buffer has never been saved, it will have no name,
@@ -376,20 +385,16 @@ catch /^Vim\%((\a\+)\)\=:E185/
     endif
 endtry
 
-" Completion junk
-let g:jedi#completions_enabled = 0
-let g:jedi#show_call_signatures_delay = 999
-
-" Pytest
-" nmap <silent><Leader>f <Esc>:Pytest file<CR>
-" nmap <silent><Leader>c <Esc>:Pytest class<CR>
-" nmap <silent><Leader>m <Esc>:Pytest method<CR>
-
+" vim-test setup
+let test#strategy = "neovim"
 nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>f :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
+
+let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_browser='Safari'
 
 " Use tern_for_vim.
 let g:tern#command = ["tern"]
@@ -397,7 +402,6 @@ let g:tern#arguments = ["--persistent"]
 " let g:tern_show_argument_hints='on_hold'
 let g:tern_map_keys=0
 let g:tern_request_timeout = 3
-
 let g:flow#enable = 1
 let g:flow#autoclose = 1
 
@@ -412,6 +416,13 @@ let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
 
+if has('nvim') && has('termguicolors') && $TRUE_COLOR
+    set termguicolors
+    let g:solarized_termtrans=1
+    let g:solarized_degrade=0
+else
+    set t_Co=256
+endif
 if has('nvim')
     set guicursor=
     set completeopt-=preview
@@ -419,8 +430,18 @@ if has('nvim')
     nnoremap <leader>d :call LanguageClient_textDocument_definition()<CR>
     nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
     nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-    let g:python_support_python3_requirements = get(g:,'python_support_python3_requirements',[]) + ['psutil', 'pyls-mypy', 'python-language-server']
-    let g:python_support_python2_requirements = get(g:,'python_support_python2_requirements',[]) + ['psutil', 'python-language-server']
+    nnoremap <leader>r :call LanguageClient_textDocument_rename()<CR>
+    nnoremap <leader>u :call LanguageClient_textDocument_references()<CR>
+    let g:python_support_python3_requirements = get(g:, 'python_support_python3_requirements', []) + [
+        \ 'psutil',
+        \ 'python-language-server',
+        \ 'flake8'
+    \ ]
+    let g:python_support_python2_requirements = get(g:, 'python_support_python2_requirements', []) + [
+        \ 'psutil',
+        \ 'python-language-server',
+        \ 'flake8'
+    \ ]
 else
     let g:jedi#auto_vim_configuration = 0
     let g:jedi#goto_command = ""
@@ -440,19 +461,70 @@ else
     nnoremap <leader>n :YcmCompleter GoToReferences<CR>
 endif
 
+let g:rainbow_conf =
+\ {
+    \ 'guifgs': [
+         \ 'royalblue3',
+         \ 'darkorange3',
+         \ 'seagreen3',
+         \ 'firebrick',
+    \ ],
+    \ 'ctermfgs': [
+         \ 'lightblue',
+         \ 'lightyellow',
+         \ 'lightcyan',
+         \ 'lightmagenta',
+    \ ],
+    \ 'operators': '_,_',
+    \ 'parentheses': [
+         \ 'start=/(/ end=/)/ fold',
+         \ 'start=/\[/ end=/\]/ fold',
+         \ 'start=/{/ end=/}/ fold',
+    \ ],
+    \ 'separately': {
+        \ '*': {},
+        \ 'tex': {
+             \ 'parentheses': [
+                 \ 'start=/(/ end=/)/',
+                 \ 'start=/\[/ end=/\]/',
+             \ ],
+        \ },
+        \ 'lisp': {
+             \ 'guifgs': [
+                 \ 'royalblue3',
+                 \ 'darkorange3',
+                 \ 'seagreen3',
+                 \ 'firebrick',
+                 \ 'darkorchid3',
+             \ ],
+         \ },
+        \ 'vim': {
+             \ 'parentheses': [
+                 \ 'start=/(/ end=/)/',
+                 \ 'start=/\[/ end=/\]/',
+                 \ 'start=/{/ end=/}/ fold',
+                 \ 'start=/(/ end=/)/ containedin=vimFuncBody',
+                 \ 'start=/\[/ end=/\]/ containedin=vimFuncBody',
+                 \ 'start=/{/ end=/}/ fold containedin=vimFuncBody',
+             \ ],
+         \ },
+        \ 'html': 0,
+        \ 'css': 0,
+    \ }
+\ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:promptline_preset = {
-    \'a'    : [ promptline#slices#python_virtualenv() ],
-    \'b'    : [ '$USER' ],
-    \'c'    : [ '%~' ],
-    \'x'    : [ promptline#slices#vcs_branch() ],
-    \'y'    : [ promptline#slices#host({ 'only_if_ssh': 1  }) ],
-    \'z'    : [],
-    \'warn' : [ promptline#slices#last_exit_code() ],
-    \'options': {
-        \'left_sections' : [ 'y', 'b', 'a', 'x', 'c', 'z', 'warn' ],
-        \'right_sections': []}}
+    \ 'a'    : [ promptline#slices#python_virtualenv() ],
+    \ 'b'    : [ '$USER' ],
+    \ 'c'    : [ '%~' ],
+    \ 'x'    : [ promptline#slices#vcs_branch() ],
+    \ 'y'    : [ promptline#slices#host({ 'only_if_ssh': 1  }) ],
+    \ 'z'    : [],
+    \ 'warn' : [ promptline#slices#last_exit_code() ],
+    \ 'options': {
+         \ 'left_sections' : [ 'y', 'b', 'a', 'x', 'c', 'z', 'warn' ],
+         \ 'right_sections': []}}
 
 let g:tmuxline_preset='solarline'
 let g:tmuxline_theme='airline'
