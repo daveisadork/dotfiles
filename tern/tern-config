@@ -2,24 +2,26 @@
   "ecmaVersion": 6,
   "libs": [
     "browser",
+    "chai",
     "ecmascript",
-    "jquery"
-  ],
-  "dontLoad": [
-    "./node_modules/**"
+    "jquery",
+    "react",
+    "underscore"
   ],
   "plugins": {
     "angular": {},
-    "es_modules": {},
-    "jsx": {},
-    "node": {},
-    "requirejs": {},
-    "webpack": {
-      "configPath": "./webpack.config.js"
-    },
+    "commonjs": {},
+    "complete_strings": {},
     "doc_comment": {
       "fullDocs": true,
       "strong": true
-    }
+    },
+    "es_modules": {},
+    "jsx": {},
+    "modules": {},
+    "node": {},
+    "node_resolve": {},
+    "requirejs": {},
+    "webpack": {}
   }
 }
