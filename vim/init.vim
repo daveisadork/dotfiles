@@ -133,7 +133,7 @@ let g:LanguageClient_rootMarkers = {
     \ }
 
 let g:LanguageClient_loadSettings = 1
-let g:LanguageClient_settingsPath = '/Users/dave/.config/nvim/settings.json'
+let g:LanguageClient_settingsPath = $HOME . '/.config/nvim/settings.json'
 
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
@@ -181,7 +181,7 @@ set statusline+=%#warningmsg#
 set statusline+=%*
 
 " Ale setup
-let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_linters = {'javascript': ['eslint'], 'jinja.html': [], 'html': []}
 let g:ale_python_flake8_executable = $HOME . '/.dotfiles/bin/flake8.sh'
 let g:ale_python_flake8_use_global = 1
 let g:ale_sign_error = '✖'
@@ -190,6 +190,9 @@ let g:ale_sign_info = 'ℹ'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 let g:ale_open_list = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
@@ -279,7 +282,7 @@ augroup vimrc_autocmds
     " autocmd FileType python match Excess /\%80v.*/
     " autocmd FileType python set colorcolumn=80
     autocmd FileType python,css,html,eruby,yaml,javascript,json,php set nowrap
-    autocmd FileType css,html,ruby,eruby,yaml,javascript,json set ai sw=2 sts=2 et
+    autocmd FileType css,html,jinja.html,ruby,eruby,yaml,javascript,json set ai sw=2 sts=2 et
     " autocmd FileType python setlocal completeopt+=longest,menuone
     " autocmd FileType python setlocal completeopt=menuone,menu,longest,preview
 
