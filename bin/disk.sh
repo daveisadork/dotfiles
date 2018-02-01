@@ -1,4 +1,4 @@
-#!/usr/local/bin/zsh
+#!/usr/bin/env zsh
 
 BASE03=colour8
 BASE02=colour0
@@ -17,23 +17,23 @@ BLUE=colour4
 CYAN=colour6
 GREEN=colour2
 
-DF="$(df -h -l --output=avail,pcent,target | grep -p '/$')"
-NUMBER="$(echo \"$DF\"| grep -op '\(1\?[0-9]\{2\}\%\)' | grep -op '[0-9]\+')"
-DISK_FREE="$(echo \"$DF\"| grep -op '\([0-9\.]*[KMGTPEZY]\)')"
+DF="$(df -h -l --output=avail,pcent,target . | grep -E '/$')"
+NUMBER="$(echo \"$DF\"| grep -oE '(1?[0-9]{2}%)' | grep -oE '[0-9]+')"
+DISK_FREE="$(echo \"$DF\"| grep -oE '([0-9.]*[KMGTPEZY])')"
 
-if [ $NUMBER -ge 90 ]
+if [[ $NUMBER -ge 90 ]]
 then
     TEXT_FG_COLOR=$RED
-elif [ $NUMBER -ge 80 ]
+elif [[ $NUMBER -ge 80 ]]
 then
     TEXT_FG_COLOR=$MAGENTA
-elif [ $NUMBER -ge 60 ]
+elif [[ $NUMBER -ge 60 ]]
 then
     TEXT_FG_COLOR=$VIOLET
-elif [ $NUMBER -ge 40 ]
+elif [[ $NUMBER -ge 40 ]]
 then
     TEXT_FG_COLOR=$BLUE
-elif [ $NUMBER -ge 20 ]
+elif [[ $NUMBER -ge 20 ]]
 then
     TEXT_FG_COLOR=$CYAN
 else
@@ -41,4 +41,3 @@ else
 fi
 
 echo "#[fg=$TEXT_FG_COLOR,bg=$BASE02,nobold,nounderscore,noitalics]$DISK_FREE#[fg=$BASE00,bg=$BASE02,nobold,nounderscore,noitalics]"
-
