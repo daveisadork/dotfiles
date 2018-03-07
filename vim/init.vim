@@ -42,7 +42,8 @@ endif
 Plug 'janko-m/vim-test'
 
 " Airline/tmux/zsh
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'edkolev/promptline.vim'
 Plug 'edkolev/tmuxline.vim'
 
@@ -98,8 +99,9 @@ Plug 'Glench/Vim-Jinja2-Syntax'
 " Plug 'mustache/vim-mustache-handlebars'
 Plug 'elzr/vim-json', { 'for': 'json' }
 Plug 'flowtype/vim-flow', { 'for': 'javascript' }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+" Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 Plug 'leafgarland/typescript-vim'
 
 " CSS/SCSS stuff
