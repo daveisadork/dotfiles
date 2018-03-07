@@ -234,9 +234,6 @@ fi
 # bindkey -v
 export KEYTIMEOUT=1
 
-export PHANTOMJS_BIN=`which phantomjs`
-
-# source "$DOTFILES/submodules/powerline/powerline/bindings/zsh/powerline.zsh"
 source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
 
 # Google Cloud SDK stuff
@@ -247,9 +244,10 @@ source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
 export NVM_DIR=~/.nvm
 if [[ "$OSX" == "1"  ]]
 then
-    source $(brew --prefix nvm)/nvm.sh
-else
-    [ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    source /usr/local/opt/nvm/nvm.sh --no-use
+elif [ -s "$NVM_DIR/nvm.sh"  ] 
+then
+    source "$NVM_DIR/nvm.sh" --no-use
 fi
 
 # iTerm2 Shell Integration
