@@ -221,6 +221,10 @@ endfunction
 let g:search_root = s:compute_working_directory()
 
 
+" GitGutter
+set updatetime=100
+
+
 " fzf setup
 " nnoremap <C-o> :Files<CR>
 nnoremap <C-p> :GFiles<CR>
@@ -256,6 +260,7 @@ let g:ack_use_cword_for_empty_search = 1
 let g:grepper = {}
 let g:grepper.quickfix = 0
 let g:grepper.dir = 'repo,filecwd'
+let g:grepper.tools = ['ag', 'git', 'grep']
 nnoremap <silent> <C-g> :Grepper -cword -noprompt<cr>
 
 " Completion setup
