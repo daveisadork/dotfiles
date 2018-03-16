@@ -38,6 +38,7 @@ else
     Plug 'altercation/vim-colors-solarized'
 endif
 
+" Plug 'jacobsimpson/nvim-example-python-plugin'
 " Test running
 Plug 'janko-m/vim-test'
 
@@ -52,7 +53,8 @@ Plug 'lilydjwg/colorizer'
 Plug 'luochen1990/rainbow'
 
 " Utility stuff
-" Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
+Plug 'tommcdo/vim-fugitive-blame-ext'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-abolish'
@@ -66,68 +68,64 @@ Plug 'ervandew/supertab'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
-" Plug 'mileszs/ack.vim'
-" Plug 'numkil/ag.nvim'
 Plug 'mhinz/vim-grepper'
 
 if has('nvim')
-    " Plug 'roxma/nvim-cm-tern',  {'do': 'npm install'}
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': 'bash install.sh',
+        \ }
+    Plug 'roxma/nvim-completion-manager'
+    Plug 'roxma/nvim-cm-tern',  {'do': 'npm install'}
     Plug 'Shougo/neco-syntax'
     Plug 'Shougo/neco-vim'
-    " Plug 'daveisadork/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'make release'}
     Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
-    Plug 'roxma/ncm-flow'
+    " Plug 'roxma/ncm-flow'
     Plug 'roxma/ncm-github'
     Plug 'roxma/ncm-rct-complete'
-    Plug 'roxma/nvim-completion-manager'
     Plug 'roxma/python-support.nvim'
 else
     Plug 'Valloric/YouCompleteMe'
 endif
 
 " General Syntax stuff
+Plug 'sheerun/vim-polyglot'
 Plug 'w0rp/ale'
 
 " Python stuff
 Plug 'klen/python-mode', { 'for': 'python' }
-Plug 'Glench/Vim-Jinja2-Syntax'
-
-" JavaScript stuff
-" Plug 'Shutnik/jshint2.vim', { 'for': 'javascript' }
-" Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
-" Plug 'mustache/vim-mustache-handlebars'
-Plug 'elzr/vim-json', { 'for': 'json' }
-Plug 'flowtype/vim-flow', { 'for': 'javascript' }
-" Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim'
 
 " CSS/SCSS stuff
-Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
-Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+Plug 'othree/csscomplete.vim', { 'for': ['css', 'scss'] }
 
 " Other languages
-Plug 'jcf/vim-latex', { 'for': 'tex' }
-Plug 'lambdatoast/elm.vim'
-Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'JamshedVesuna/vim-markdown-preview', { 'for': 'markdown' }
 
 " End Plug Packages
 call plug#end()
 
+
+let g:cm_sources_override = {
+    \ 'LanguageClient_python': {'enable':0},
+    \ 'LanguageClient_javascript.jsx': {'enable':0},
+    \ }
+
+let js_ts_server = ['node', '~/.dotfiles/node/node_modules/.bin/flow-language-server', '--stdio']
+let js_ts_server = ['node', '~/.dotfiles/node/node_modules/.bin/javascript-typescript-stdio']
+let clangserver = ['cquery', '--language-server']
+
 " LanguageClient-neovim setup
 let g:LanguageClient_serverCommands = {
     \ 'python': ['~/.dotfiles/bin/pyls.sh'],
-    \ 'javascript': ['node', '~/.dotfiles/node/node_modules/.bin/javascript-typescript-stdio'],
-    \ 'typescript': ['node', '~/.dotfiles/node/node_modules/.bin/javascript-typescript-stdio'],
+    \ 'javascript': js_ts_server,
+    \ 'javascript.jsx': js_ts_server,
+    \ 'typescript': js_ts_server,
     \ 'css': ['node', '~/.dotfiles/node/node_modules/.bin/css-language-server', '--stdio'],
     \ 'dockerfile': ['node', '~/.dotfiles/node/node_modules/.bin/docker-langserver', '--stdio'],
     \ 'yaml': ['node', '~/.dotfiles/node/node_modules/.bin/docker-langserver', '--stdio'],
-    \ 'c': ['cquery', '--language-server'],
-    \ 'cpp': ['cquery', '--language-server'],
-    \ 'objc': ['cquery', '--language-server'],
+    \ 'c': clangserver,
+    \ 'cpp': clangserver,
+    \ 'objc': clangserver,
     \ }
 
 let g:LanguageClient_rootMarkers = {
@@ -183,7 +181,7 @@ set statusline+=%#warningmsg#
 set statusline+=%*
 
 " Ale setup
-let g:ale_linters = {'javascript': ['eslint'], 'jinja.html': [], 'html': []}
+" let g:ale_linters = {'javascript': ['eslint', 'flow'], 'jinja.html': [], 'html': []}
 let g:ale_python_flake8_executable = $HOME . '/.dotfiles/bin/flake8.sh'
 let g:ale_python_flake8_use_global = 1
 let g:ale_sign_error = '✖'
@@ -264,12 +262,11 @@ let g:grepper.tools = ['ag', 'git', 'grep']
 nnoremap <silent> <C-g> :Grepper -cword -noprompt<cr>
 
 " Completion setup
-" set shortmess+=c
+"" don't give |ins-completion-menu| messages.  For example,
+" '-- XXX completion (YYY)', 'match 1 of 2', 'The only match',
+set shortmess+=c
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 let g:cm_sources_enable = 1
-let g:cm_sources_override = {
-    \ 'LanguageClient_python': {'enable':0}
-    \ }
 
 " Completion junk
 let g:jedi#completions_enabled = 0
@@ -308,7 +305,7 @@ command -nargs=0 -bar Update if &modified
                            \|endif
 
 " UI config
-syntax enable
+syntax on
 set background=dark
 
 set guifont=Source\ Code\ Pro:h12
@@ -346,7 +343,7 @@ vnoremap <S-Tab> <gv
 vnoremap <Tab> >gv
 
 " Performance stuff
-set synmaxcol=120 " Disable syntax highlighting past 120 chars 
+" set synmaxcol=120 " Disable syntax highlighting past 120 chars 
 if $REMOTE_SESSION
     set lazyredraw " to avoid scrolling problems
 else
@@ -407,13 +404,15 @@ let vim_markdown_preview_hotkey='<C-m>'
 let vim_markdown_preview_browser='Safari'
 
 " Use tern_for_vim.
-let g:tern#command = ["tern"]
+let g:tern#command = ['node', $HOME . '/.dotfiles/node/node_modules/.bin/tern']
 let g:tern#arguments = ["--persistent"]
-" let g:tern_show_argument_hints='on_hold'
+let g:tern_show_argument_hints='on_hold'
+let g:tern_show_signature_in_pum = 1
 let g:tern_map_keys=0
 let g:tern_request_timeout = 3
 let g:flow#enable = 1
 let g:flow#autoclose = 1
+" let g:flow#flowpath = '/usr/local/bin/flow'
 
 "Add extra filetypes
 let g:tern#filetypes = [
@@ -425,6 +424,7 @@ let g:tern#filetypes = [
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
+let g:polyglot_disabled = ['python']
 
 if has('nvim') && has('termguicolors') && $TRUE_COLOR
     set termguicolors
