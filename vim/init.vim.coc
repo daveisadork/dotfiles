@@ -1,0 +1,701 @@
+" Basic setup
+set nocompatible
+set encoding=utf-8
+set timeoutlen=500 ttimeoutlen=0
+set nowrap
+filetype on
+filetype plugin on
+filetype indent on
+
+" Environment detection/setup
+if has('nvim')
+    if has("unix")
+        let s:uname = system("uname")
+        let g:python3_host_prog='/usr/bin/python3'
+        let g:python_host_prog='/usr/bin/python2'
+        if s:uname == "Darwin\n"
+            let g:python3_host_prog='/usr/local/bin/python3'
+            let g:python_host_prog='/usr/local/bin/python2'
+        endif
+    endif
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins                                                                     "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Use different plugin directories for neovim and vim
+if has('nvim')
+    call plug#begin('~/.vim/plugged-nvim')
+else
+    call plug#begin('~/.vim/plugged')
+endif
+
+" Use neovim specific solarized
+if has('nvim')
+    Plug 'iCyMind/NeoSolarized'
+else
+    Plug 'altercation/vim-colors-solarized'
+endif
+
+" Plug 'jacobsimpson/nvim-example-python-plugin'
+" Test running
+Plug 'janko-m/vim-test'
+
+" Airline/tmux/zsh
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'edkolev/promptline.vim'
+Plug 'edkolev/tmuxline.vim'
+
+" Code visualization stuff
+Plug 'lilydjwg/colorizer'
+Plug 'luochen1990/rainbow'
+
+" Utility stuff
+Plug 'airblade/vim-gitgutter'
+Plug 'tommcdo/vim-fugitive-blame-ext'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-surround'
+Plug 'neoclide/jsonc.vim'
+
+" Completion and search stuff
+Plug 'ervandew/supertab'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'fszymanski/fzf-gitignore', {'do': ':UpdateRemotePlugins'}
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+Plug 'mhinz/vim-grepper'
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+
+if has('nvim')
+    Plug 'Shougo/denite.nvim'
+    Plug 'Shougo/neco-vim'
+    Plug 'galooshi/vim-import-js'
+    Plug 'prettier/vim-prettier', {
+      \ 'do': 'yarn install',
+      \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+    Plug 'neoclide/coc-neco'
+    Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+    Plug 'roxma/nvim-yarp'
+else
+    Plug 'Valloric/YouCompleteMe'
+endif
+
+" General Syntax stuff
+Plug 'sheerun/vim-polyglot'
+" Plug 'w0rp/ale'
+
+" Python stuff
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+Plug 'klen/python-mode', { 'for': 'python' }
+
+" CSS/SCSS stuff
+Plug 'othree/csscomplete.vim', { 'for': ['css', 'sass', 'scss'] }
+
+" Other languages
+" Plug 'JamshedVesuna/vim-markdown-preview', { 'for': 'markdown' }
+
+" End Plug Packages
+call plug#end()
+
+let vim_markdown_preview_github=1
+
+" Airline Setup
+set laststatus=2
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled=1
+let g:airline_theme='solarline'
+let g:airline#extensions#tabline#tab_nr_type=1
+let g:airline#extensions#tabline#buffer_nr_show=1
+let g:airline#extensions#ale#enabled = 1
+
+" python-mode setup
+" Just disable everything but the nicer syntax and virtualenv
+let g:pymode_rope = 0
+let g:pymode_rope_lookup_project = 0
+let g:pymode_rope_complete_on_dot = 0
+let g:pymode_lint = 0
+let g:pymode_lint_write = 0
+let g:pymode_breakpoint = 0
+let g:pymode_run = 0
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Enable rainbow parentheses
+let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
+
+" Don't autofold code
+let g:pymode_folding = 0
+
+
+" Syntax/linting setup
+set statusline+=%#warningmsg#
+set statusline+=%*
+
+" s:compute_working_directory() {{{2
+function! s:compute_working_directory() abort
+    let repopath = finddir('.git', '.;')
+    if empty(repopath)
+        let repopath = findfile('requirements.txt', '.;')
+    endif
+    if !empty(repopath)
+        let repopath = fnamemodify(repopath, ':h')
+        return fnameescape(repopath)
+    endif
+    let cwd = getcwd()
+    let bufdir = expand('%:p:h')
+    if stridx(bufdir, cwd) != 0
+      return fnameescape(bufdir)
+    endif
+    let bufdir = expand('%:p:h')
+    return fnameescape(bufdir)
+endfunction
+
+
+let g:search_root = s:compute_working_directory()
+
+" GitGutter
+" set updatetime=100
+let g:gitgutter_override_sign_column_highlight = 0
+
+" nnoremap <C-i> :GFiles?<CR>
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Ag/Ack setup
+let g:ag_working_path_mode="r"
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+" nnoremap <silent> <C-p> :call fzf#vim#files(g:search_root)<CR>
+let g:ag_highlight = 1
+let g:ag_autoclose = 1
+
+let g:ack_autoclose = 1
+let g:ack_highlight = 1
+let g:ack_use_cword_for_empty_search = 1
+" nnoremap <C-g> :Ack<CR>
+let g:grepper = {}
+let g:grepper.quickfix = 0
+let g:grepper.dir = 'repo,filecwd'
+let g:grepper.tools = ['rg', 'git', 'ag', 'grep']
+nnoremap <silent> <C-g> :Grepper -cword -noprompt<cr>
+" nnoremap <silent> <C-g> :Rg -cword -noprompt<cr>
+
+" Completion setup
+"" don't give |ins-completion-menu| messages.  For example,
+" '-- XXX completion (YYY)', 'match 1 of 2', 'The only match',
+set shortmess+=c
+
+" Completion junk
+let g:jedi#completions_enabled = 0
+let g:jedi#show_call_signatures_delay = 999
+
+" Auto-close the quickfix buffer if it's the only remaining buffer
+aug QFClose
+    au!
+    au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
+aug END
+
+augroup vimrc_autocmds
+    autocmd!
+    autocmd FileType php LanguageClientStart
+    " highlight characters past column 79
+    " autocmd FileType python highlight Excess guifg=DarkRed ctermfg=DarkRed ctermbg=Black guibg=Black
+    " autocmd FileType python match Excess /\%80v.*/
+    " autocmd FileType python set colorcolumn=80
+    autocmd FileType python,scss,css,html,eruby,yaml,javascript,json,php set nowrap
+    autocmd FileType scss,css,html,jinja.html,ruby,eruby,yaml,javascript,json set ai sw=2 sts=2 et
+    " autocmd FileType python setlocal completeopt+=longest,menuone
+    " autocmd FileType python setlocal completeopt=menuone,menu,longest,preview
+
+    " rename tmux window
+    " autocmd BufEnter,BufFilePost,BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+augroup END
+
+" If the current buffer has never been saved, it will have no name,
+" call the file browser to save it, otherwise just save it.
+command -nargs=0 -bar Update if &modified 
+                           \|   if empty(bufname('%'))
+                           \|       browse confirm write
+                           \|   else
+                           \|       confirm write
+                           \|   endif
+                           \|endif
+
+" UI config
+syntax on
+set background=dark
+
+set guifont=Source\ Code\ Pro:h12
+set go=egmLt
+
+" Set up display stuff
+set colorcolumn=80
+set number
+set ruler
+
+" Turn off that stupid quote hiding in JSON
+set conceallevel=0
+let g:vim_json_syntax_conceal = 0
+
+set diffopt+=vertical
+
+" Tabs and indention
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
+set softtabstop=4
+set backspace=indent,eol,start
+set list lcs=tab:⤚—
+set showtabline=2 " Always display the tabline, even if there is only one tab
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
+set mouse=a
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" <Tab> and <Shift-Tab> to indent/unindent selected text
+vnoremap <S-Tab> <gv
+vnoremap <Tab> >gv
+
+" Performance stuff
+" set synmaxcol=120 " Disable syntax highlighting past 120 chars 
+"
+set lazyredraw " to avoid scrolling problems
+if $REMOTE_SESSION
+    set lazyredraw " to avoid scrolling problems
+else
+    set cursorline
+    set ttyfast " u got a fast terminal
+    if !has('nvim')
+        set ttyscroll=200
+    endif
+endif
+
+" This does pbcopy/pbpaste integration
+set clipboard=unnamed
+
+" persistent undo
+set undofile
+set undodir=~/.vimundo
+
+" Other random junk from http://items.sjbach.com/319/configuring-vim-right
+set hidden  " switch buffers without having to save
+let mapleader = ","  " Make leader useful on osx
+set history=1000  " command history"
+set wildmenu
+set wildmode=list:longest
+set ignorecase 
+set smartcase
+set scrolloff=3
+runtime macros/matchit.vim
+
+" Highlight search terms...
+" set hlsearch
+set incsearch " ...dynamically as they are typed."
+
+" Try loading the solarized them, call the vundle install routine if it fails
+try
+    if has('nvim')
+        colorscheme NeoSolarized
+    else
+        colorscheme solarized
+    endif
+catch /^Vim\%((\a\+)\)\=:E185/
+    PlugInstall
+    if has('nvim')
+        colorscheme NeoSolarized
+    else
+        colorscheme solarized
+    endif
+endtry
+
+let g:neosolarized_bold = 1
+let g:neosolarized_underline = 1
+let g:neosolarized_italic = 1
+
+" vim-test setup
+let test#strategy = "neovim"
+nmap <silent> <leader>tn :TestNearest<CR>
+nmap <silent> <leader>tf :TestFile<CR>
+nmap <silent> <leader>ta :TestSuite<CR>
+nmap <silent> <leader>tl :TestLast<CR>
+nmap <silent> <leader>tv :TestVisit<CR>
+
+" fzf setup
+nnoremap <silent> <leader>s :Rg<CR> 
+nnoremap <silent> <leader>w :Buffers<CR> 
+"nnoremap <silent> <leader>p :Files<CR>
+nnoremap <silent> <leader>b :BCommits<CR>
+nnoremap <silent> <leader>c :Commits<CR>
+nnoremap <C-p> :GFiles<CR>
+
+" Semshi setup
+" nnoremap <silent> <leader>Se :Semshi enable<CR> 
+" nnoremap <silent> <leader>Sd :Semshi disable<CR> 
+" nnoremap <silent> <leader>St :Semshi toggle<CR>
+" nnoremap <silent> <leader>Sh :Semshi highlight<CR>
+
+" Prettier setup
+" max line length that prettier will wrap on
+" Prettier default: 80
+let g:prettier#config#print_width = 80
+
+" number of spaces per indentation level
+" Prettier default: 2
+let g:prettier#config#tab_width = 2
+
+" use tabs over spaces
+" Prettier default: false
+let g:prettier#config#use_tabs = 'false'
+
+" print semicolons
+" Prettier default: true
+let g:prettier#config#semi = 'true'
+
+" single quotes over double quotes
+" Prettier default: false
+let g:prettier#config#single_quote = 'false'
+
+" print spaces between brackets
+" Prettier default: true
+let g:prettier#config#bracket_spacing = 'true'
+
+" put > on the last line instead of new line
+" Prettier default: false
+let g:prettier#config#jsx_bracket_same_line = 'false'
+
+" avoid|always
+" Prettier default: avoid
+let g:prettier#config#arrow_parens = 'avoid'
+
+" none|es5|all
+" Prettier default: none
+let g:prettier#config#trailing_comma = 'none'
+
+" flow|babylon|typescript|css|less|scss|json|graphql|markdown
+" Prettier default: babylon
+let g:prettier#config#parser = 'babylon'
+
+" cli-override|file-override|prefer-file
+let g:prettier#config#config_precedence = 'prefer-file'
+
+" always|never|preserve
+let g:prettier#config#prose_wrap = 'preserve'
+
+
+let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_browser='Safari'
+let vim_markdown_preview_github=1
+let vim_markdown_preview_toggle=2
+
+
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+let g:javascript_plugin_flow = 1
+let g:polyglot_disabled = ['python']
+
+if has('nvim') && has('termguicolors') && $TRUE_COLOR
+    set termguicolors
+    let g:solarized_termtrans=1
+    let g:solarized_degrade=0
+else
+    set t_Co=256
+endif
+if has('nvim')
+    set guicursor=
+    set completeopt-=preview
+else
+    let g:jedi#auto_vim_configuration = 0
+    let g:jedi#goto_command = ""
+    let g:jedi#goto_assignments_command = ""
+    let g:jedi#goto_definitions_command = ""
+    let g:jedi#documentation_command = "K"
+    let g:jedi#usages_command = ""
+    let g:jedi#completions_command = ""
+    let g:jedi#rename_command = "<leader>r"
+
+    " let g:ycm_python_binary_path = 'python'
+    let g:ycm_add_preview_to_completeopt = 1
+    let g:ycm_autoclose_preview_window_after_completion = 1
+    let g:ycm_autoclose_preview_window_after_insertion = 1
+    let g:ycm_complete_in_strings = 0
+    nnoremap <leader>d :YcmCompleter GoTo<CR>
+    nnoremap <leader>n :YcmCompleter GoToReferences<CR>
+endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+" Better display for messages
+" set cmdheight=2
+
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+
+" always show signcolumns
+set signcolumn=yes
+
+""  Use tab for trigger completion with characters ahead and navigate.
+"" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+"function! s:check_back_space() abort
+"  let col = col('.') - 1
+"  return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
+
+"" Use <c-space> for trigger completion.
+"inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"
+" autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+
+" if you want to disable auto detect, comment out those two lines
+"let g:airline#extensions#disable_rtp_load = 1
+"let g:airline_extensions = ['branch', 'hunks', 'coc']
+
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+
+
+" Use `[c` and `]c` for navigate diagnostics
+nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> <leader>d <Plug>(coc-definition)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> <leader>u <Plug>(coc-references)
+
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+" autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+nmap <silent> <leader>f <Plug>(coc-format)
+vmap <leader>f <Plug>(coc-format-selected)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nnoremap <silent> <leader> :WhichKey ','<CR>
+
+let g:rainbow_conf =
+\ {
+    \ 'guifgs': [
+         \ 'royalblue3',
+         \ 'darkorange3',
+         \ 'seagreen3',
+         \ 'firebrick',
+    \ ],
+    \ 'ctermfgs': [
+         \ 'lightblue',
+         \ 'lightyellow',
+         \ 'lightcyan',
+         \ 'lightmagenta',
+    \ ],
+    \ 'operators': '_,_',
+    \ 'parentheses': [
+         \ 'start=/(/ end=/)/ fold',
+         \ 'start=/\[/ end=/\]/ fold',
+         \ 'start=/{/ end=/}/ fold',
+    \ ],
+    \ 'separately': {
+        \ '*': {},
+        \ 'tex': {
+             \ 'parentheses': [
+                 \ 'start=/(/ end=/)/',
+                 \ 'start=/\[/ end=/\]/',
+             \ ],
+        \ },
+        \ 'lisp': {
+             \ 'guifgs': [
+                 \ 'royalblue3',
+                 \ 'darkorange3',
+                 \ 'seagreen3',
+                 \ 'firebrick',
+                 \ 'darkorchid3',
+             \ ],
+         \ },
+        \ 'vim': {
+             \ 'parentheses': [
+                 \ 'start=/(/ end=/)/',
+                 \ 'start=/\[/ end=/\]/',
+                 \ 'start=/{/ end=/}/ fold',
+                 \ 'start=/(/ end=/)/ containedin=vimFuncBody',
+                 \ 'start=/\[/ end=/\]/ containedin=vimFuncBody',
+                 \ 'start=/{/ end=/}/ fold containedin=vimFuncBody',
+             \ ],
+         \ },
+        \ 'html': 0,
+        \ 'css': 0,
+    \ }
+\ }
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:promptline_preset = {
+    \ 'a'    : [ promptline#slices#python_virtualenv() ],
+    \ 'b'    : [ '$USER' ],
+    \ 'c'    : [ '%~' ],
+    \ 'x'    : [ promptline#slices#vcs_branch() ],
+    \ 'y'    : [ promptline#slices#host({ 'only_if_ssh': 1  }) ],
+    \ 'z'    : [],
+    \ 'warn' : [ promptline#slices#last_exit_code() ],
+    \ 'options': {
+         \ 'left_sections' : [ 'y', 'b', 'a', 'x', 'c', 'z', 'warn' ],
+         \ 'right_sections': []}}
+
+let g:tmuxline_preset='solarline'
+let g:tmuxline_theme='airline'

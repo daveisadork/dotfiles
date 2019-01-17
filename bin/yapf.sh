@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
 PYENV=$(dirname "$0")/pyv.sh
-exec $PYENV flake8 "$@"
+exec $PYENV yapf "$@"

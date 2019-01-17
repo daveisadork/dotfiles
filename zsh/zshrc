@@ -73,9 +73,11 @@ export ZSH=$DOTFILES/submodules/oh-my-zsh
 # POWERLINE_HIDE_HOST_NAME="true"
 # POWERLINE_NO_BLANK_LINE="true"
 # POWERLINE_DISABLE_RPROMPT="true"
+#
+ZSH_THEME_TERM_TITLE_TYPE=screen
 
 
-ZSH_TMUX_AUTOSTART="true"
+ZSH_TMUX_AUTOSTART="false"
 ZSH_TMUX_AUTOSTART_ONCE="true"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -91,13 +93,13 @@ CASE_SENSITIVE="true"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="false"
+DISABLE_AUTO_TITLE="false"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -119,7 +121,7 @@ CASE_SENSITIVE="true"
 
 if [[ "$OSX" == "1"  ]]
 then
-    plugins=(brew brew-cask colored-man docker gitfast gitignore gnu-utils httpie osx pip python sudo tmux zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
+    plugins=(brew brew-cask colored-man colorize docker gitfast gitignore gnu-utils httpie node npm nvm osx pip pyenv python sudo tmux zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
     #    plugins=(aws bower brew brew-cask colored-man dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools osx node npm pip python sublime sudo supervisor tmux web-search zsh_reload)
 
 else
@@ -128,7 +130,7 @@ fi
 # User configuration
 if [[ "$OSX" == "1" ]]
 then
-    export PATH="$HOME/.local/bin:/usr/local/opt/python/libexec/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt/FDK/Tools/osx"
+    export PATH="$HOME/.local/bin:/usr/local/opt/python/libexec/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt/FDK/Tools/osx:/Library/TeX/texbin/"
     homebrew_command_not_found_handle() {
         local cmd="$1"
         if test -z "$CONTINUOUS_INTEGRATION" && test -n "$MC_SID" -o ! -t 1 ; then
@@ -234,10 +236,8 @@ fi
 # bindkey -v
 export KEYTIMEOUT=1
 
-source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
-
 # Google Cloud SDK stuff
-# export CLOUDSDK_PYTHON=`which python`
+# export CLOUDSDK_PYTHON=`which python3`
 source "$HOME/.gcloud/google-cloud-sdk/path.zsh.inc"
 source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
 
@@ -250,6 +250,9 @@ then
     source "$NVM_DIR/nvm.sh" --no-use
 fi
 
+# Set up pyenv
+eval "$(pyenv init -)"
+
 # iTerm2 Shell Integration
 if [[ "$ITERM_SESSION_ID" != ""  ]]
 then
@@ -261,3 +264,18 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 source $DOTFILES/zsh/shell_prompt.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
+
+
+chpwd() {
+    tmux rename-window `/usr/local/bin/super_pwd $("pwd")`
+}
+
+# PATH="/Users/dave/perl5/bin${PATH:+:${PATH}}"; export PATH;
+# PERL5LIB="/Users/dave/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+# PERL_LOCAL_LIB_ROOT="/Users/dave/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+# PERL_MB_OPT="--install_base \"/Users/dave/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=/Users/dave/perl5"; export PERL_MM_OPT;
+# eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
+eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
