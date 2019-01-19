@@ -3,7 +3,6 @@
 import os
 import sys
 
-
 IMPORTANT = {
     ".git",
     "Pipfile",
@@ -21,7 +20,9 @@ def do_split(path):
         return "~", ""
 
     head, tail = os.path.split(path)
-    if not tail or tail.startswith(".") or IMPORTANT.intersection(os.listdir(path)):  # noqa
+    if (
+        not tail or tail.startswith(".") or IMPORTANT.intersection(os.listdir(path))
+    ):  # noqa
         return head, tail
 
     dirs = os.listdir(head)
@@ -58,9 +59,9 @@ def get_cwd():
     PWD = os.environ.get("PWD")
     cwd = os.getcwd()
     if os.path.samefile(PWD, cwd):
-        return PWD
+        return cwd
 
-    return cwd
+    return PWD
 
 
 def main():
