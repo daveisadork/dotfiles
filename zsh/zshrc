@@ -40,17 +40,6 @@ fi
 
 export DOTFILES=$HOME/.dotfiles
 
-export TMUX_VERSION=`$TMUX_PATH -V | grep -o '[0-9]\.[0-9]*'`
-if [[ $TMUX_VERSION && $TMUX_VERSION -le "2.0" ]]
-then
-    export TMUX_CONFIG="$DOTFILES/tmux/tmux-20.conf"
-elif [[ $TMUX_VERSION -eq "2.1" ]]
-then
-    export TMUX_CONFIG="$DOTFILES/tmux/tmux-21.conf"
-else
-    export TMUX_CONFIG="$DOTFILES/tmux/tmux-22.conf"
-fi
-
 export TRUE_COLOR=`$TMUX_PATH info | grep Tc | grep -o true`
 
 source "$DOTFILES/zsh/private.zsh"
@@ -60,7 +49,7 @@ module_path=($module_path /usr/local/lib/zpython)
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
-fpath=(/usr/local/share/zsh-completions $fpath)
+# fpath=(/usr/local/share/zsh-completions $fpath)
 
 # Path to your oh-my-zsh installation.
 export ZSH=$DOTFILES/submodules/oh-my-zsh
@@ -75,10 +64,6 @@ export ZSH=$DOTFILES/submodules/oh-my-zsh
 # POWERLINE_DISABLE_RPROMPT="true"
 #
 ZSH_THEME_TERM_TITLE_TYPE=screen
-
-
-ZSH_TMUX_AUTOSTART="false"
-ZSH_TMUX_AUTOSTART_ONCE="true"
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
@@ -119,45 +104,63 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
+
 if [[ "$OSX" == "1"  ]]
 then
-    plugins=(brew brew-cask colored-man colorize docker gitfast gitignore gnu-utils httpie node npm nvm osx pip pyenv python sudo tmux zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
-    #    plugins=(aws bower brew brew-cask colored-man dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools osx node npm pip python sublime sudo supervisor tmux web-search zsh_reload)
-
+    plugins=(
+        colored-man
+        command-not-found
+        docker
+        docker-compose
+        fzf
+        git
+        gnu-utils
+        httpie
+        kubectl
+        npm
+        nvm
+        osx
+        pip
+        pyenv
+        shrink-path
+        sudo
+        yarn
+        zsh-autosuggestions
+        zsh-iterm-touchbar
+        zsh-syntax-highlighting
+    )
 else
-    plugins=(aws bower colored-man command-not-found dirpersist docker gem gitfast git-extras git-flow gitignore gnu-utils httpie jsontools node npm pip python sudo supervisor tmux ubuntu zsh-autosuggestions zsh-completions zsh_reload zsh-syntax-highlighting)
+    plugins=(
+        aws
+        bower
+        colored-man
+        command-not-found
+        dirpersist
+        docker
+        gem
+        gitfast
+        git-extras
+        git-flow
+        gitignore
+        gnu-utils
+        httpie
+        jsontools
+        npm
+        pip
+        sudo
+        supervisor
+        tmux
+        ubuntu
+        zsh-autosuggestions
+        zsh-completions
+        zsh_reload
+        zsh-syntax-highlighting
+    )
 fi
 # User configuration
 if [[ "$OSX" == "1" ]]
 then
     export PATH="$HOME/.local/bin:/usr/local/opt/python/libexec/bin:/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/opt/FDK/Tools/osx:/Library/TeX/texbin/"
-    homebrew_command_not_found_handle() {
-        local cmd="$1"
-        if test -z "$CONTINUOUS_INTEGRATION" && test -n "$MC_SID" -o ! -t 1 ; then
-            [ -n "$BASH_VERSION" ] && \
-                TEXTDOMAIN=command-not-found echo $"$cmd: command not found"
-            return 127
-        fi
-        local txt="$(brew which-formula --explain $cmd 2>/dev/null)"
-        if [ -z "$txt" ]; then
-            [ -n "$BASH_VERSION" ] && \
-                TEXTDOMAIN=command-not-found echo $"$cmd: command not found"
-        else
-            echo "$txt"
-        fi
-        return 127
-    }
-    if [ -n "$BASH_VERSION" ]; then
-        command_not_found_handle() {
-            homebrew_command_not_found_handle $*
-            return $?
-        }
-    elif [ -n "$ZSH_VERSION" ]; then
-        command_not_found_handler() {
-            homebrew_command_not_found_handle $*
-            return $?
-        }
-    fi
 else
     export PATH="$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
 fi
@@ -167,7 +170,7 @@ source $ZSH/oh-my-zsh.sh
 
 autoload -U compinit && compinit
 
-alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+eval $(thefuck --alias)
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -236,22 +239,11 @@ fi
 # bindkey -v
 export KEYTIMEOUT=1
 
-# Google Cloud SDK stuff
-# export CLOUDSDK_PYTHON=`which python3`
-source "$HOME/.gcloud/google-cloud-sdk/path.zsh.inc"
-source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
+# google-cloud-sdk (homebrew)
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 
 export NVM_DIR=~/.nvm
-if [[ "$OSX" == "1"  ]]
-then
-    source /usr/local/opt/nvm/nvm.sh --no-use
-elif [ -s "$NVM_DIR/nvm.sh"  ] 
-then
-    source "$NVM_DIR/nvm.sh" --no-use
-fi
-
-# Set up pyenv
-eval "$(pyenv init -)"
 
 # iTerm2 Shell Integration
 if [[ "$ITERM_SESSION_ID" != ""  ]]
@@ -265,17 +257,8 @@ source $DOTFILES/zsh/shell_prompt.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source "$HOME/.dotfiles/submodules/zsh-autoenv/autoenv.zsh"
-
-
-chpwd() {
-    tmux rename-window `/usr/local/bin/super_pwd $("pwd")`
+precmd() {
+    tmux rename-window  `/usr/local/bin/super_pwd $("pwd")`
 }
 
-# PATH="/Users/dave/perl5/bin${PATH:+:${PATH}}"; export PATH;
-# PERL5LIB="/Users/dave/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-# PERL_LOCAL_LIB_ROOT="/Users/dave/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-# PERL_MB_OPT="--install_base \"/Users/dave/perl5\""; export PERL_MB_OPT;
-# PERL_MM_OPT="INSTALL_BASE=/Users/dave/perl5"; export PERL_MM_OPT;
-# eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
 eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
