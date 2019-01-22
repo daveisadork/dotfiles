@@ -1,0 +1,29 @@
+antigen use oh-my-zsh
+
+antigen bundles <<EOBUNDLES
+    iam4x/zsh-iterm-touchbar
+    joel-porquet/zsh-dircolors-solarized.git
+    zsh-users/zsh-autosuggestions
+    zsh-users/zsh-syntax-highlighting
+    colored-man
+    docker
+    docker-compose
+    fzf
+    gitfast
+    gnu-utils
+    httpie
+    kubectl
+    npm
+    nvm
+    osx
+    pip
+    pyenv
+    pyenv-virtualenv
+    shrink-path
+    sudo
+    yarn
+EOBUNDLES
+
+antigen theme /Users/dave/.dotfiles/zsh themes/solarized
+
+antigen apply
