@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import os
 import sys
 
 IMPORTANT = {
-    ".git",
+    ".nvmrc",
+    ".python-version",
     "Pipfile",
-    "package.json",
+    "main.py",
+#    "package.json",
+    "pyproject.toml",
     "requirements.txt",
     "setup.cfg",
     "setup.py",
@@ -21,17 +26,19 @@ def do_split(path):
 
     head, tail = os.path.split(path)
     if (
-        not tail or tail.startswith(".") or IMPORTANT.intersection(os.listdir(path))
-    ):  # noqa
+        not tail
+        or tail.startswith(".")
+        or IMPORTANT.intersection(os.listdir(path))
+    ):
         return head, tail
 
-    dirs = os.listdir(head)
+    dirs = os.scandir(head)
+    dirs = [d.name for d in dirs if d.is_dir()]
     dirs.remove(tail)
-    dirs = [d for d in dirs if os.path.isdir(os.path.join(head, d))]
 
     for index in range(1, len(tail) + 1):
         shortened = tail[:index]
-        dirs = [d for d in dirs if d.startswith(shortened)]
+        dirs = [d for d in dirs if d[:index] == shortened]
         if not dirs:
             break
 
@@ -48,10 +55,11 @@ def shorten(path):
     head, tail = os.path.split(path)
     parts = []
     while tail:
-        parts.insert(0, tail)
+        parts.append(tail)
         head, tail = do_split(head)
 
-    parts.insert(0, head)
+    parts.append(head)
+    parts.reverse()
     return os.path.join(*parts)
 
 

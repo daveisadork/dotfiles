@@ -15,8 +15,8 @@ let g:fzf_colors =
 
 " fzf setup
 nnoremap <silent> <leader>s :Rg<CR> 
-nnoremap <silent> <leader>w :Buffers<CR> 
+nnoremap <silent> <leader>b :Buffers<CR> 
 "nnoremap <silent> <leader>p :Files<CR>
-nnoremap <silent> <leader>b :BCommits<CR>
-nnoremap <silent> <leader>c :Commits<CR>
+nnoremap <silent> <leader>gC :BCommits<CR>
+nnoremap <silent> <leader>gc :Commits<CR>
 nnoremap <C-p> :GFiles<CR>

@@ -12,7 +12,7 @@
 "endfunction
 
 "" Use <c-space> for trigger completion.
-"inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
@@ -34,6 +34,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <leader>u <Plug>(coc-references)
+nmap <silent> <leader>l <Plug>(coc-action-code-lens-action)
 
 
 " Use K for show documentation in preview window
@@ -55,4 +56,28 @@ nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
 nmap <silent> <leader>f <Plug>(coc-format)
+nnoremap <silent> <leader>is :CocCommand python.sortImports<CR>
 vmap <leader>f <Plug>(coc-format-selected)
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+vmap <leader>a  <Plug>(coc-codeaction-selected)
+" nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+nnoremap <silent> <leader>p :CocCommand prettier.formatFile<CR>
+
+nnoremap <silent> <leader>gb :Gblame<CR> 
+nnoremap <silent> <leader>gs :Gstatus<CR> 
+nnoremap <silent> <leader>gf :Gfetch<CR> 
+nnoremap <silent> <leader>gl :0Glog<CR> 
+nnoremap <silent> <leader>gr :Gbrowse<CR> 
+
+nnoremap <silent> <leader>hn :CocCommand post.new<CR>
+nnoremap <silent> <leader>hd :CocCommand post.do<CR>
+nnoremap <silent> <leader>hn :CocList post<CR>
+
+nnoremap <silent> <leader>m :CocList marketplace<CR>

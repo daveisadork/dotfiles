@@ -17,9 +17,6 @@ let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
-" Enable rainbow parentheses
-let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
-
 " Don't autofold code
 let g:pymode_folding = 0
 

@@ -11,8 +11,6 @@ antigen bundles <<EOBUNDLES
     fzf
     gitfast
     gnu-utils
-    httpie
-    kubectl
     npm
     nvm
     osx
@@ -24,6 +22,6 @@ antigen bundles <<EOBUNDLES
     yarn
 EOBUNDLES
 
-antigen theme /Users/dave/.dotfiles/zsh themes/solarized
+# antigen theme /Users/dave/.dotfiles/zsh/themes/solarized
 
 antigen apply

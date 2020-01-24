@@ -4,7 +4,7 @@
 function __promptline_host {
   local only_if_ssh="1"
 
-  if [ ! $only_if_ssh -o -n "${SSH_CLIENT}" ]; then
+  if [ $only_if_ssh -eq 0 -o -n "${SSH_CLIENT}" ]; then
     if [[ -n ${ZSH_VERSION-} ]]; then print %m; elif [[ -n ${FISH_VERSION-} ]]; then hostname -s; else printf "%s" \\h; fi
   fi
 }
@@ -152,25 +152,25 @@ function __promptline {
   local alt_rsep=""
   local reset="${wrap}0${end_wrap}"
   local reset_bg="${wrap}49${end_wrap}"
-  local a_fg="${wrap}38;5;7${end_wrap}"
+  local a_fg="${wrap}38;5;21${end_wrap}"
   local a_bg="${wrap}48;5;2${end_wrap}"
   local a_sep_fg="${wrap}38;5;2${end_wrap}"
-  local b_fg="${wrap}38;5;7${end_wrap}"
+  local b_fg="${wrap}38;5;21${end_wrap}"
   local b_bg="${wrap}48;5;4${end_wrap}"
   local b_sep_fg="${wrap}38;5;4${end_wrap}"
-  local c_fg="${wrap}38;5;7${end_wrap}"
-  local c_bg="${wrap}48;5;10${end_wrap}"
-  local c_sep_fg="${wrap}38;5;10${end_wrap}"
-  local warn_fg="${wrap}38;5;7${end_wrap}"
+  local c_fg="${wrap}38;5;21${end_wrap}"
+  local c_bg="${wrap}48;5;19${end_wrap}"
+  local c_sep_fg="${wrap}38;5;19${end_wrap}"
+  local warn_fg="${wrap}38;5;21${end_wrap}"
   local warn_bg="${wrap}48;5;1${end_wrap}"
   local warn_sep_fg="${wrap}38;5;1${end_wrap}"
-  local x_fg="${wrap}38;5;7${end_wrap}"
+  local x_fg="${wrap}38;5;21${end_wrap}"
   local x_bg="${wrap}48;5;6${end_wrap}"
   local x_sep_fg="${wrap}38;5;6${end_wrap}"
-  local y_fg="${wrap}38;5;7${end_wrap}"
+  local y_fg="${wrap}38;5;21${end_wrap}"
   local y_bg="${wrap}48;5;13${end_wrap}"
   local y_sep_fg="${wrap}38;5;13${end_wrap}"
-  local z_fg="${wrap}38;5;7${end_wrap}"
+  local z_fg="${wrap}38;5;21${end_wrap}"
   local z_bg="${wrap}48;5;236${end_wrap}"
   local z_sep_fg="${wrap}38;5;236${end_wrap}"
   if [[ -n ${ZSH_VERSION-} ]]; then
