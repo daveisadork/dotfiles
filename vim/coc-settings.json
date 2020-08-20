@@ -8,8 +8,10 @@
   // not make vim select first item on completion start
   "suggest.noselect": true,
   // enable formatOnType feature
-  "coc.preferences.formatOnType": true,
-  "coc.preferences.bracketEnterImprove": true,
+  // "coc.preferences.bracketEnterImprove": true,
+  "typescript.format.enabled": false,
+  "coc.preferences.formatOnType": false,
+  "tsserver.formatOnType": true,
   "coc.preferences.enableFloatHighlight": true,
   "coc.preferences.extensionUpdateCheck": "daily",
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
@@ -37,6 +39,7 @@
   "prettier.eslintIntegration": true,
   "prettier.tslintIntegration": true,
   "prettier.stylelintIntegration": false,
+  "prettier.trailingComma": "all",
   "stylelintplus.autoFixOnFormat": true,
   "stylelintplus.validateOnType": true,
   "coc.source.omni.enable": false,
@@ -58,6 +61,10 @@
   "diagnostic.messageTarget": "float",
   "signature.target": "float",
   "coc.preferences.hoverTarget": "float",
+  "jest.watch": false,
+  "jest.enabled": false,
+  "suggest.languageSourcePriority": 99,
+  "tabnine.priority": 0,
   // "signature.maxWindowHeight": 1000,
   // "signature.floatMaxWidth": 80,
   "diagnostic-languageserver.filetypes": {
@@ -91,6 +98,7 @@
   "pyls.plugins.jedi_definition.follow_imports": false,
   "pyls.plugins.jedi_definition.follow_builtin_imports": false,
   "pyls.plugins.jedi_references.enabled": false,
+  "python.autoComplete.addBrackets": true,
   "python.jediEnabled": false,
   "python.jediMemoryLimit": -1,
   "python.jediPath": "/usr/local/lib/python3.7/site-packages",
@@ -124,6 +132,7 @@
   //"python.linting.flake8Path": "/Users/dave/Projects/dotfiles/bin/format.py",
   "python.sortImports.path": "/Users/dave/.pyenv/shims/isort",
   "python.autoUpdateLanguageServer": true,
+  "python.analysis.downloadChannel": "beta",
   "pyright.useLibraryCodeForTypes": true,
   "languageserver": {
     // "omnisharp": {
@@ -200,5 +209,9 @@
     "snippet": "snippet",
     "typeParameter": "typeParameter",
     "default": "default"
-  }
+  },
+  "python.autoComplete.extraPaths": [
+    "${env:SPARK_HOME}/python",
+    "${env:SPARK_HOME}/python/pyspark"
+  ]
 }

@@ -29,7 +29,7 @@ Plug 'luochen1990/rainbow'
 " Plug 'airblade/vim-gitgutter'
 Plug 'tommcdo/vim-fugitive-blame-ext'
 Plug 'editorconfig/editorconfig-vim'
-" Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-characterize'
 " Plug 'tpope/vim-endwise'
@@ -57,8 +57,11 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'roxma/nvim-yarp'
 
 " General Syntax stuff
-Plug 'sheerun/vim-polyglot'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+" Plug 'leafgarland/typescript-vim'
+" Plug 'peitalin/vim-jsx-typescript'
+Plug 'sheerun/vim-polyglot'
+Plug 'wilriker/gcode.vim'
 
 " Python stuff
 Plug 'klen/python-mode'
@@ -66,8 +69,8 @@ Plug 'ambv/black'
 " Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 " CSS/SCSS stuff
-Plug 'hail2u/vim-css3-syntax'
 Plug 'JulesWang/css.vim'
+Plug 'hail2u/vim-css3-syntax'
 " Plug 'cakebaker/scss-syntax.vim'
 
 " Writing

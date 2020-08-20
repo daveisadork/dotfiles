@@ -106,7 +106,7 @@ augroup vimrc_autocmds
     autocmd FileType python match Excess /\%89v.*/
     autocmd FileType python set colorcolumn=89
     autocmd FileType python,scss,css,html,eruby,yaml,javascript,json,php,typescript set nowrap
-    autocmd FileType css,eruby,html,javascript,jinja.html,json,ruby,scss,typescript,vim,yaml,zsh set ai sw=2 sts=2 et
+    autocmd FileType css,eruby,html,javascript,jinja.html,json,ruby,scss,typescript,vim,yaml,zsh,typescript.tsx,javascript.jsx,typescriptreact set ai sw=2 sts=2 et
     " autocmd FileType python setlocal completeopt+=longest,menuone
     " autocmd FileType python setlocal completeopt=menuone,menu,longest,preview
 
