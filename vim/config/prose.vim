@@ -1,6 +1,6 @@
 function! Prose()
   call pencil#init()
-  call lexical#init()
+  " call lexical#init()
   call litecorrect#init()
   call textobj#sentence#init()
   call textobj#quote#init()
@@ -36,8 +36,10 @@ function! Prose()
 
 endfunction
 
+
 " automatically initialize buffer by file type
 autocmd FileType markdown,mkd call Prose()
 
 " invoke manually by command for other file types
 command! -nargs=0 Prose call Prose()
+nmap <silent> <leader>p :Prose<CR>

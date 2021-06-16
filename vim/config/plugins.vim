@@ -2,6 +2,10 @@
 " Plugins                                                                     "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Polyglot is a snowflake and needs this defined before it gets loaded
+let g:polyglot_disabled = ['python', 'scss']
+
+
 call plug#begin('~/.vim/plugged')
 
 " Color schemes
@@ -22,8 +26,8 @@ Plug 'edkolev/promptline.vim'
 Plug 'edkolev/tmuxline.vim'
 
 " Code visualization stuff
-Plug 'lilydjwg/colorizer'
-Plug 'luochen1990/rainbow'
+" Plug 'lilydjwg/colorizer'
+" Plug 'luochen1990/rainbow'
 
 " Utility stuff
 " Plug 'airblade/vim-gitgutter'
@@ -43,10 +47,10 @@ Plug 'metakirby5/codi.vim'
 
 " Completion and search stuff
 Plug 'ervandew/supertab'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'fszymanski/fzf-gitignore', {'do': ':UpdateRemotePlugins'}
-Plug 'mhinz/vim-grepper'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
+" Plug 'fszymanski/fzf-gitignore', {'do': ':UpdateRemotePlugins'}
+" Plug 'mhinz/vim-grepper'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 Plug 'Shougo/denite.nvim'
@@ -78,13 +82,20 @@ Plug 'reedes/vim-pencil' " Super-powered writing things
 Plug 'tpope/vim-abolish' " Fancy abbreviation replacements
 Plug 'junegunn/limelight.vim' " Highlights only active paragraph
 Plug 'junegunn/goyo.vim' " Full screen writing mode
-Plug 'reedes/vim-lexical' " Better spellcheck mappings
+" Plug 'reedes/vim-lexical' " Better spellcheck mappings
 Plug 'reedes/vim-litecorrect' " Better autocorrections
 Plug 'kana/vim-textobj-user'
 Plug 'reedes/vim-textobj-sentence' " Treat sentences as text objects
 Plug 'reedes/vim-textobj-quote'
 Plug 'reedes/vim-wordy' " Weasel words and passive voice
 Plug 'ron89/thesaurus_query.vim'
+
+" Telescope related stuff
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 " End Plug Packages
 call plug#end()

@@ -1,4 +1,5 @@
 {
+  "java.home": "/usr/local/opt/openjdk",
   // could be 'always' 'trigger' => for specified trigger characters only 'none'
   "suggest.autoTrigger": "always",
   // only used when autoTrigger is always
@@ -9,9 +10,18 @@
   "suggest.noselect": true,
   // enable formatOnType feature
   // "coc.preferences.bracketEnterImprove": true,
+  "typescript.suggest.enabled": true,
   "typescript.format.enabled": false,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "typescript.format.semicolons": "insert",
   "coc.preferences.formatOnType": false,
   "tsserver.formatOnType": true,
+  "tsserver.enable": true,
+  "eslint.autoFixOnSave": false,
+  "eslint.format.enable": false,
+  "tslint.autoFixOnSave": false,
+  "tslint.enable": true,
   "coc.preferences.enableFloatHighlight": true,
   "coc.preferences.extensionUpdateCheck": "daily",
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
@@ -36,18 +46,21 @@
   "git.branchCharacter": "",
   "suggest.enablePreview": true,
   "suggest.minTriggerInputLength": 0,
-  "prettier.eslintIntegration": true,
+  "prettier.eslintIntegration": false,
   "prettier.tslintIntegration": true,
   "prettier.stylelintIntegration": false,
-  "prettier.trailingComma": "all",
+  "prettier.onlyUseLocalVersion": false,
   "stylelintplus.autoFixOnFormat": true,
   "stylelintplus.validateOnType": true,
   "coc.source.omni.enable": false,
-  "coc.source.omni.filetypes": ["css", "sass", "scss"],
+  "coc.source.omni.filetypes": [
+    "css",
+    "sass",
+    "scss"
+  ],
   "coc.source.omni.disableSyntaxes": [],
   "coc.source.around.enable": false,
   "diagnostic.enable": true,
-  "diagnostic.signOffset": 1000,
   "diagnostic.enableSign": true,
   "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
@@ -55,14 +68,14 @@
   "diagnostic.hintSign": "",
   "diagnostic.virtualText": false,
   "diagnostic.checkCurrentLine": true,
-  "diagnostic.refreshAfterSave": false,
   "diagnostic.refreshOnInsertMode": true,
   "suggest.floatEnable": true,
   "diagnostic.messageTarget": "float",
   "signature.target": "float",
   "coc.preferences.hoverTarget": "float",
-  "jest.watch": false,
-  "jest.enabled": false,
+  "jedi.enable": false,
+  "jedi.diagnostics.enable": false,
+  "jedi.startupMessage": false,
   "suggest.languageSourcePriority": 99,
   "tabnine.priority": 0,
   // "signature.maxWindowHeight": 1000,
@@ -70,26 +83,34 @@
   "diagnostic-languageserver.filetypes": {
     "vim": "vint",
     "email": "languagetool",
-    "markdown": ["languagetool", "write-good", "markdownlint"],
+    "markdown": [
+      "languagetool",
+      "write-good",
+      "markdownlint"
+    ],
     "sh": "shellcheck",
     "php": "phpcs"
   },
-  "diagnostic-languageserver.formatFiletypes": { "sh": "shellcheck" },
+  "diagnostic-languageserver.formatFiletypes": {
+    "sh": "shellcheck"
+  },
   "coc.preferences.colorSupport": true,
   "tsserver.enableJavascript": true,
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
   "wxss.validate": false,
-  "pyls.enable": true,
-  "pyls.configurationSources": ["flake8"],
+  "pyls.enable": false,
+  "pyls.configurationSources": [
+    "flake8"
+  ],
   "pyls.plugins.autopep8.enabled": false,
   "pyls.plugins.flake8.enabled": true,
   "pyls.plugins.pycodestyle.enabled": false,
   "pyls.plugins.pyflakes.enabled": false,
   "pyls.plugins.rope_completion.enabled": false,
   "pyls.plugins.yapf.enabled": false,
-  "pyls.plugins.pyls_mypy.enabled": false,
+  // "pyls.plugins.pyls_mypy.enabled": false,
   "pyls.plugins.jedi_completion.enabled": false,
   "pyls.plugins.jedi_symbols.enabled": false,
   "pyls.plugins.jedi_symbols.all_scopes": false,
@@ -98,13 +119,17 @@
   "pyls.plugins.jedi_definition.follow_imports": false,
   "pyls.plugins.jedi_definition.follow_builtin_imports": false,
   "pyls.plugins.jedi_references.enabled": false,
-  "python.autoComplete.addBrackets": true,
-  "python.jediEnabled": false,
-  "python.jediMemoryLimit": -1,
-  "python.jediPath": "/usr/local/lib/python3.7/site-packages",
-  "python.formatting.provider": "none",
-  "python.linting.lintOnSave": false,
-  "python.linting.enabled": false,
+  // "python.autoComplete.addBrackets": true,
+  // "python.jediEnabled": false,
+  // "python.jediMemoryLimit": -1,
+  // "python.jediPath": "/usr/local/lib/python3.7/site-packages",
+  "python.formatting.provider": "black",
+  "python.analysis.extraPaths": [
+    "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/platform/google_appengine"
+  ],
+  "pyright.organizeimports.provider": "isort",
+  "python.linting.lintOnSave": true,
+  "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
   "python.linting.maxNumberOfProblems": 100,
   "python.linting.pylintEnabled": false,
@@ -123,17 +148,19 @@
   "python.linting.pylamaPath": "~/.pyenv/shims/pylama",
   "python.linting.prospectorPath": "~/.pyenv/shims/prospector",
   "python.linting.pylintPath": "~/.pyenv/shims/pylint",
+  "python.analysis.autoImportCompletions": true,
   //"python.linting.pylintArgs": ["--init-hook=\"import pylint_venv; pylint_venv.inithook()\""],
-  "python.linting.flake8CategorySeverity.B": "Warning",
-  "python.linting.flake8CategorySeverity.BLK": "Warning",
-  "python.linting.flake8CategorySeverity.E": "Error",
-  "python.linting.flake8CategorySeverity.W": "Warning",
-  "python.linting.flake8CategorySeverity.I": "Information",
+  //"python.linting.flake8CategorySeverity.B": "Warning",
+  //"python.linting.flake8CategorySeverity.BLK": "Warning",
+  //"python.linting.flake8CategorySeverity.E": "Error",
+  //"python.linting.flake8CategorySeverity.W": "Warning",
+  //"python.linting.flake8CategorySeverity.I": "Information",
   //"python.linting.flake8Path": "/Users/dave/Projects/dotfiles/bin/format.py",
   "python.sortImports.path": "/Users/dave/.pyenv/shims/isort",
   "python.autoUpdateLanguageServer": true,
   "python.analysis.downloadChannel": "beta",
   "pyright.useLibraryCodeForTypes": true,
+  "python.venvPath": "/Users/dave/.pyenv/versions",
   "languageserver": {
     // "omnisharp": {
     //   "command": "/Users/dave/Projects/omnisharp/run",
@@ -169,7 +196,10 @@
         ".git/",
         ".hg/"
       ],
-      "filetypes": ["objc", "objcpp"]
+      "filetypes": [
+        "objc",
+        "objcpp"
+      ]
     }
     // "haskell": {
     //   "command": "hie-wrapper",
@@ -182,7 +212,6 @@
     //   "filetypes": ["lua"]
     // }
   },
-
   "suggest.completionItemKindLabels": {
     "keyword": "keyword",
     "variable": "variable",
@@ -213,5 +242,13 @@
   "python.autoComplete.extraPaths": [
     "${env:SPARK_HOME}/python",
     "${env:SPARK_HOME}/python/pyspark"
-  ]
+  ],
+  "cSpell.userWords": [
+    "Brannoc",
+    "Braxton",
+    "Fitzcharles",
+    "NPCs",
+    "Yartar"
+  ],
+  "java.errors.incompleteClasspath.severity": "ignore"
 }

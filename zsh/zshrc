@@ -139,5 +139,8 @@ export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 test -d "${GOPATH}" || mkdir "${GOPATH}"
 test -d "${GOPATH}/src/github.com" || mkdir -p "${GOPATH}/src/github.com"
 
+export PYTHON_CONFIGURE_OPTS="--enable-framework"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source ~/.dotfiles/zsh/shell_prompt.zsh
+export PATH="/usr/local/opt/openjdk@11/bin:$PATH"

@@ -17,13 +17,6 @@ function! s:compute_working_directory() abort
     return fnameescape(bufdir)
 endfunction
 
-function! Prose() abort
-  set wrap
-  set linebreak
-endfunction
-
-nmap <silent> <leader>p :Prose<CR>
-
 let g:search_root = s:compute_working_directory()
 
 " GitGutter
@@ -36,7 +29,7 @@ let g:grepper = {}
 let g:grepper.quickfix = 0
 let g:grepper.dir = 'repo,filecwd'
 let g:grepper.tools = ['rg', 'git', 'ag', 'grep']
-nnoremap <silent> <C-g> :Grepper -cword -noprompt<cr>
+" nnoremap <silent> <C-g> :Grepper -cword -noprompt<cr>
 " nnoremap <silent> <C-g> :Rg -cword -noprompt<cr>
 
 let g:vim_json_syntax_conceal = 0
@@ -70,7 +63,6 @@ let vim_markdown_preview_toggle=2
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
-let g:polyglot_disabled = ['python', 'scss']
 
 nnoremap <silent> <leader> :WhichKey ','<CR>
 
