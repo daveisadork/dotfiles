@@ -3,7 +3,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Polyglot is a snowflake and needs this defined before it gets loaded
-let g:polyglot_disabled = ['python', 'scss']
+let g:polyglot_disabled = ['autoindent', 'python', 'scss', 'typescript']
 
 
 call plug#begin('~/.vim/plugged')
@@ -14,6 +14,18 @@ Plug 'iCyMind/NeoSolarized'
 Plug 'phanviet/vim-monokai-pro'
 Plug 'crusoexia/vim-monokai'
 Plug 'patstockwell/vim-monokai-tasty'
+
+" Tim Pope stuff
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-dotenv'
+Plug 'tpope/vim-heroku'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-characterize'
+" Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-surround'
 
 " Plug 'jacobsimpson/nvim-example-python-plugin'
 " Test running
@@ -34,15 +46,8 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'tommcdo/vim-fugitive-blame-ext'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-characterize'
-" Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-git'
 " Plug 'iamcco/sran.nvim', { 'do': { -> sran#util#install() } }
 " Plug 'iamcco/git-p.nvim'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround'
 Plug 'metakirby5/codi.vim'
 
 " Completion and search stuff
@@ -65,7 +70,8 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 " Plug 'leafgarland/typescript-vim'
 " Plug 'peitalin/vim-jsx-typescript'
 Plug 'sheerun/vim-polyglot'
-Plug 'wilriker/gcode.vim'
+" Plug 'wilriker/gcode.vim'
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 " Python stuff
 Plug 'klen/python-mode'
@@ -97,5 +103,11 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
+Plug 'rizzatti/dash.vim'
+
+" SQL
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'kristijanhusak/vim-dadbod-completion'
 " End Plug Packages
 call plug#end()

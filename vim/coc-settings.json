@@ -18,10 +18,13 @@
   "coc.preferences.formatOnType": false,
   "tsserver.formatOnType": true,
   "tsserver.enable": true,
+  "prettier.formatterPriority": 100,
   "eslint.autoFixOnSave": false,
   "eslint.format.enable": false,
   "tslint.autoFixOnSave": false,
   "tslint.enable": true,
+  "solargraph.useBundler": false,
+  "solargraph.commandPath": "~/.rbenv/shims/solargraph",
   "coc.preferences.enableFloatHighlight": true,
   "coc.preferences.extensionUpdateCheck": "daily",
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
@@ -30,6 +33,7 @@
   // executable path for https://facebook.github.io/watchman/, detected from $PATH by default
   // "coc.preferences.watchmanPath": "",
   // enable diagnostic
+  "coc.preferences.colorSupport": true,
   "highlight.colors.enable": true,
   "highlight.document.enable": true,
   "git.addGBlameToVirtualText": true,
@@ -47,17 +51,14 @@
   "suggest.enablePreview": true,
   "suggest.minTriggerInputLength": 0,
   "prettier.eslintIntegration": false,
-  "prettier.tslintIntegration": true,
-  "prettier.stylelintIntegration": false,
+  "prettier.tslintIntegration": false,
+  "prettier.stylelintIntegration": true,
+  "prettier.printWidth": 88,
   "prettier.onlyUseLocalVersion": false,
   "stylelintplus.autoFixOnFormat": true,
   "stylelintplus.validateOnType": true,
   "coc.source.omni.enable": false,
-  "coc.source.omni.filetypes": [
-    "css",
-    "sass",
-    "scss"
-  ],
+  "coc.source.omni.filetypes": ["css", "sass", "scss"],
   "coc.source.omni.disableSyntaxes": [],
   "coc.source.around.enable": false,
   "diagnostic.enable": true,
@@ -83,11 +84,7 @@
   "diagnostic-languageserver.filetypes": {
     "vim": "vint",
     "email": "languagetool",
-    "markdown": [
-      "languagetool",
-      "write-good",
-      "markdownlint"
-    ],
+    "markdown": ["languagetool", "write-good", "markdownlint"],
     "sh": "shellcheck",
     "php": "phpcs"
   },
@@ -100,10 +97,9 @@
   "less.validate": false,
   "scss.validate": false,
   "wxss.validate": false,
+  "clangd.semanticHighlighting": true,
   "pyls.enable": false,
-  "pyls.configurationSources": [
-    "flake8"
-  ],
+  "pyls.configurationSources": ["flake8"],
   "pyls.plugins.autopep8.enabled": false,
   "pyls.plugins.flake8.enabled": true,
   "pyls.plugins.pycodestyle.enabled": false,
@@ -162,6 +158,14 @@
   "pyright.useLibraryCodeForTypes": true,
   "python.venvPath": "/Users/dave/.pyenv/versions",
   "languageserver": {
+    // ...
+    "solidity": {
+      "command": "/Users/dave/Projects/solidity/build/solc/solc",
+      "args": ["--lsp"],
+      "trace.server": "verbose",
+      "rootPatterns": [".git/"],
+      "filetypes": ["solidity"]
+    }
     // "omnisharp": {
     //   "command": "/Users/dave/Projects/omnisharp/run",
     //   "filetypes": ["cs"],
@@ -172,35 +176,35 @@
     //   "filetypes": ["javascript", "javascript.jsx"],
     //   "args": ["lsp"]
     // },
-    //"ccls": {
-    //  "command": "ccls",
-    //  "args": ["--log-file=/tmp/ccls.log"],
-    //  "filetypes": ["c", "cpp"],
-    //  "rootPatterns": [
-    //    "compile_flags.txt",
-    //    "compile_commands.json",
-    //    ".vim/",
-    //    ".git/",
-    //    ".hg/"
-    //  ],
-    //  "initializationOptions": {
-    //    "cacheDirectory": "/tmp/ccls"
-    //  }
-    //},
-    "clangd": {
-      "command": "clangd",
-      "rootPatterns": [
-        "compile_flags.txt",
-        "compile_commands.json",
-        ".vim/",
-        ".git/",
-        ".hg/"
-      ],
-      "filetypes": [
-        "objc",
-        "objcpp"
-      ]
-    }
+    // "ccls": {
+    //   "command": "ccls",
+    //   "args": ["--log-file=/tmp/ccls.log"],
+    //   "filetypes": ["c", "cpp", "objc", "objcpp"],
+    //   "rootPatterns": [
+    //     "compile_flags.txt",
+    //     "compile_commands.json",
+    //     ".vim/",
+    //     ".git/",
+    //     ".hg/"
+    //   ],
+    //   "initializationOptions": {
+    //     "cacheDirectory": "/tmp/ccls"
+    //   }
+    // },
+    // "clangd": {
+    //   "command": "clangd",
+    //   "rootPatterns": [
+    //     "compile_flags.txt",
+    //     "compile_commands.json",
+    //     ".vim/",
+    //     ".git/",
+    //     ".hg/"
+    //   ],
+    //   "filetypes": [
+    //     "objc",
+    //     "objcpp"
+    //   ]
+    // }
     // "haskell": {
     //   "command": "hie-wrapper",
     //   "rootPatterns": [".stack.yaml", "cabal.config", "package.yaml"],
@@ -243,12 +247,6 @@
     "${env:SPARK_HOME}/python",
     "${env:SPARK_HOME}/python/pyspark"
   ],
-  "cSpell.userWords": [
-    "Brannoc",
-    "Braxton",
-    "Fitzcharles",
-    "NPCs",
-    "Yartar"
-  ],
+  "cSpell.userWords": ["Brannoc", "Braxton", "Fitzcharles", "NPCs", "Yartar"],
   "java.errors.incompleteClasspath.severity": "ignore"
 }

@@ -1,4 +1,4 @@
-#!/usr/local/bin/zsh
+#!/opt/homebrew/bin/zsh
 
 #BASE03=colour8
 #BASE02=colour0

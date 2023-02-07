@@ -5,10 +5,9 @@ fun! tmuxline#presets#solarline#get()
   call bar.left.add_left_sep()
   
   call bar.right.add_right_sep()
-  call bar.right.add('x', '#(~/.dotfiles/bin/disk.sh)')
-  " call bar.right.add_right_sep()
-  call bar.right.add_right_alt_sep()
-  call bar.right.add('c', '#(~/.dotfiles/bin/battery.sh)')
+  " call bar.right.add_right_alt_sep()
+  " call bar.right.add('c', '#(~/.dotfiles/bin/battery.sh)')
+  call bar.right.add('c', '#(~/.dotfiles/bin/disk.sh)')
 
   call bar.right.add_right_sep()
   call bar.right.add('b', '%Y-%m-%d')

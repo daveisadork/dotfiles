@@ -35,6 +35,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <leader>u <Plug>(coc-references)
 nmap <silent> <leader>l <Plug>(coc-action-code-lens-action)
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 
 " Use K for show documentation in preview window

@@ -8,6 +8,9 @@ filetype on
 filetype plugin on
 filetype indent on
 syntax on
+" syntax sync fromstart
+set mmp=20000
+set re=0
 
 let mapleader = ','  " Make leader useful on osx
 
@@ -108,6 +111,7 @@ augroup vimrc_autocmds
     autocmd FileType python,scss,css,html,eruby,yaml,javascript,json,php,typescript set nowrap
     autocmd FileType css,eruby,html,javascript,jinja.html,json,ruby,scss,typescript,vim,yaml,zsh,typescript.tsx,javascript.jsx,typescriptreact set ai sw=2 sts=2 et
     autocmd FileType go set noet
+    autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni
     " autocmd FileType python setlocal completeopt+=longest,menuone
     " autocmd FileType python setlocal completeopt=menuone,menu,longest,preview
 

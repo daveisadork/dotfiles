@@ -17,6 +17,7 @@ antigen bundles <<EOBUNDLES
     pip
     pyenv
     pyenv-virtualenv
+    rbenv
     shrink-path
     sudo
     yarn

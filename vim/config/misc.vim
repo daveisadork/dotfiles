@@ -17,6 +17,10 @@ function! s:compute_working_directory() abort
     return fnameescape(bufdir)
 endfunction
 
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
 let g:search_root = s:compute_working_directory()
 
 " GitGutter
@@ -71,3 +75,5 @@ nmap <silent> <leader>iw :ImportJSWord<CR>
 nmap <silent> <leader>ig :ImportJSGoto<CR>
 
 nmap <silent> <leader>B :Black<CR>
+
+let g:db_ui_env_variable_url = 'DATABASE_URL'
