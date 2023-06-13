@@ -1,6 +1,6 @@
 CASE_SENSITIVE="true"
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/games:/usr/local/games"
-export PREFIX="/usr"
+export SYS_PREFIX="/usr"
 export DOTFILES=$HOME/.dotfiles
 
 if [[ `uname` == 'Linux'  ]]
@@ -23,7 +23,7 @@ then
   if [[ -e $HOMEBREW_PREFIX/bin/brew ]]
   then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    export PREFIX="$HOMEBREW_PREFIX"
+    export SYS_PREFIX="$HOMEBREW_PREFIX"
     if [[ -e $HOMEBREW_PREFIX/opt/coreutils ]]; then export PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"; fi
     if [[ -e $HOMEBREW_PREFIX/opt/gnu-tar ]]; then export PATH="$HOMEBREW_PREFIX/opt/gnu-tar/libexec/gnubin:$PATH"; fi
     if [[ -e $HOMEBREW_PREFIX/opt/llvm ]]; then export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"; fi
@@ -33,12 +33,12 @@ else
   export OSX=
 fi
 
-export SHELL="$PREFIX/bin/zsh"
-if [[ -e "$PREFIX/bin/tmux-next" ]]
+export SHELL="$SYS_PREFIX/bin/zsh"
+if [[ -e "$SYS_PREFIX/bin/tmux-next" ]]
 then
-  export TMUX_PATH="$PREFIX/bin/tmux-next"
+  export TMUX_PATH="$SYS_PREFIX/bin/tmux-next"
 else
-  export TMUX_PATH="$PREFIX/bin/tmux"
+  export TMUX_PATH="$SYS_PREFIX/bin/tmux"
 fi
 
 if [[ -e "$TMUX_PATH" ]]
@@ -55,7 +55,19 @@ fi
 
 # source '$HOMEBREW_PREFIX/opt/asdf/asdf.sh'
 # source '$HOMEBREW_PREFIX/opt/asdf/etc/bash_completion.d/asdf.bash'
-#
+
+if [[ -e `which nvim` ]]
+then
+  alias vim=nvim
+  export GIT_EDITOR=nvim
+  export VISUAL=nvim
+  export EDITOR=nvim
+else
+  export GIT_EDITOR=vim
+  export VISUAL=vim
+  export EDITOR=vim
+fi
+
 alias brew='arch -arm64 brew'
 alias ls='ls -F --color=auto'
 #alias dir='dir --color=auto'
@@ -77,53 +89,20 @@ export LESSOPEN='|~/.lessfilter %s'
 
 alias yolo='git commit -am "$(curl -s https://whatthecommit.com/index.txt)"'
 
-if [[ -e `which nvim` ]]
-then
-  alias vim=nvim
-  export GIT_EDITOR=nvim
-  export VISUAL=nvim
-  export EDITOR=nvim
-else
-  export GIT_EDITOR=vim
-  export VISUAL=vim
-  export EDITOR=vim
-fi
-
-export SHORT_PWD="$($PREFIX/bin/python3 $PREFIX/bin/super_pwd $PWD)"
-function shorten_pwd() {
-  export SHORT_PWD="$($PREFIX/bin/python3 $PREFIX/bin/super_pwd $PWD)"
-}
-
-chpwd_functions=(${chpwd_functions[@]} "shorten_pwd")
-
-function tmux_window_pwd() {
-  tmux rename-window "$SHORT_PWD"
-}
-precmd_functions=(${precmd_functions[@]} "tmux_window_pwd")
-
-# eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
-
-homebrew_command_not_found_handle() {
-  local cmd="$1"
-  local txt="$(brew which-formula --explain $cmd 2>/dev/null)"
-
-  if [ -z "$txt" ]; then
-    echo "command not found: $cmd" >&2
-  else
-    echo "$txt"
-  fi
-
-  return 127
-}
-
-command_not_found_handler() {
-  homebrew_command_not_found_handle $*
-  return $?
-}
+export SHORT_PWD="$($SYS_PREFIX/bin/python3 $SYS_PREFIX/bin/super_pwd $PWD)"
 
 export PYTHON_CONFIGURE_OPTS="--enable-framework"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init --path)"
+fi
 
 export NVM_DIR="$HOME/.nvm"
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin:$PATH"
 . "$HOME/.cargo/env"
+
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export GOPRIVATE=gitlab.sezzle.com

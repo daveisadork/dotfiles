@@ -1,22 +1,27 @@
 antigen use oh-my-zsh
 
 antigen bundles <<EOBUNDLES
-    iam4x/zsh-iterm-touchbar
     joel-porquet/zsh-dircolors-solarized.git
     zsh-users/zsh-autosuggestions
     zsh-users/zsh-syntax-highlighting
+    brew
     colored-man
+    direnv
     docker
     docker-compose
     fzf
     gitfast
     gnu-utils
+    golang
+    kubectl
+    macos
+    node
     npm
     nvm
-    osx
     pip
     pyenv
     pyenv-virtualenv
+    python
     rbenv
     shrink-path
     sudo

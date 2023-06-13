@@ -75,5 +75,20 @@ nmap <silent> <leader>iw :ImportJSWord<CR>
 nmap <silent> <leader>ig :ImportJSGoto<CR>
 
 nmap <silent> <leader>B :Black<CR>
+nmap <silent> <leader>b :DBUI<CR>
 
 let g:db_ui_env_variable_url = 'DATABASE_URL'
+
+let g:db_ui_win_position = 'right'
+let g:db_ui_winwidth = 60
+let g:db_ui_use_nerd_fonts = 1
+let g:db_ui_execute_on_save = 1
+
+autocmd FileType dbout setlocal nofoldenable
+
+
+let g:go_code_completion_enabled = 0
+let g:go_fmt_autosave = 0
+let g:go_imports_autosave = 0
+let g:go_mod_fmt_autosave = 0
+let g:go_metalinter_command = "golangci-lint"

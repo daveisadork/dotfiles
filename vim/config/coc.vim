@@ -82,3 +82,15 @@ nnoremap <silent> <leader>hd :CocCommand post.do<CR>
 nnoremap <silent> <leader>hn :CocList post<CR>
 
 nnoremap <silent> <leader>m :CocList marketplace<CR>
+
+nnoremap <silent> <leader>gtge :CocCommand go.test.generate.exported<CR>
+nnoremap <silent> <leader>gtgf :CocCommand go.test.generate.file<CR>
+nnoremap <silent> <leader>gtgc :CocCommand go.test.generate.function<CR>
+nnoremap <silent> <leader>gtt :CocCommand go.test.toggle<CR>
+nnoremap <silent> <leader>it :CocCommand go.gopls.tidy<CR>
+
+autocmd FileType go nmap gty :CocCommand go.tags.add yaml<cr>
+autocmd FileType go nmap gtx :CocCommand go.tags.clear<cr>
+autocmd FileType go nmap gtj :CocCommand go.tags.add json<cr>
+
+autocmd FileType go nmap gt :CocCommand go.test.toggle<cr>

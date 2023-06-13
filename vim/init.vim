@@ -41,7 +41,7 @@ set smarttab
 set expandtab
 set softtabstop=4
 set backspace=indent,eol,start " make backspace work like most other programs
-set list lcs=tab:⤚—
+set list lcs=tab:——→
 set showtabline=2 " Always display the tabline, even if there is only one tab
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 set mouse=a

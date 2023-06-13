@@ -6,48 +6,14 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
 source $DOTFILES/zsh/private.zsh
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init --path)"
-fi
-
-if [[ -e $HOMEBREW_PREFIX/bin/brew ]]
-then
-  [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && . "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && . "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-else
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-fi
-
 source $HOME/antigen.zsh
 antigen init $HOME/.antigenrc
 
-alias brew='arch -arm64 brew'
-alias ls='ls -F --color=auto'
-#alias dir='dir --color=auto'
-#alias vdir='vdir --color=auto'
+# Stop stupid oh-my-zsh from breaking ls colors
+alias ls='ls -FG --color=auto'
 
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# less alias
-alias less='less -R'
-export LESS='-R'
-export LESSOPEN='|~/.lessfilter %s'
-
-alias yolo='git commit -am "$(curl -s https://whatthecommit.com/index.txt)"'
-
-export SHORT_PWD="$($SYS_PREFIX/bin/python3 $DOTFILES/bin/cwd.py $PWD)"
 function shorten_pwd() {
-  export SHORT_PWD="$($SYS_PREFIX/bin/python3 $DOTFILES/bin/cwd.py $PWD)"
+  export SHORT_PWD="$($SYS_PREFIX/bin/python3 $SYS_PREFIX/bin/super_pwd $PWD)"
 }
 
 chpwd_functions=(${chpwd_functions[@]} "shorten_pwd")
@@ -72,8 +38,6 @@ homebrew_command_not_found_handle() {
   return 127
 }
 
-export PATH=$PATH:~/.cargo/bin:~/go/bin
-
 command_not_found_handler() {
   homebrew_command_not_found_handle $*
   return $?
@@ -83,3 +47,4 @@ command_not_found_handler() {
 
 source ~/.dotfiles/zsh/shell_prompt.zsh
 
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

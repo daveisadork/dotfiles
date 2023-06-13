@@ -84,30 +84,37 @@ Plug 'hail2u/vim-css3-syntax'
 " Plug 'cakebaker/scss-syntax.vim'
 
 " Writing
-Plug 'reedes/vim-pencil' " Super-powered writing things
-Plug 'tpope/vim-abolish' " Fancy abbreviation replacements
-Plug 'junegunn/limelight.vim' " Highlights only active paragraph
-Plug 'junegunn/goyo.vim' " Full screen writing mode
+" Plug 'reedes/vim-pencil' " Super-powered writing things
+" Plug 'tpope/vim-abolish' " Fancy abbreviation replacements
+" Plug 'junegunn/limelight.vim' " Highlights only active paragraph
+" Plug 'junegunn/goyo.vim' " Full screen writing mode
 " Plug 'reedes/vim-lexical' " Better spellcheck mappings
-Plug 'reedes/vim-litecorrect' " Better autocorrections
-Plug 'kana/vim-textobj-user'
-Plug 'reedes/vim-textobj-sentence' " Treat sentences as text objects
-Plug 'reedes/vim-textobj-quote'
-Plug 'reedes/vim-wordy' " Weasel words and passive voice
-Plug 'ron89/thesaurus_query.vim'
+" Plug 'reedes/vim-litecorrect' " Better autocorrections
+" Plug 'kana/vim-textobj-user'
+" Plug 'reedes/vim-textobj-sentence' " Treat sentences as text objects
+" Plug 'reedes/vim-textobj-quote'
+" Plug 'reedes/vim-wordy' " Weasel words and passive voice
+" Plug 'ron89/thesaurus_query.vim'
 
 " Telescope related stuff
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'fannheyward/telescope-coc.nvim'
 
-Plug 'rizzatti/dash.vim'
+" Plug 'rizzatti/dash.vim'
 
 " SQL
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'kristijanhusak/vim-dadbod-completion'
+
+" Go
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'puremourning/vimspector'
+
 " End Plug Packages
 call plug#end()

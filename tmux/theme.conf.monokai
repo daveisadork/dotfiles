@@ -1,0 +1,23 @@
+# This tmux statusbar config was created by tmuxline.vim
+# on Thu, 19 Sep 2019
+
+set -g status-justify "left"
+set -g status "on"
+set -g status-left-style "none"
+set -g message-command-style "fg=colour3,bg=colour0"
+set -g status-right-style "none"
+set -g pane-active-border-style "fg=colour8"
+set -g status-style "none,bg=colour17"
+set -g message-style "fg=colour3,bg=colour0"
+set -g pane-border-style "fg=colour0"
+set -g status-right-length "100"
+set -g status-left-length "100"
+# setw -g window-status-activity-attr "none"
+setw -g window-status-activity-style "bold,fg=colour21,bg=colour17"
+setw -g window-status-separator ""
+setw -g window-status-style "none,fg=colour20,bg=colour17"
+set -g status-left "#[fg=colour7,bg=colour8] #S #[fg=colour8,bg=colour17,nobold,nounderscore,noitalics]"
+# set -g status-right "#[fg=colour17,bg=colour17,nobold,nounderscore,noitalics]#[fg=colour7,bg=colour17] #(~/.dotfiles/bin/disk.sh) #[fg=colour7,bg=colour17] #(~/.dotfiles/bin/battery.sh) #[fg=colour0,bg=colour17,nobold,nounderscore,noitalics]#[fg=colour21,bg=colour0] %Y-%m-%d #[fg=colour8,bg=colour0,nobold,nounderscore,noitalics]#[fg=colour7,bg=colour8] %I:%M %p "
+set -g status-right "#[fg=colour17,bg=colour17,nobold,nounderscore,noitalics]#[fg=colour7,bg=colour17] #[fg=colour7,bg=colour17] #(~/.dotfiles/bin/disk.sh) #[fg=colour0,bg=colour17,nobold,nounderscore,noitalics]#[fg=colour21,bg=colour0] %Y-%m-%d #[fg=colour8,bg=colour0,nobold,nounderscore,noitalics]#[fg=colour7,bg=colour8] %I:%M %p "
+setw -g window-status-format "#[fg=colour20,bg=colour17] #I #[fg=colour20,bg=colour17] #W "
+setw -g window-status-current-format "#[fg=colour17,bg=colour0,nobold,nounderscore,noitalics]#[fg=colour3,bg=colour0] #I #[fg=colour3,bg=colour0] #W #[fg=colour0,bg=colour17,nobold,nounderscore,noitalics]"

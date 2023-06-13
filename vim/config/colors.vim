@@ -4,7 +4,7 @@ let g:solarized_extra_hi_groups = 1
 
 " Try loading the solarized them, call the vundle install routine if it fails
 try
-  colorscheme monokai_pro
+  colorscheme solarized8
 catch /^Vim\%((\a\+)\)\=:E185/
   PlugInstall
   colorscheme solarized8
