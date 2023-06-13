@@ -143,7 +143,7 @@ mason_lspconfig.setup_handlers {
             diagnosticMode = "workspace",
           },
           pythonPath = vim.fn.system { "pyenv", "which", "python" },
-          venvPath = "/Users/david.hayes/.pyenv/versions",
+          venvPath = "/Users/dave/.pyenv/versions",
         },
       },
     }

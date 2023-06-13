@@ -88,6 +88,7 @@ export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
 alias yolo='git commit -am "$(curl -s https://whatthecommit.com/index.txt)"'
+alias dl='yt-dlp --restrict-filenames --external-downloader aria2c'
 
 export SHORT_PWD="$($SYS_PREFIX/bin/python3 $SYS_PREFIX/bin/super_pwd $PWD)"
 

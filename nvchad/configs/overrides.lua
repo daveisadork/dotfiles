@@ -12,7 +12,7 @@ M.treesitter = {
     "gomod",
     "gosum",
     "gowork",
-    "help",
+    "vimdoc",
     "html",
     "http",
     "javascript",
