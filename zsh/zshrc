@@ -3,10 +3,9 @@ autoload run-help
 HELPDIR=$PREFIX/share/zsh/help
 
 fpath+=${ZDOTDIR:-~}/.zsh_functions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 
 source $DOTFILES/zsh/private.zsh
-
 source $HOME/antigen.zsh
 antigen init $HOME/.antigenrc
 
