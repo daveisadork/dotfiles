@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 
 # BASE03=colour8
 # BASE02=colour0
@@ -35,9 +35,15 @@ CYAN="#2aa198"
 GREEN="#859900"
 
 
+if [[ `uname` == 'Linux'  ]]
+then
+    DFCMD=df
+else
+    DFCMD=gdf
+fi
 
 
-DF="$(df -h -l --output=avail,pcent,target . | grep -E '/$')"
+DF="$($DFCMD -h -l --output=avail,pcent,target . | grep -E '/$')"
 NUMBER="$(echo \"$DF\"| grep -oE '(1?[0-9]{2}%)' | grep -oE '[0-9]+')"
 DISK_FREE="$(echo \"$DF\"| grep -oE '([0-9.]*[KMGTPEZY])')"
 
