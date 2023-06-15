@@ -10,11 +10,12 @@ IMPORTANT = {
     ".python-version",
     "Pipfile",
     "main.py",
-#    "package.json",
+    "package.json",
     "pyproject.toml",
     "requirements.txt",
     "setup.cfg",
     "setup.py",
+    ".git",
 }
 
 HOME = os.environ["HOME"]
@@ -25,16 +26,14 @@ def do_split(path):
         return "~", ""
 
     head, tail = os.path.split(path)
-    if (
-        not tail
-        or tail.startswith(".")
-        or IMPORTANT.intersection(os.listdir(path))
-    ):
+    if not tail or tail.startswith(".") or IMPORTANT.intersection(os.listdir(path)):
         return head, tail
 
     dirs = os.scandir(head)
     dirs = [d.name for d in dirs if d.is_dir()]
     dirs.remove(tail)
+
+    shortened = tail
 
     for index in range(1, len(tail) + 1):
         shortened = tail[:index]
@@ -43,6 +42,20 @@ def do_split(path):
             break
 
     return head, shortened
+
+
+def path_contains_mount(path):
+    head, tail = os.path.split(os.path.realpath(path))
+    while tail:
+        if head == "/":
+            break
+
+        if os.path.ismount(head):
+            return True
+
+        head, tail = os.path.split(head)
+
+    return False
 
 
 def shorten(path):
@@ -56,7 +69,8 @@ def shorten(path):
     parts = []
     while tail:
         parts.append(tail)
-        head, tail = do_split(head)
+        split_func = os.path.split if path_contains_mount(head) else do_split
+        head, tail = split_func(head)
 
     parts.append(head)
     parts.reverse()
@@ -64,12 +78,15 @@ def shorten(path):
 
 
 def get_cwd():
-    PWD = os.environ.get("PWD")
+    return os.environ.get("PWD", os.getcwd())
+    pwd = os.environ.get("PWD", os.getcwd())
     cwd = os.getcwd()
-    if os.path.samefile(PWD, cwd):
+    print("pwd", pwd)
+    print("cwd", cwd)
+    if os.path.samefile(pwd, cwd):
         return cwd
 
-    return PWD
+    return pwd
 
 
 def main():

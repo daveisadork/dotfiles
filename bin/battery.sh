@@ -66,11 +66,11 @@ then
     then
       TEXT_FG_COLOR="yellow"
     else
-      TEXT_FG_COLOR="#939293"
+      TEXT_FG_COLOR="white"
     fi
     if [ $CHARGING -eq 1 ]
     then
-        CHARGE_FG_COLOR="blue"
+        CHARGE_FG_COLOR="orange"
     else
         CHARGE_FG_COLOR="green"
     fi
@@ -91,7 +91,7 @@ else
         NUMBER="$(echo $PERCENTAGE | grep -op '[0-9]\+')"
         if [ $NUMBER -lt 20 ]
         then
-            TEXT_FG_COLOR="blue"
+            TEXT_FG_COLOR="red"
         elif [ $NUMBER -lt 40 ]
         then
             TEXT_FG_COLOR="yellow"
@@ -102,7 +102,7 @@ else
         then
             TEXT_FG_COLOR="cyan"
         else
-            TEXT_FG_COLOR="#939293"
+            TEXT_FG_COLOR="white"
         fi
     fi
 fi
