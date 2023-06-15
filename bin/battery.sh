@@ -1,4 +1,9 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env zsh
+
+if [[ "$LINUX" == "1" ]]
+then
+    exec ~/.dotfiles/bin/load.sh
+fi
 
 #BASE03=colour8
 #BASE02=colour0

@@ -37,7 +37,7 @@ GREEN="#859900"
 
 
 
-DF="$(gdf -h -l --output=avail,pcent,target . | grep -E '/$')"
+DF="$(df -h -l --output=avail,pcent,target . | grep -E '/$')"
 NUMBER="$(echo \"$DF\"| grep -oE '(1?[0-9]{2}%)' | grep -oE '[0-9]+')"
 DISK_FREE="$(echo \"$DF\"| grep -oE '([0-9.]*[KMGTPEZY])')"
 

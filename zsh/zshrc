@@ -10,8 +10,8 @@ source $DOTFILES/zsh/private.zsh
 source $HOME/antigen.zsh
 antigen init $HOME/.antigenrc
 
-# Stop stupid oh-my-zsh from breaking ls colors
-alias ls='ls -FG --color=auto'
+# # Stop stupid oh-my-zsh from breaking ls colors
+# alias ls='ls -FG --color=auto'
 
 function shorten_pwd() {
   export SHORT_PWD="$($SYS_PREFIX/bin/python3 $SYS_PREFIX/bin/super_pwd $PWD)"
