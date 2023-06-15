@@ -4,21 +4,26 @@ antigen bundles <<EOBUNDLES
     joel-porquet/zsh-dircolors-solarized.git
     zsh-users/zsh-autosuggestions
     zsh-users/zsh-syntax-highlighting
+    1password
     brew
     colored-man
+    command-not-found
     direnv
     docker
     docker-compose
+    dotenv
     fzf
     gitfast
     gnu-utils
     golang
+    helm
     kubectl
     macos
     node
     npm
     nvm
     pip
+    poetry
     pyenv
     pyenv-virtualenv
     python

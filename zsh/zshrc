@@ -1,3 +1,4 @@
+# zmodload zsh/zprof
 autoload run-help
 HELPDIR=$PREFIX/share/zsh/help
 
@@ -23,34 +24,11 @@ function tmux_window_pwd() {
 }
 precmd_functions=(${precmd_functions[@]} "tmux_window_pwd")
 
-# eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
-
-homebrew_command_not_found_handle() {
-  local cmd="$1"
-  local txt="$(brew which-formula --explain $cmd 2>/dev/null)"
-
-  if [ -z "$txt" ]; then
-    echo "command not found: $cmd" >&2
-  else
-    echo "$txt"
-  fi
-
-  return 127
-}
-
-command_not_found_handler() {
-  homebrew_command_not_found_handle $*
-  return $?
-}
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 source ~/.dotfiles/zsh/shell_prompt.zsh
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 setopt extendedglob
+# zprof
