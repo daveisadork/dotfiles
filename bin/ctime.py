@@ -10,9 +10,9 @@ import dircolors
 dc = dircolors.Dircolors()
 
 def print_times(path: str):
-    stat = os.stat(path).st_ctime
-    ctime = date.fromtimestamp(stat).isoformat()
-    mtime = date.fromtimestamp(stat).isoformat()
+    stat = os.stat(path)
+    ctime = date.fromtimestamp(stat.st_ctime).isoformat()
+    mtime = date.fromtimestamp(stat.st_mtime).isoformat()
     head, name = os.path.split(path)
     name = dc.format(name, cwd=head)
     if os.path.isdir(path):
