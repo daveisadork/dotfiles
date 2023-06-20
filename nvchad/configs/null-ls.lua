@@ -30,6 +30,7 @@ local sources = {
   b.formatting.goimports,
   b.code_actions.gomodifytags,
   b.code_actions.impl,
+  b.diagnostics.commitlint,
 
   -- sql
   b.formatting.sqlfluff.with {
