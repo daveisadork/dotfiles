@@ -26,7 +26,7 @@ local sources = {
   b.formatting.isort,
 
   -- go
-  b.formatting.golines,
+  --b.formatting.golines,
   b.formatting.goimports,
   b.code_actions.gomodifytags,
   b.code_actions.impl,
