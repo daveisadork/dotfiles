@@ -28,6 +28,7 @@ then
     if [[ -e $HOMEBREW_PREFIX/opt/gnu-tar ]]; then export PATH="$HOMEBREW_PREFIX/opt/gnu-tar/libexec/gnubin:$PATH"; fi
     if [[ -e $HOMEBREW_PREFIX/opt/llvm ]]; then export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"; fi
     if [[ -e $HOMEBREW_PREFIX/opt/python ]]; then export PATH="$HOMEBREW_PREFIX/opt/python/libexec/bin:$PATH"; fi
+    if [[ -e $HOMEBREW_PREFIX/opt/curl ]]; then export PATH="$HOMEBREW_PREFIX/opt/curl/libexec/bin:$PATH"; fi
   fi
 else
   export OSX=
