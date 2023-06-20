@@ -4,6 +4,7 @@ HELPDIR=$PREFIX/share/zsh/help
 
 fpath+=${ZDOTDIR:-~}/.zsh_functions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
+ZSH_AUTOSUGGEST_USE_ASYNC="true"
 
 source $DOTFILES/zsh/private.zsh
 source $HOME/antigen.zsh

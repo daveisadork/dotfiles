@@ -5,16 +5,21 @@ import sys
 
 from datetime import date
 
-import dircolors
+try:
+    import dircolors
 
-dc = dircolors.Dircolors()
+    dc = dircolors.Dircolors()
+except:
+    dc = None
 
 def print_times(path: str):
     stat = os.stat(path)
     ctime = date.fromtimestamp(stat.st_ctime).isoformat()
     mtime = date.fromtimestamp(stat.st_mtime).isoformat()
     head, name = os.path.split(path)
-    name = dc.format(name, cwd=head)
+    if dc:
+        name = dc.format(name, cwd=head)
+
     if os.path.isdir(path):
         name = f"{name}/"
 
