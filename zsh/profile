@@ -1,5 +1,5 @@
 CASE_SENSITIVE="true"
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/games:/usr/local/games"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/games:/usr/local/games:/snap/bin"
 export SYS_PREFIX="/usr"
 export DOTFILES=$HOME/.dotfiles
 
