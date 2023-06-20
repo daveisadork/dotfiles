@@ -54,6 +54,11 @@ local plugins = {
 		opts = overrides.nvimtree,
 	},
 
+	{
+		"hrsh7th/nvim-cmp",
+		opts = overrides.nvim_cmp,
+	},
+
 	-- Install a plugin
 	{
 		"max397574/better-escape.nvim",
@@ -316,6 +321,7 @@ local plugins = {
 		"isobit/vim-caddyfile",
 		ft = { "caddyfile" },
 	},
+
 	-- To make a plugin not be loaded
 	-- {
 	--   "NvChad/nvim-colorizer.lua",
