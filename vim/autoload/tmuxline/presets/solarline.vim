@@ -5,20 +5,20 @@ fun! tmuxline#presets#solarline#get()
   call bar.left.add_left_sep()
   
   call bar.right.add_right_sep()
-  " call bar.right.add_right_alt_sep()
-  " call bar.right.add('c', '#(~/.dotfiles/bin/battery.sh)')
-  call bar.right.add('c', '#(~/.dotfiles/bin/disk.sh)')
+  call bar.right.add('x', '#(~/.dotfiles/bin/disk.sh)')
+  call bar.right.add_right_alt_sep()
+  call bar.right.add('x', '#(~/.dotfiles/bin/battery.sh)')
 
   call bar.right.add_right_sep()
-  call bar.right.add('b', '%Y-%m-%d')
+  call bar.right.add('y', '%Y-%m-%d')
   call bar.right.add_right_sep()
-  call bar.right.add('a', '%I:%M %p')
-  " call bar.right.add_right_sep()
+  call bar.right.add('z', '%I:%M %p')
 
-
+  call bar.win.add_left_sep()
   call bar.win.add('win.dim', '#I')
   call bar.win.add_left_alt_sep()
   call bar.win.add('win', '#W')
+  call bar.win.add_left_sep()
 
   call bar.cwin.add_left_sep()
   call bar.cwin.add('cwin.dim', '#I')

@@ -254,6 +254,11 @@ local plugins = {
 			vim.g["airline#extensions#tmuxline#enabled"] = 1
 			vim.g.airline_theme = "solarline"
 
+			--vim.g.airline_left_sep = ""
+			--vim.g.airline_left_alt_sep = ""
+			--vim.g.airline_right_sep = ""
+			--vim.g.airline_right_alt_sep = ""
+
 			vim.g.airline_left_sep = ""
 			vim.g.airline_left_alt_sep = ""
 			vim.g.airline_right_sep = ""
@@ -286,6 +291,21 @@ local plugins = {
 			"vim-airline/vim-airline",
 			"vim-airline/vim-airline-themes",
 		},
+		config = function()
+			vim.cmd([[
+        let g:promptline_preset = {
+          \ 'a'    : [ promptline#slices#python_virtualenv() ],
+          \ 'b'    : [ '$USER' ],
+          \ 'c'    : [ '%~' ],
+          \ 'x'    : [ promptline#slices#vcs_branch() ],
+          \ 'y'    : [ promptline#slices#host({ 'only_if_ssh': 1  }) ],
+          \ 'z'    : [],
+          \ 'warn' : [ promptline#slices#last_exit_code() ],
+          \ 'options': {
+               \ 'left_sections' : [ 'y', 'b', 'a', 'x', 'c', 'z', 'warn' ],
+               \ 'right_sections': []}}
+      ]])
+		end,
 	},
 
 	{
@@ -300,8 +320,7 @@ local plugins = {
 			"vim-airline/vim-airline-themes",
 		},
 		config = function()
-			vim.g.tmuxline_preset = "solarline"
-			vim.g.tmuxline_theme = "airline"
+			require("custom.configs.tmuxline")
 		end,
 	},
 
