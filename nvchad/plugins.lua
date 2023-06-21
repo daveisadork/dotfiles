@@ -315,10 +315,6 @@ local plugins = {
 			"TmuxlineSimple",
 			"TmuxlineSnapshot",
 		},
-		dependencies = {
-			"vim-airline/vim-airline",
-			"vim-airline/vim-airline-themes",
-		},
 		config = function()
 			require("custom.configs.tmuxline")
 		end,
