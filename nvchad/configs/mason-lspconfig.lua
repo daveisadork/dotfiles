@@ -6,6 +6,9 @@ local mason_lspconfig = require("mason-lspconfig")
 local lspconfig = require("lspconfig")
 local configs = require("lspconfig.configs")
 
+-- local capabilities = require("plugins.configs.lspconfig").capabilities
+-- local on_attach = require("plugins.configs.lspconfig").on_attach
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 capabilities.textDocument.completion.completionItem = {

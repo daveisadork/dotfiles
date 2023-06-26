@@ -238,7 +238,7 @@ local plugins = {
 		"folke/neodev.nvim",
 		config = function()
 			require("neodev").setup({
-				library = { plugins = { "nvim-dap-ui" }, types = true },
+				library = { plugins = { "neotest", "nvim-dap-ui" }, types = true },
 			})
 		end,
 	},
@@ -342,6 +342,24 @@ local plugins = {
 	{
 		"isobit/vim-caddyfile",
 		ft = { "caddyfile" },
+	},
+	{
+		"nvim-neotest/neotest",
+		init = function()
+			require("core.utils").load_mappings("neotest")
+		end,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-neotest/neotest-python",
+			"nvim-neotest/neotest-go",
+			"nvim-neotest/neotest-plenary",
+			"nvim-neotest/neotest-vim-test",
+		},
+		config = function()
+			require("custom.configs.neotest")
+		end,
 	},
 
 	-- To make a plugin not be loaded
