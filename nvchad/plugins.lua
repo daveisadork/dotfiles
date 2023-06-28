@@ -8,6 +8,7 @@ local plugins = {
 		"williamboman/mason.nvim",
 		opts = overrides.mason,
 	},
+
 	{
 		"jose-elias-alvarez/null-ls.nvim",
 		config = function()
@@ -28,19 +29,23 @@ local plugins = {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			-- format & linting
-			{
-				"jose-elias-alvarez/null-ls.nvim",
-				config = function()
-					require("custom.configs.null-ls")
-				end,
-			},
 		},
 		-- config = function()
 		--   require "custom.configs.mason-lspconfig"
 		--   --require "plugins.configs.lspconfig"
 		--   --require "custom.configs.lspconfig"
 		-- end, -- Override to setup mason-lspconfig
+	},
+	{
+		"jay-babu/mason-null-ls.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"williamboman/mason.nvim",
+			"jose-elias-alvarez/null-ls.nvim",
+		},
+		config = function()
+			require("custom.configs.null-ls")
+		end,
 	},
 
 	-- override plugin configs
@@ -116,6 +121,7 @@ local plugins = {
 		cmd = "DBUI",
 		dependencies = {
 			"tpope/vim-dadbod",
+		  "kristijanhusak/vim-dadbod-completion",
 		},
 		config = function()
 			vim.g.db_ui_win_position = "right"
@@ -182,19 +188,59 @@ local plugins = {
 		end,
 	},
 
+	-- {
+	-- 	"mfussenegger/nvim-dap",
+	-- 	lazy = false,
+	-- 	config = function() end,
+	-- },
+
 	{
-		"mfussenegger/nvim-dap",
+		"jay-babu/mason-nvim-dap.nvim",
 		lazy = false,
-		config = function() end,
+		dependencies = {
+			"williamboman/mason.nvim",
+			"mfussenegger/nvim-dap",
+			{
+				"theHamsta/nvim-dap-virtual-text",
+				config = function()
+					require("nvim-dap-virtual-text").setup()
+				end,
+			},
+		},
+		config = function()
+			require("mason-nvim-dap").setup({
+				ensure_installed = { "python", "delve" },
+				handlers = {
+					function(config)
+						-- all sources with no handler get passed here
+
+						-- Keep original functionality
+						require("mason-nvim-dap").default_setup(config)
+					end,
+					delve = function(config)
+						table.insert(config.configurations, {
+							type = "delve",
+							name = "Delve: Debug with args",
+							request = "launch",
+							program = "${file}",
+							args = function()
+								local argument_string = vim.fn.input("Program arguments: ")
+								return vim.fn.split(argument_string, " ", true)
+							end,
+						})
+						require("mason-nvim-dap").default_setup(config)
+					end,
+				}, -- sets up dap in the predefined manner
+			})
+		end,
 	},
 
 	{
 		"rcarriga/nvim-dap-ui",
-		lazy = false,
 		dependencies = {
 			"mfussenegger/nvim-dap",
 		},
-		config = function()
+		init = function()
 			local dap, dapui = require("dap"), require("dapui")
 			dapui.setup()
 			dap.listeners.after.event_initialized["dapui_config"] = function()
@@ -209,30 +255,22 @@ local plugins = {
 		end,
 	},
 
-	{
-		"leoluz/nvim-dap-go",
-		lazy = false,
-		config = function()
-			require("dap-go").setup({
-				dap_configurations = {
-					{
-						type = "go",
-						name = "Attach remote",
-						mode = "remote",
-						request = "attach",
-					},
-				},
-			})
-		end,
-	},
-
-	{
-		"theHamsta/nvim-dap-virtual-text",
-		lazy = false,
-		config = function()
-			require("nvim-dap-virtual-text").setup()
-		end,
-	},
+	-- {
+	-- 	"leoluz/nvim-dap-go",
+	-- 	lazy = false,
+	-- 	config = function()
+	-- 		require("dap-go").setup({
+	-- 			dap_configurations = {
+	-- 				{
+	-- 					type = "go",
+	-- 					name = "Attach remote",
+	-- 					mode = "remote",
+	-- 					request = "attach",
+	-- 				},
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 
 	{
 		"folke/neodev.nvim",
@@ -362,6 +400,10 @@ local plugins = {
 		end,
 	},
 
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		opts = overrides.blankline,
+	},
 	-- To make a plugin not be loaded
 	-- {
 	--   "NvChad/nvim-colorizer.lua",

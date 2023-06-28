@@ -1,8 +1,5 @@
-local present, null_ls = pcall(require, "null-ls")
-
-if not present then
-	return
-end
+local null_ls = require("null-ls")
+local mason_null_ls = require("mason-null-ls")
 
 local b = null_ls.builtins
 
@@ -55,7 +52,69 @@ local sources = {
 	-- },
 }
 
+-- null_ls.setup({
+-- 	debug = true,
+-- 	sources = sources,
+-- })
+
 null_ls.setup({
 	debug = true,
-	sources = sources,
+	diagnostic_config = {
+		virtual_text = false,
+	},
+	sources = {
+		null_ls.builtins.code_actions.refactoring,
+		null_ls.builtins.hover.printenv,
+	},
+})
+
+mason_null_ls.setup({
+	ensure_installed = {
+		-- misc
+		"impl",
+
+		-- go
+		"gofumpt",
+		"goimports",
+		"gomodifytags",
+		"golangci_lint",
+
+		-- javascript
+		"prettierd",
+
+		-- python
+		"black",
+		"usort",
+
+		-- lua
+		"stylua",
+	},
+	automatic_installation = false,
+	handlers = {
+		prettierd = function(source, types)
+			-- custom logic
+			vim.tbl_map(function(type)
+				null_ls.register(null_ls.builtins[type][source].with({
+					filetypes = {
+						"javascript",
+						"javascriptreact",
+						"typescript",
+						"typescriptreact",
+						"vue",
+						"css",
+						"scss",
+						"less",
+						"html",
+						"json",
+						"jsonc",
+						--"yaml",
+						--"markdown",
+						--"markdown.mdx",
+						"graphql",
+						"handlebars",
+					},
+				}))
+			end, types)
+		end,
+	},
 })

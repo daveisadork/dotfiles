@@ -39,6 +39,17 @@ M.general = {
 		["<leader>tt"] = { ":TroubleToggle<CR>", "Toggle Trouble" },
 		["<leader>b"] = { ":DBUI<CR>", "Open DBUI" },
 		["<leader>m"] = { ":Glow<CR>", "Markdown preview" },
+		["<leader>sw"] = {
+			function()
+				if vim.opt.list then
+					vim.opt.list = false
+				else
+          vim.opt.listchars = { tab = "——→", eol = "↵", space = "·" }
+					vim.opt.list = true
+				end
+			end,
+			"Toggle whitespace",
+		},
 	},
 	v = {
 		["<S-Tab>"] = { "<gv", "Unindent" },
@@ -97,7 +108,7 @@ M.neotest = {
 		},
 		["<leader>ts"] = {
 			function()
-        require("neotest").summary.toggle()
+				require("neotest").summary.toggle()
 			end,
 			"test summary",
 		},

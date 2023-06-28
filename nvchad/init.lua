@@ -7,7 +7,11 @@
 -- })
 vim.g.mapleader = ","
 vim.wo.wrap = false
-vim.opt.listchars = { tab = "——→" }
+vim.opt.listchars = {
+	tab = "——→",
+	eol = "↵",
+	space = "·",
+}
 vim.opt.list = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
