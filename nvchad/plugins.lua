@@ -9,6 +9,12 @@ local plugins = {
 		opts = overrides.mason,
 	},
 
+  {
+
+    "nvim-telescope/telescope.nvim",
+    opts = overrides.telescope,
+  },
+
 	{
 		"jose-elias-alvarez/null-ls.nvim",
 		config = function()
@@ -75,7 +81,12 @@ local plugins = {
 
 	{
 		"folke/trouble.nvim",
-		cmd = { "Trouble", "TroubleToggle" },
+		cmd = {
+			"Trouble",
+			"TroubleClose",
+			"TroubleRefresh",
+			"TroubleToggle",
+		},
 		config = function()
 			require("trouble").setup({
 				-- your configuration comes here
@@ -121,7 +132,7 @@ local plugins = {
 		cmd = "DBUI",
 		dependencies = {
 			"tpope/vim-dadbod",
-		  "kristijanhusak/vim-dadbod-completion",
+			"kristijanhusak/vim-dadbod-completion",
 		},
 		config = function()
 			vim.g.db_ui_win_position = "right"
@@ -132,24 +143,23 @@ local plugins = {
 	},
 
 	{
-		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "make",
-		dependencies = {
-			"nvim-telescope/telescope.nvim",
-		},
-		lazy = false,
-		config = function()
-			require("telescope").load_extension("fzf")
-		end,
+		"nvim-telescope/telescope-fzy-native.nvim",
+		build = "cd deps/fzy-lua-native && make all",
+		event = "BufRead",
+		--config = function()
+		--	require("telescope").load_extension("fzy")
+		--end,
 	},
 
 	{
 		"rest-nvim/rest.nvim",
 		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
 			"nvim-lua/plenary.nvim",
 		},
-		lazy = false,
+		ft = { "http" },
+		init = function()
+			require("core.utils").load_mappings("rest")
+		end,
 		config = function()
 			require("rest-nvim").setup({
 				-- Open request results in a horizontal split
