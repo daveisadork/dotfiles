@@ -1,5 +1,5 @@
 dofile(vim.g.base46_cache .. "lsp")
-require("nvchad_ui.lsp")
+require("nvchad.lsp")
 
 local utils = require("core.utils")
 local mason_lspconfig = require("mason-lspconfig")
