@@ -30,6 +30,7 @@ then
     if [[ -e $HOMEBREW_PREFIX/opt/python ]]; then export PATH="$HOMEBREW_PREFIX/opt/python/libexec/bin:$PATH"; fi
     if [[ -e $HOMEBREW_PREFIX/opt/curl ]]; then export PATH="$HOMEBREW_PREFIX/opt/curl/libexec/bin:$PATH"; fi
   fi
+  export PYTHON_CONFIGURE_OPTS="--enable-framework"
 else
   export OSX=
 fi
@@ -93,7 +94,6 @@ alias dl='yt-dlp --restrict-filenames --external-downloader aria2c'
 
 export SHORT_PWD="$($SYS_PREFIX/bin/python3 $SYS_PREFIX/bin/super_pwd $PWD)"
 
-export PYTHON_CONFIGURE_OPTS="--enable-framework"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
