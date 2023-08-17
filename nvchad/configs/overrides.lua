@@ -22,7 +22,7 @@ M.blankline = {
 }
 
 M.treesitter = {
-	ensure_installed = "all",
+	ensure_installed = {},
 	auto_install = true,
 	highlight = {
 		enable = true,
@@ -30,7 +30,10 @@ M.treesitter = {
 		additional_vim_regex_highlighting = false,
 	},
 
-	indent = { enable = true },
+	indent = {
+		enable = true,
+		disable = { "python" },
+	},
 }
 
 M.mason = {
@@ -76,6 +79,7 @@ M.nvimtree = {
 }
 
 M.telescope = {
+	defaults = require("plugins.configs.telescope").defaults,
 	extensions = {
 		fzy_native = {
 			override_generic_sorter = false,
