@@ -88,9 +88,26 @@ mason_null_ls.setup({
 
 		-- lua
 		"stylua",
+
+		-- sql
+		"sql_formatter",
 	},
 	automatic_installation = false,
 	handlers = {
+		goimports = function(source, types)
+			-- custom logic
+			vim.tbl_map(function(type)
+				null_ls.register(null_ls.builtins[type][source].with({
+					filetypes = { "go" },
+					generator_opts = {
+						command = "goimports",
+						args = { "-srcdir", "$DIRNAME", "-local", "gitlab.sezzle.com" },
+						to_stdin = true,
+						prepend_extra_args = true,
+					},
+				}))
+			end, types)
+		end,
 		prettierd = function(source, types)
 			-- custom logic
 			vim.tbl_map(function(type)
@@ -112,6 +129,22 @@ mason_null_ls.setup({
 						--"markdown.mdx",
 						"graphql",
 						"handlebars",
+					},
+				}))
+			end, types)
+		end,
+		sql_formatter = function(source, types)
+			-- custom logic
+			vim.tbl_map(function(type)
+				null_ls.register(null_ls.builtins[type][source].with({
+					filetypes = { "mysql", "sql", "plsql" },
+					generator_opts = {
+						command = "sql-formatter",
+						args = {
+							"--config",
+							vim.fn.expand("$HOME/.sql-formatter.json"),
+						},
+						to_stdin = true,
 					},
 				}))
 			end, types)

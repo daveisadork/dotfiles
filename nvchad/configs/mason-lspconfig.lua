@@ -43,12 +43,13 @@ local on_attach = require("plugins.configs.lspconfig").on_attach
 
 mason_lspconfig.setup({
 	ensure_installed = {
+		"gopls",
+		--"golangci_lint_ls",
+		"helm_ls",
 		"lua_ls",
 		"pyright",
-		"yamlls",
-		"helm_ls",
-		"gopls",
 		"tsserver",
+		"yamlls",
 	},
 	handlers = {
 		-- The first entry (without a key) will be the default handler
@@ -114,7 +115,7 @@ mason_lspconfig.setup({
 			lspconfig.gopls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
-				cmd = { "gopls", "-remote=auto" },
+				cmd = { "gopls", "-remote=auto", "-remote.listen.timeout", "5s" },
 				filetypes = { "go", "gomod", "gowork", "gotmpl" },
 				root_dir = lspconfig.util.root_pattern("go.mod", ".git"),
 				single_file_support = true,
@@ -134,24 +135,6 @@ mason_lspconfig.setup({
 
 		pyright = function()
 			lspconfig.pyright.setup({
-				-- on_attach = function(client, bufnr)
-				-- 	utils.load_mappings("lspconfig", { buffer = bufnr })
-				--
-				-- 	if client.server_capabilities.signatureHelpProvider then
-				-- 		require("nvchad_ui.signature").setup(client)
-				-- 	end
-				--
-				-- 	if not utils.load_config().ui.lsp_semantic_tokens then
-				-- 		client.server_capabilities.semanticTokensProvider = nil
-				-- 	end
-				--
-				-- 	client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
-				-- 		python = {
-				-- 			pythonPath = vim.fn.system({ "pyenv", "which", "python" }),
-				-- 		},
-				-- 	})
-				-- 	client.notify("workspace/didChangeConfiguration", { settings = nil })
-				-- end,
 				on_attach = on_attach,
 				capabilities = capabilities,
 				cmd = { "pyright-langserver", "--stdio" },

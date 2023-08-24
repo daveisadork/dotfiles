@@ -12,7 +12,6 @@ M.general = {
 		-- 	"Clear highlights, close quickfix and Trouble",
 		-- },
 		[";"] = { ":", "enter command mode", opts = { nowait = true } },
-		["<C-p>"] = { ":Telescope find_files <CR>", "Telescope Files" },
 		["<C-j>"] = {
 			function()
 				vim.diagnostic.goto_next()
@@ -50,15 +49,22 @@ M.general = {
 			end,
 			"Toggle whitespace",
 		},
-		["gi"] = { ":Trouble lsp_implementations<CR>", "LSP Implementations" },
-		["gr"] = { ":Trouble lsp_references<CR>", "LSP References" },
-		["gd"] = { ":Trouble lsp_definitions<CR>", "LSP Definitions" },
-		["gt"] = { ":Trouble lsp_type_definitions<CR>", "LSP Type Definitions" },
-		["<leader>tt"] = { ":TroubleToggle<CR>", "Toggle Trouble" },
 	},
 	v = {
 		["<S-Tab>"] = { "<gv", "Unindent" },
 		["<Tab>"] = { ">gv", "Indent" },
+	},
+}
+
+M.telescope = {
+	plugin = true,
+	n = {
+		["<C-p>"] = { ":Telescope find_files <CR>", "Telescope Files" },
+		-- ["gi"] = { ":Telescope lsp_implementations<CR>", "LSP Implementations" },
+		-- ["gr"] = { ":Telescope lsp_references<CR>", "LSP References" },
+		-- ["gd"] = { ":Telescope lsp_definitions<CR>", "LSP Definitions" },
+		-- ["gt"] = { ":Telescope lsp_type_definitions<CR>", "LSP Type Definitions" },
+		["<leader>fs"] = { ":Telescope lsp_dynamic_workspace_symbols<CR>", "LSP Workspace Symbols" },
 	},
 }
 
