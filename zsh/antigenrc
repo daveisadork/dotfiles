@@ -5,6 +5,10 @@ antigen bundles <<EOBUNDLES
     zsh-users/zsh-autosuggestions
     zsh-users/zsh-syntax-highlighting
     1password
+    aws2
+    aws-plugin
+    aws-vault
+    aws-vault-profiles
     brew
     colored-man
     command-not-found

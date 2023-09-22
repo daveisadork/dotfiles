@@ -19,6 +19,7 @@ vim.opt.softtabstop = 4
 vim.opt.ruler = true
 vim.opt.whichwrap = ""
 vim.opt.showtabline = 2
+vim.opt.confirm = false
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "css,eruby,html,javascript,jinja.html,json,ruby,scss,typescript,vim,yaml,zsh,typescript.tsx,javascript.jsx,typescriptreact,lua",
@@ -53,6 +54,11 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.wo.number = false
 		vim.wo.relativenumber = false
 	end,
+})
+
+vim.api.nvim_create_autocmd("WinEnter", {
+	pattern = { "qf", "dbui", "dbout" },
+	command = [[if winnr('$') == 1 |q|endif]],
 })
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {

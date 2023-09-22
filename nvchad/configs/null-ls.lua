@@ -44,7 +44,7 @@ local sources = {
 
 	-- sql
 	b.formatting.sql_formatter.with({
-		filetypes = { "mysql", "sql" },
+		filetypes = { "mysql", "plsql", "sql" },
 	}),
 	-- b.formatting.sqlfluff.with {
 	--   extra_args = { "--dialect", "mysql" },
