@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("WinEnter", {
-	pattern = { "qf", "dbui", "dbout" },
+	pattern = { "qf", "dbui", "dbout", "httpResult" },
 	command = [[if winnr('$') == 1 |q|endif]],
 })
 

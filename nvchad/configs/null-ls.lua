@@ -65,6 +65,7 @@ null_ls.setup({
 	sources = {
 		null_ls.builtins.code_actions.refactoring,
 		null_ls.builtins.hover.printenv,
+		null_ls.builtins.formatting.xmlformat,
 	},
 })
 
@@ -90,7 +91,7 @@ mason_null_ls.setup({
 		"stylua",
 
 		-- sql
-		"sql_formatter",
+		--"sql_formatter",
 	},
 	automatic_installation = false,
 	handlers = {
@@ -149,5 +150,13 @@ mason_null_ls.setup({
 				}))
 			end, types)
 		end,
+		-- sqlfluff = function(source, types)
+		-- 	-- custom logic
+		-- 	vim.tbl_map(function(type)
+		-- 		null_ls.register(null_ls.builtins[type][source].with({
+		-- 			filetypes = { "mysql", "sql", "plsql" },
+		-- 		}))
+		-- 	end, types)
+		-- end,
 	},
 })

@@ -15,7 +15,7 @@ alias ls='ls -FG --color=auto'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 function shorten_pwd() {
-  export SHORT_PWD="$($SYS_PREFIX/bin/python3 $SYS_PREFIX/bin/super_pwd $PWD)"
+  export SHORT_PWD="$($DOTFILES/bin/cwd.py $PWD)"
 }
 
 chpwd_functions=(${chpwd_functions[@]} "shorten_pwd")
@@ -30,6 +30,7 @@ precmd_functions=(${precmd_functions[@]} "tmux_window_pwd")
 source ~/.dotfiles/zsh/shell_prompt.zsh
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+test -e "${HOME}/.config/op/plugins.sh" && source "${HOME}/.config/op/plugins.sh"
 
 setopt extendedglob
 # zprof

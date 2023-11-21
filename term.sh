@@ -31,3 +31,4 @@ update_terminfo () {
 }
 
 update_terminfo
+setupsolarized dircolors.ansi-dark
