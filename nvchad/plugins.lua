@@ -8,9 +8,24 @@ local plugins = {
 		"williamboman/mason.nvim",
 		opts = overrides.mason,
 	},
-
+	{
+		"kkharji/sqlite.lua",
+	},
 	{
 		"nvim-telescope/telescope.nvim",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-telescope/telescope-smart-history.nvim",
+			{
+				"nvim-telescope/telescope-fzy-native.nvim",
+				build = "cd deps/fzy-lua-native && make all",
+				event = "BufRead",
+			},
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				build = "make",
+			},
+		},
 		opts = overrides.telescope,
 	},
 
@@ -178,15 +193,6 @@ local plugins = {
 			vim.g.db_ui_winwidth = 60
 			vim.g.db_ui_execute_on_save = 1
 		end,
-	},
-
-	{
-		"nvim-telescope/telescope-fzy-native.nvim",
-		build = "cd deps/fzy-lua-native && make all",
-		event = "BufRead",
-		--config = function()
-		--	require("telescope").load_extension("fzy")
-		--end,
 	},
 
 	{
@@ -457,6 +463,34 @@ local plugins = {
 	--   "NvChad/nvim-colorizer.lua",
 	--   enabled = false
 	-- },
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup({
+				suggestion = {
+					auto_trigger = true,
+					keymap = {
+						accept = "<C-e>",
+					},
+				},
+			})
+		end,
+	},
+
+	{
+		"jackMort/ChatGPT.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("chatgpt").setup()
+		end,
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+		},
+	},
 }
 
 return plugins

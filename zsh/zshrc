@@ -7,6 +7,11 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 ZSH_AUTOSUGGEST_USE_ASYNC="true"
 
 source $DOTFILES/zsh/private.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.iterm2_shell_integration.zsh ] && source ~/.iterm2_shell_integration.zsh
+[ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
+
 source $HOME/antigen.zsh
 antigen init $HOME/.antigenrc
 
@@ -15,22 +20,21 @@ alias ls='ls -FG --color=auto'
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 function shorten_pwd() {
-  export SHORT_PWD="$($DOTFILES/bin/cwd.py $PWD)"
+    export SHORT_PWD="$($DOTFILES/bin/cwd.py $PWD)"
 }
 
 chpwd_functions=(${chpwd_functions[@]} "shorten_pwd")
 
 function tmux_window_pwd() {
-  tmux rename-window "$SHORT_PWD"
+    tmux rename-window "$SHORT_PWD"
 }
 precmd_functions=(${precmd_functions[@]} "tmux_window_pwd")
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 source ~/.dotfiles/zsh/shell_prompt.zsh
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-test -e "${HOME}/.config/op/plugins.sh" && source "${HOME}/.config/op/plugins.sh"
-
 setopt extendedglob
 # zprof
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

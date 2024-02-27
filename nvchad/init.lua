@@ -20,6 +20,7 @@ vim.opt.ruler = true
 vim.opt.whichwrap = ""
 vim.opt.showtabline = 2
 vim.opt.confirm = false
+vim.g.copilot_no_tab_map = true
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "css,eruby,html,javascript,jinja.html,json,ruby,scss,typescript,vim,yaml,zsh,typescript.tsx,javascript.jsx,typescriptreact,lua",

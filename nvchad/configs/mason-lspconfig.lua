@@ -47,7 +47,7 @@ mason_lspconfig.setup({
 		--"golangci_lint_ls",
 		"helm_ls",
 		"lua_ls",
-		"pyright",
+		-- "pyright",
 		"tsserver",
 		"yamlls",
 	},
