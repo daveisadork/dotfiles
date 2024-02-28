@@ -4,13 +4,9 @@ antigen bundles <<EOBUNDLES
     joel-porquet/zsh-dircolors-solarized.git
     zsh-users/zsh-autosuggestions
     zsh-users/zsh-syntax-highlighting
-    1password
-    aws2
-    aws-plugin
-    aws-vault
-    aws-vault-profiles
-    brew
-    colored-man
+    aliases
+    aws
+    colored-man-pages
     command-not-found
     direnv
     docker
@@ -33,7 +29,10 @@ antigen bundles <<EOBUNDLES
     python
     rbenv
     shrink-path
+    ssh
     sudo
+    terraform
+    tig
     yarn
 EOBUNDLES
 

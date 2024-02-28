@@ -5,15 +5,27 @@ HELPDIR=$PREFIX/share/zsh/help
 fpath+=${ZDOTDIR:-~}/.zsh_functions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 ZSH_AUTOSUGGEST_USE_ASYNC="true"
+setopt completealiases
+autoload -Uz compinit
+compinit
 
 source $DOTFILES/zsh/private.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.iterm2_shell_integration.zsh ] && source ~/.iterm2_shell_integration.zsh
 [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
+if type brew &>/dev/null
+then
+  eval "$(op completion zsh)"; compdef _op op
+fi
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 source $HOME/antigen.zsh
 antigen init $HOME/.antigenrc
+
 
 # Stop stupid oh-my-zsh from breaking ls colors
 alias ls='ls -FG --color=auto'
@@ -35,6 +47,3 @@ source ~/.dotfiles/zsh/shell_prompt.zsh
 
 setopt extendedglob
 # zprof
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
