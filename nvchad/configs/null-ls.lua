@@ -33,6 +33,7 @@ mason_null_ls.setup({
   },
   automatic_installation = false,
   handlers = {
+    taplo = function() end,
     darker = function()
       -- custom logic
       null_ls.register({
@@ -163,6 +164,6 @@ null_ls.setup({
   sources = {
     null_ls.builtins.code_actions.refactoring,
     null_ls.builtins.hover.printenv,
-    null_ls.builtins.formatting.xmlformat,
+    -- null_ls.builtins.formatting.xmlformat,
   },
 })
