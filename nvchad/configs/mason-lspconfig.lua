@@ -156,7 +156,10 @@ mason_lspconfig.setup({
               useLibraryCodeForTypes = true,
               diagnosticMode = "workspace",
             },
-            pythonPath = vim.fn.system({ "pyenv", "which", "python" }):gsub("^%s*(.-)%s*$", "%1"),
+            pythonPath = vim.fn
+                .system(vim.fn.expand("$DOTFILES/bin/which_python.sh"))
+                :gsub("^%s*(.-)%s*$", "%1"),
+            -- pythonPath = vim.fn.system({ "pyenv", "which", "python" }):gsub("^%s*(.-)%s*$", "%1"),
           },
         },
       })
