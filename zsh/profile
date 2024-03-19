@@ -92,22 +92,24 @@ export LESSOPEN='|~/.lessfilter %s'
 alias yolo='git commit -am "$(curl -s https://whatthecommit.com/index.txt)"'
 alias dl='yt-dlp --restrict-filenames --external-downloader aria2c'
 
-#
 export SHORT_PWD="$($DOTFILES/bin/cwd.py $PWD)"
 
 # Version managers
 # pyenv for python
+#
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init --path)"
 fi
 
 # nvm for node
-export NVM_DIR="$HOME/.nvm"
+# export NVM_DIR="$HOME/.nvm"
+# [ -f "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+# [ -f "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 export PATH="$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin:$PATH"
-. "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
@@ -115,3 +117,4 @@ export GOPRIVATE=gitlab.sezzle.com
 
 # 1Password SSH Agent
 export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+export FOOBAR=2000
