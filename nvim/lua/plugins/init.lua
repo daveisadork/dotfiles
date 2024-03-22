@@ -74,6 +74,7 @@ return {
     opts = require "configs.treesitter",
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "syntax")
+      dofile(vim.g.base46_cache .. "treesitter")
       require("nvim-treesitter.configs").setup(opts)
       vim.treesitter.language.register("sql", "mysql")
       vim.treesitter.language.register("sql", "plsql")
@@ -439,6 +440,7 @@ return {
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-go",
+      "nvim-neotest/neotest-jest",
       "nvim-neotest/neotest-plenary",
       "nvim-neotest/neotest-vim-test",
     },

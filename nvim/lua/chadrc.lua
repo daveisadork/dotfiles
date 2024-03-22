@@ -5,23 +5,9 @@ M.ui = {
   theme = "solarized_dark",
 
   ---@type Base46HLGroupsList
-  hl_override = {
-    Visual = {
-      bg = "light_bg2",
-    },
-    CursorLine = {
-      bg = "black2",
-    },
-    Comment = {
-      italic = true,
-    },
-    ["@comment"] = { italic = true },
-  },
-
+  hl_override = require "highlights.overrides",
   ---@type HLTable
-  hl_add = {
-    NvimTreeOpenedFolderName = { fg = "green", bold = true },
-  },
+  hl_add = require "highlights.add",
 
   tabufline = {
     enabled = true,

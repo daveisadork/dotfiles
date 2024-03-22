@@ -73,6 +73,12 @@ ignore = [
   "S608",
 ]
 
+[lint.per-file-ignores]
+# Ignore `E402` (import violations) in all `__init__.py` files
+"__init__.py" = ["E402"]
+# Ignore `S101` (use of assert) in all test files
+"tests/**/*.py" = ["S101"]
+
 [lint.isort]
 # Use a single line between direct and from import.
 lines-between-types = 1

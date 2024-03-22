@@ -93,3 +93,4 @@ setopt extendedglob
 # zprof
 
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export OP_ACCOUNT="my"

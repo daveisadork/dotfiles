@@ -1,5 +1,3 @@
-.python-version
-
 # Created by https://www.toptal.com/developers/gitignore/api/python,node,go,macos,linux,vim,visualstudiocode,goland,goland+all,goland+iml
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,node,go,macos,linux,vim,visualstudiocode,goland,goland+all,goland+iml
 
@@ -451,6 +449,7 @@ __pycache__/
 # C extensions
 
 # Distribution / packaging
+.python-version
 .Python
 build/
 develop-eggs/

@@ -142,11 +142,15 @@ mason_lspconfig.setup {
         ),
         single_file_support = true,
         settings = {
+          pyright = {
+            disableOrganizeImports = true,
+          },
           python = {
             analysis = {
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               diagnosticMode = "workspace",
+              typeCheckingMode = "basic",
             },
             pythonPath = vim.fn.system(vim.fn.expand "$DOTFILES/bin/which_python.sh"):gsub("^%s*(.-)%s*$", "%1"),
           },
