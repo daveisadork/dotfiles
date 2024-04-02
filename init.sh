@@ -10,6 +10,7 @@ if [[ `uname` == 'Darwin'  ]]; then
     brew tap homebrew/cask-fonts
     brew install -q \
         alacritty \
+        ansifilter \
         coreutils \
         font-sauce-code-pro-nerd-font \
         fzf \
