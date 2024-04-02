@@ -9,6 +9,16 @@ M.ui = {
   ---@type HLTable
   hl_add = require "highlights.add",
 
+  lsp = {
+    signature = false,
+  },
+
+  cmp = {
+    icons = true,
+    lspkind_text = true,
+    style = "default", -- default/flat_light/flat_dark/atom/atom_colored
+  },
+
   tabufline = {
     enabled = true,
     lazyload = false,

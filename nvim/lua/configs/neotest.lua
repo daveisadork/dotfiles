@@ -1,9 +1,5 @@
 local neotest_ns = vim.api.nvim_create_namespace "neotest"
 
-vim.diagnostic.config({
-  virtual_text = false,
-}, neotest_ns)
-
 local octocat_icons = {
   child_indent = "│",
   child_prefix = "├",
@@ -94,6 +90,20 @@ local md_icons = {
     "",
     "",
   },
+  -- running_animated = {
+  --   "󱑋",
+  --   "󱑌",
+  --   "󱑍",
+  --   "󱑎",
+  --   "󱑏",
+  --   "󱑐",
+  --   "󱑑",
+  --   "󱑒",
+  --   "󱑓",
+  --   "󱑔",
+  --   "󱑕",
+  --   "󱑖",
+  -- },
 }
 
 require("neotest").setup {
@@ -156,6 +166,7 @@ require("neotest").setup {
   adapters = {
     require "neotest-python" {
       dap = { justMyCode = false },
+      args = { "--cov", "--cov-report=html" },
     },
     require "neotest-go" {
       experimental = {
@@ -173,3 +184,7 @@ require("neotest").setup {
     },
   },
 }
+
+vim.diagnostic.config({
+  virtual_text = false,
+}, neotest_ns)

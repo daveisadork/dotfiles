@@ -1,14 +1,18 @@
 return {
   {
-    "stevearc/conform.nvim",
-    -- event = 'BufWritePre' -- uncomment for format on save
-    config = function()
-      require "configs.conform"
-    end,
+    "kkharji/sqlite.lua",
   },
 
   {
-    "kkharji/sqlite.lua",
+    "nvim-treesitter/nvim-treesitter",
+    opts = require "configs.treesitter",
+    -- config = function(_, opts)
+    --   dofile(vim.g.base46_cache .. "syntax")
+    --   dofile(vim.g.base46_cache .. "treesitter")
+    --   require("nvim-treesitter.configs").setup(opts)
+    --   vim.treesitter.language.register("sql", "mysql")
+    --   vim.treesitter.language.register("sql", "plsql")
+    -- end,
   },
 
   {
@@ -40,6 +44,8 @@ return {
     "williamboman/mason-lspconfig.nvim",
     cmd = { "LspInstall", "LspUninstall" },
     config = function()
+      dofile(vim.g.base46_cache .. "lsp")
+      require "nvchad.lsp"
       require "configs.lspconfig"
     end, -- Override to setup mason-lspconfig
   },
@@ -70,27 +76,45 @@ return {
 
   -- override plugin configs
   {
-    "nvim-treesitter/nvim-treesitter",
-    opts = require "configs.treesitter",
-    config = function(_, opts)
-      dofile(vim.g.base46_cache .. "syntax")
-      dofile(vim.g.base46_cache .. "treesitter")
-      require("nvim-treesitter.configs").setup(opts)
-      vim.treesitter.language.register("sql", "mysql")
-      vim.treesitter.language.register("sql", "plsql")
-    end,
-  },
-
-  {
     "nvim-tree/nvim-tree.lua",
     opts = require "configs.nvimtree",
   },
 
   {
     "hrsh7th/nvim-cmp",
-    opts = require "configs.nvim_cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp-signature-help",
+      {
+        "zbirenbaum/copilot-cmp",
+        dependencies = {
+          {
+            "zbirenbaum/copilot.lua",
+            config = function()
+              require("copilot").setup {
+                suggestion = { enabled = false },
+                panel = { enabled = false },
+              }
+            end,
+          },
+        },
+        config = function()
+          require("copilot_cmp").setup()
+        end,
+      },
+    },
+    opts = function()
+      return require "configs.nvim_cmp"
+    end,
   },
 
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    opts = {},
+    config = function(_, opts)
+      require("lsp_signature").setup(opts)
+    end,
+  },
   -- Install a plugin
   {
     "max397574/better-escape.nvim",
@@ -193,11 +217,15 @@ return {
       vim.g.db_ui_execute_on_save = 1
     end,
   },
-
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000,
+    config = true,
+  },
   {
     "rest-nvim/rest.nvim",
     dependencies = {
-      "nvim-lua/plenary.nvim",
+      "luarocks.nvim",
     },
     ft = { "http" },
     config = function()
@@ -237,12 +265,6 @@ return {
       }
     end,
   },
-
-  -- {
-  -- 	"mfussenegger/nvim-dap",
-  -- 	lazy = false,
-  -- 	config = function() end,
-  -- },
 
   {
     "jay-babu/mason-nvim-dap.nvim",
@@ -305,23 +327,6 @@ return {
       end
     end,
   },
-
-  -- {
-  -- 	"leoluz/nvim-dap-go",
-  -- 	lazy = false,
-  -- 	config = function()
-  -- 		require("dap-go").setup({
-  -- 			dap_configurations = {
-  -- 				{
-  -- 					type = "go",
-  -- 					name = "Attach remote",
-  -- 					mode = "remote",
-  -- 					request = "attach",
-  -- 				},
-  -- 			},
-  -- 		})
-  -- 	end,
-  -- },
 
   {
     "folke/neodev.nvim",
@@ -458,21 +463,21 @@ return {
   --   "NvChad/nvim-colorizer.lua",
   --   enabled = false
   -- },
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup {
-        suggestion = {
-          auto_trigger = true,
-          keymap = {
-            accept = "<C-e>",
-          },
-        },
-      }
-    end,
-  },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup {
+  --       suggestion = {
+  --         auto_trigger = true,
+  --         keymap = {
+  --           accept = "<C-e>",
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
 
   {
     "jackMort/ChatGPT.nvim",
@@ -486,31 +491,13 @@ return {
       "nvim-telescope/telescope.nvim",
     },
   },
-  -- {
-  --   "neovim/nvim-lspconfig",
-  --   config = function()
-  --     require("nvchad.configs.lspconfig").defaults()
-  --     require "configs.lspconfig"
-  --   end,
-  -- },
 
-  -- {
-  -- 	"williamboman/mason.nvim",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"lua-language-server", "stylua",
-  -- 			"html-lsp", "css-lsp" , "prettier"
-  -- 		},
-  -- 	},
-  -- },
-  --
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
+  {
+    "Vimjas/vim-python-pep8-indent",
+    ft = { "python" },
+  },
+
+  {
+    "tpope/vim-obsession",
+  },
 }

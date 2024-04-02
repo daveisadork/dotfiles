@@ -70,46 +70,104 @@ mason_null_ls.setup {
         })
       end, types)
     end,
-    isort = function(source, types)
-      -- custom logic
-      vim.tbl_map(function(type)
-        null_ls.register(null_ls.builtins[type][source].with {
-          generator_opts = {
-            command = "isort",
-            args = {
-              "--stdout",
-              "--filename",
-              "$FILENAME",
-              "--profile",
-              "black",
-              "--trailing-comma",
-              "--lines-between-types",
-              "1",
-              "-",
-            },
-            to_stdin = true,
-            cwd = h.cache.by_bufnr(function(params)
-              return u.root_pattern(
-                -- isort will detect files in the CWD as first-party
-                -- https://pycqa.github.io/isort/docs/configuration/config_files.html
-                ".isort.cfg",
-                "pyproject.toml",
-                "setup.py",
-                "setup.cfg",
-                "tox.ini",
-                ".editorconfig"
-              )(params.bufname)
-            end),
-          },
-        })
-      end, types)
-    end,
+    -- isort = function(source, types)
+    --   -- custom logic
+    --   vim.tbl_map(function(type)
+    --     null_ls.register(null_ls.builtins[type][source].with {
+    --       generator_opts = {
+    --         command = "isort",
+    --         args = {
+    --           "--stdout",
+    --           "--filename",
+    --           "$FILENAME",
+    --           "--profile",
+    --           "black",
+    --           "--trailing-comma",
+    --           "--lines-between-types",
+    --           "1",
+    --           "-",
+    --         },
+    --         to_stdin = true,
+    --         cwd = h.cache.by_bufnr(function(params)
+    --           return u.root_pattern(
+    --             -- isort will detect files in the CWD as first-party
+    --             -- https://pycqa.github.io/isort/docs/configuration/config_files.html
+    --             ".isort.cfg",
+    --             "pyproject.toml",
+    --             "setup.py",
+    --             "setup.cfg",
+    --             "tox.ini",
+    --             ".editorconfig"
+    --           )(params.bufname)
+    --         end),
+    --       },
+    --     })
+    --   end, types)
+    -- end,
     mypy = function(source, types)
       -- custom logic
+      local overrides = {
+        severities = {
+          error = h.diagnostics.severities["error"],
+          warning = h.diagnostics.severities["warning"],
+          note = h.diagnostics.severities["information"],
+        },
+      }
       vim.tbl_map(function(type)
         null_ls.register(null_ls.builtins[type][source].with {
           generator_opts = {
-            command = "mypy",
+            command = vim.fn.system(vim.fn.expand "$DOTFILES/bin/which_python.sh mypy"):gsub("^%s*(.-)%s*$", "%1"),
+            args = function(params)
+              return {
+                "--hide-error-codes",
+                "--hide-error-context",
+                "--no-color-output",
+                "--show-absolute-path",
+                "--show-column-numbers",
+                "--show-error-codes",
+                "--no-error-summary",
+                "--no-pretty",
+                "--shadow-file",
+                params.bufname,
+                params.temp_path,
+                params.bufname,
+              }
+            end,
+            to_temp_file = true,
+            format = "line",
+            check_exit_code = function(code)
+              return code <= 2
+            end,
+            multiple_files = true,
+            on_output = h.diagnostics.from_patterns {
+              -- see spec for pattern examples
+              {
+                pattern = "([^:]+):(%d+):(%d+): (%a+): (.*)  %[([%a-]+)%]",
+                groups = { "filename", "row", "col", "severity", "message", "code" },
+                overrides = overrides,
+              },
+              -- no error code
+              {
+                pattern = "([^:]+):(%d+):(%d+): (%a+): (.*)",
+                groups = { "filename", "row", "col", "severity", "message" },
+                overrides = overrides,
+              },
+              -- no column or error code
+              {
+                pattern = "([^:]+):(%d+): (%a+): (.*)",
+                groups = { "filename", "row", "severity", "message" },
+                overrides = overrides,
+              },
+            },
+            cwd = h.cache.by_bufnr(function(params)
+              return u.root_pattern(
+                -- https://mypy.readthedocs.io/en/stable/config_file.html
+                "mypy.ini",
+                ".mypy.ini",
+                "pyproject.toml",
+                "setup.cfg"
+              )(params.bufname)
+            end),
           },
         })
       end, types)

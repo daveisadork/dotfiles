@@ -17,12 +17,24 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- typescript
-lspconfig.tsserver.setup {
-  on_attach = on_attach,
-  on_init = on_init,
-  capabilities = capabilities,
-}
+-- -- typescript
+-- lspconfig.tsserver.setup {
+--   on_attach = on_attach,
+--   on_init = on_init,
+--   capabilities = capabilities,
+-- }
+
+local python_root = lspconfig.util.root_pattern(
+  "pyproject.toml",
+  "setup.cfg",
+  "requirements.txt",
+  "setup.py",
+  "Pipfile",
+  "pyrightconfig.json",
+  ".git"
+)
+
+local python_path = vim.fn.system(vim.fn.expand "$DOTFILES/bin/which_python.sh"):gsub("^%s*(.-)%s*$", "%1")
 
 mason_lspconfig.setup {
   ensure_installed = {
@@ -68,7 +80,6 @@ mason_lspconfig.setup {
                 [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
                 [vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types"] = true,
                 [vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy"] = true,
-                [vim.fn.stdpath "data" .. "/lazy/NvChad/lua"] = true,
               },
               maxPreload = 100000,
               preloadFileSize = 10000,
@@ -131,15 +142,7 @@ mason_lspconfig.setup {
         capabilities = capabilities,
         cmd = { "pyright-langserver", "--stdio" },
         filetypes = { "python" },
-        root_dir = lspconfig.util.root_pattern(
-          ".git",
-          "pyproject.toml",
-          "setup.py",
-          "setup.cfg",
-          "requirements.txt",
-          "Pipfile",
-          "pyrightconfig.json"
-        ),
+        root_dir = python_root,
         single_file_support = true,
         settings = {
           pyright = {
@@ -152,7 +155,81 @@ mason_lspconfig.setup {
               diagnosticMode = "workspace",
               typeCheckingMode = "basic",
             },
-            pythonPath = vim.fn.system(vim.fn.expand "$DOTFILES/bin/which_python.sh"):gsub("^%s*(.-)%s*$", "%1"),
+            pythonPath = python_path,
+          },
+        },
+      }
+    end,
+
+    basedpyright = function()
+      lspconfig.basedpyright.setup {
+        on_attach = on_attach,
+        on_init = on_init,
+        capabilities = capabilities,
+        cmd = { "basedpyright-langserver", "--stdio" },
+        filetypes = { "python" },
+        root_dir = python_root,
+        single_file_support = true,
+        settings = {
+          basedpyright = {
+            disableOrganizeImports = true,
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = "workspace",
+              typeCheckingMode = "basic",
+            },
+          },
+          python = {
+            pythonPath = python_path,
+          },
+        },
+      }
+    end,
+
+    pylsp = function()
+      lspconfig.pylsp.setup {
+        on_attach = on_attach,
+        on_init = on_init,
+        capabilities = capabilities,
+        cmd = { "pylsp" },
+        filetypes = { "python" },
+        root_dir = python_root,
+        single_file_support = true,
+        settings = {
+          pylsp = {
+            plugins = {
+              autopep8 = {
+                enabled = false,
+              },
+              black = {
+                enabled = false,
+              },
+              flake8 = {
+                enabled = false,
+              },
+              isort = {
+                enabled = false,
+              },
+              mccabe = {
+                enabled = false,
+              },
+              pycodestyle = {
+                enabled = false,
+              },
+              pydocstyle = {
+                enabled = false,
+              },
+              pyflakes = {
+                enabled = false,
+              },
+              pylint = {
+                enabled = false,
+              },
+              yapf = {
+                enabled = false,
+              },
+            },
           },
         },
       }

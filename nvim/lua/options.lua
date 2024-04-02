@@ -18,6 +18,7 @@ vim.opt.showtabline = 2
 vim.opt.confirm = false
 vim.g.copilot_no_tab_map = true
 vim.o.cursorlineopt = "both"
+vim.opt.smartindent = false
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "css,eruby,html,javascript,jinja.html,json,ruby,scss,typescript,vim,yaml,zsh,typescript.tsx,javascript.jsx,typescriptreact,lua",

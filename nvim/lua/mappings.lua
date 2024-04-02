@@ -34,10 +34,10 @@ map("v", "<Tab>", ">gv", { desc = "Indent" })
 
 -- telescope
 map("n", "<C-p>", ":Telescope find_files <CR>", { desc = "Telescope Files" })
-map("n", "gi", ":Telescope lsp_implementations<CR>", { desc = "LSP Implementations" })
-map("n", "gr", ":Telescope lsp_references<CR>", { desc = "LSP References" })
-map("n", "gd", ":Telescope lsp_definitions<CR>", { desc = "LSP Definitions" })
-map("n", "gt", ":Telescope lsp_type_definitions<CR>", { desc = "LSP Type Definitions" })
+-- map("n", "gi", ":Telescope lsp_implementations<CR>", { desc = "LSP Implementations" })
+-- map("n", "gr", ":Telescope lsp_references<CR>", { desc = "LSP References" })
+-- map("n", "gd", ":Telescope lsp_definitions<CR>", { desc = "LSP Definitions" })
+-- map("n", "gt", ":Telescope lsp_type_definitions<CR>", { desc = "LSP Type Definitions" })
 map("n", "<leader>fs", ":Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "LSP Workspace Symbols" })
 
 -- rest
@@ -46,11 +46,11 @@ map("n", "<leader>rp", "<Plug>RestNvimPreview", { desc = "RestNvim preview the r
 map("n", "<leader>rr", "<Plug>RestNvimLast", { desc = "RestNvim re-run the last request" })
 
 -- trouble
--- map("n", "gi", ":Trouble lsp_implementations<CR>", { desc = "LSP Implementations" })
--- map("n", "gr", ":Trouble lsp_references<CR>", { desc = "LSP References" })
--- map("n", "gd", ":Trouble lsp_definitions<CR>", { desc = "LSP Definitions" })
--- map("n", "gt", ":Trouble lsp_type_definitions<CR>", { desc = "LSP Type Definitions" })
--- map("n", "<leader>tt", ":TroubleToggle<CR>", { desc = "Toggle Trouble" })
+map("n", "gi", ":Trouble lsp_implementations<CR>", { desc = "LSP Implementations" })
+map("n", "gr", ":Trouble lsp_references<CR>", { desc = "LSP References" })
+map("n", "gd", ":Trouble lsp_definitions<CR>", { desc = "LSP Definitions" })
+map("n", "gt", ":Trouble lsp_type_definitions<CR>", { desc = "LSP Type Definitions" })
+map("n", "<leader>tt", ":TroubleToggle<CR>", { desc = "Toggle Trouble" })
 
 -- nvterm
 map("t", "<C-t>", function()
@@ -144,3 +144,7 @@ lspSymbol("Error", "󰅚")
 lspSymbol("Info", "󰋽")
 lspSymbol("Hint", "󰛩")
 lspSymbol("Warn", "")
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  virtual_text = false,
+})
