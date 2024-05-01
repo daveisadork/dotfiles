@@ -1,5 +1,7 @@
 return {
-  ensure_installed = {},
+  ensure_installed = {
+    "markdown_inline", --Needed for trouble.nvim
+  },
   auto_install = true,
   highlight = {
     enable = true,

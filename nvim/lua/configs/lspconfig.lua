@@ -1,5 +1,5 @@
 -- EXAMPLE
-local on_attach = require("nvchad.configs.lspconfig").on_attach
+local nv_on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
@@ -7,6 +7,32 @@ local mason_lspconfig = require "mason-lspconfig"
 local lspconfig = require "lspconfig"
 local configs = require "lspconfig.configs"
 local servers = { "html", "cssls" }
+
+local function lspSymbol(name, icon)
+  local hl = "DiagnosticSign" .. name
+  vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
+end
+
+local function on_attach(client, bufnr)
+  nv_on_attach(client, bufnr)
+  -- your custom attach code
+  vim.diagnostic.config {
+    virtual_text = false,
+    float = {
+      border = "single",
+      source = true,
+    },
+  }
+
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = false,
+  })
+
+  lspSymbol("Error", "󰅚")
+  lspSymbol("Info", "󰋽")
+  lspSymbol("Hint", "󰛩")
+  lspSymbol("Warn", "")
+end
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -55,37 +81,6 @@ mason_lspconfig.setup {
         on_attach = on_attach,
         on_init = on_init,
         capabilities = capabilities,
-      }
-    end,
-    -- Next, you can provide a dedicated handler for specific servers.
-    -- For example, a handler override for the `rust_analyzer`:
-    -- ["rust_analyzer"] = function()
-    --   require("rust-tools").setup {}
-    -- end,
-
-    lua_ls = function()
-      lspconfig.lua_ls.setup {
-        on_attach = on_attach,
-        on_init = on_init,
-        capabilities = capabilities,
-
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { "vim" },
-            },
-            workspace = {
-              library = {
-                [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-                [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-                [vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types"] = true,
-                [vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy"] = true,
-              },
-              maxPreload = 100000,
-              preloadFileSize = 10000,
-            },
-          },
-        },
       }
     end,
 

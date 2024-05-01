@@ -106,7 +106,11 @@ local md_icons = {
   -- },
 }
 
-require("neotest").setup {
+vim.diagnostic.config({
+  virtual_text = false,
+}, neotest_ns)
+
+return {
   highlights = {
     adapter_name = "NeotestAdapterName",
     border = "NeotestBorder",
@@ -184,7 +188,3 @@ require("neotest").setup {
     },
   },
 }
-
-vim.diagnostic.config({
-  virtual_text = false,
-}, neotest_ns)

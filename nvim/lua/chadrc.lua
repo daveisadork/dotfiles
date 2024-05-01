@@ -1,6 +1,12 @@
 ---@type ChadrcConfig
 local M = {}
 
+M.base46 = {
+  integrations = {
+    "lspsaga",
+  },
+}
+
 M.ui = {
   theme = "solarized_dark",
 

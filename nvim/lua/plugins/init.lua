@@ -1,6 +1,40 @@
+---@type NvPluginSpec[]
 return {
   {
     "kkharji/sqlite.lua",
+  },
+
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        -- Customize or remove this keymap to your liking
+        "<leader>fm",
+        function()
+          require("conform").format { async = true, lsp_fallback = true }
+        end,
+        mode = "",
+        desc = "Format buffer",
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        python = { "isort", "black" },
+        javascript = { { "prettierd", "prettier" } },
+        -- typescript = { { "prettierd", "prettier" } },
+        html = { { "prettierd", "prettier" } },
+        css = { { "prettierd", "prettier" } },
+        json = { { "prettierd", "prettier" } },
+        -- jsonc = { { "prettierd", "prettier" } },
+      },
+      format_on_save = { timeout_ms = 500, lsp_fallback = true },
+    },
+    config = function(_, opts)
+      require("conform").setup(opts)
+    end,
   },
 
   {
@@ -13,6 +47,17 @@ return {
     --   vim.treesitter.language.register("sql", "mysql")
     --   vim.treesitter.language.register("sql", "plsql")
     -- end,
+  },
+
+  {
+    "dariuscorvus/tree-sitter-language-injection.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("tree-sitter-language-injection").setup()
+    end,
   },
 
   {
@@ -166,7 +211,74 @@ return {
       },
     },
   },
-
+  {
+    "folke/trouble.nvim",
+    branch = "dev", -- IMPORTANT!
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = {
+      "Trouble",
+      "TroubleClose",
+      "TroubleRefresh",
+      "TroubleToggle",
+    },
+    keys = {
+      {
+        "<leader>xx",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+      {
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>cs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>xL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>xQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
+      },
+      {
+        "gi",
+        "<cmd>Trouble lsp_implementations<cr>",
+        desc = "LSP Implementations",
+      },
+      {
+        "gr",
+        "<cmd>Trouble lsp_references<cr>",
+        desc = "LSP References",
+      },
+      {
+        "gd",
+        "<cmd>Trouble lsp_definitions<cr>",
+        desc = "LSP Definitions",
+      },
+      {
+        "gt",
+        "<cmd>Trouble lsp_type_definitions<cr>",
+        desc = "LSP Type Definitions",
+      },
+    },
+    opts = {
+      mode = "document_diagnostics",
+      auto_close = true,
+      use_diagnostic_signs = false,
+    }, -- for default options, refer to the configuration section for custom setup.
+  },
   {
     "ray-x/go.nvim",
     dependencies = { -- optional packages
@@ -272,38 +384,13 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "mfussenegger/nvim-dap",
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        config = function()
-          require("nvim-dap-virtual-text").setup()
-        end,
-      },
+      "theHamsta/nvim-dap-virtual-text",
     },
-    config = function()
-      require("mason-nvim-dap").setup {
-        ensure_installed = { "python", "delve" },
-        handlers = {
-          function(config)
-            -- all sources with no handler get passed here
-
-            -- Keep original functionality
-            require("mason-nvim-dap").default_setup(config)
-          end,
-          delve = function(config)
-            table.insert(config.configurations, {
-              type = "delve",
-              name = "Delve: Debug with args",
-              request = "launch",
-              program = "${file}",
-              args = function()
-                local argument_string = vim.fn.input "Program arguments: "
-                return vim.fn.split(argument_string, " ", true)
-              end,
-            })
-            require("mason-nvim-dap").default_setup(config)
-          end,
-        }, -- sets up dap in the predefined manner
-      }
+    opts = function()
+      return require "configs.dap"
+    end,
+    config = function(_, opts)
+      require("mason-nvim-dap").setup(opts)
     end,
   },
 
@@ -328,14 +415,7 @@ return {
     end,
   },
 
-  {
-    "folke/neodev.nvim",
-    config = function()
-      require("neodev").setup {
-        library = { plugins = { "neotest", "nvim-dap-ui" }, types = true },
-      }
-    end,
-  },
+  { "folke/neodev.nvim", ft = "lua", opts = {} },
 
   {
     "vim-airline/vim-airline",
@@ -437,22 +517,6 @@ return {
     "isobit/vim-caddyfile",
     ft = { "caddyfile" },
   },
-  {
-    "nvim-neotest/neotest",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "antoinemadec/FixCursorHold.nvim",
-      "nvim-neotest/neotest-python",
-      "nvim-neotest/neotest-go",
-      "nvim-neotest/neotest-jest",
-      "nvim-neotest/neotest-plenary",
-      "nvim-neotest/neotest-vim-test",
-    },
-    config = function()
-      require "configs.neotest"
-    end,
-  },
 
   -- {
   --   "lukas-reineke/indent-blankline.nvim",
@@ -500,4 +564,65 @@ return {
   {
     "tpope/vim-obsession",
   },
+  {
+    "aklt/plantuml-syntax",
+    lazy = false,
+  },
+  {
+    "scrooloose/vim-slumlord",
+    ft = "plantuml",
+  },
+
+  -- {
+  --   "nvimdev/lspsaga.nvim",
+  --   event = "LspAttach",
+  --   opts = {
+  --     lightbulb = {
+  --       enabled = false,
+  --       sign = false,
+  --       virtual_text = false,
+  --       enable_in_insert = false,
+  --     },
+  --     diagnostic = {
+  --       only_current = true,
+  --     },
+  --     beacon = {
+  --       enable = false,
+  --     },
+  --     ui = {
+  --       code_action = "󰛩",
+  --       -- lspSymbol("Error", "󰅚")
+  --       -- lspSymbol("Info", "󰋽")
+  --       -- lspSymbol("Hint", "")
+  --       -- lspSymbol("Warn", "")
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     require("lspsaga").setup(opts)
+  --   end,
+  --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter", -- optional
+  --     "nvim-tree/nvim-web-devicons", -- optional
+  --   },
+  --   keys = {
+  --     {
+  --       "<C-j>",
+  --       ":Lspsaga diagnostic_jump_next<CR>",
+  --       mode = "",
+  --       desc = "Diagnostic jump next",
+  --     },
+  --     {
+  --       "<C-k>",
+  --       ":Lspsaga diagnostic_jump_prev<CR>",
+  --       mode = "",
+  --       desc = "Diagnostic jump prev",
+  --     },
+  --     {
+  --       "K",
+  --       ":Lspsaga diagnostic_jump_prev<CR>",
+  --       mode = "",
+  --       desc = "Diagnostic jump prev",
+  --     },
+  --   },
+  -- },
 }

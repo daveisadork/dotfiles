@@ -229,7 +229,7 @@ null_ls.setup {
     virtual_text = false,
   },
   sources = {
-    null_ls.builtins.code_actions.refactoring,
+    -- null_ls.builtins.code_actions.refactoring,
     null_ls.builtins.hover.printenv,
     -- null_ls.builtins.formatting.xmlformat,
   },
