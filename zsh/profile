@@ -31,6 +31,7 @@ then
     if [[ -e $HOMEBREW_PREFIX/opt/curl ]]; then export PATH="$HOMEBREW_PREFIX/opt/curl/libexec/bin:$PATH"; fi
   fi
   export PYTHON_CONFIGURE_OPTS="--enable-framework"
+  alias brew='arch -arm64 brew'
 else
   export OSX=
 fi
@@ -70,7 +71,6 @@ else
   export EDITOR=vim
 fi
 
-alias brew='arch -arm64 brew'
 alias ls='ls -F --color=auto'
 #alias dir='dir --color=auto'
 #alias vdir='vdir --color=auto'
@@ -116,5 +116,4 @@ export PATH=$PATH:$GOPATH/bin
 export GOPRIVATE=gitlab.sezzle.com
 
 # 1Password SSH Agent
-export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-export FOOBAR=2000
+[ -f "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ] && export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
