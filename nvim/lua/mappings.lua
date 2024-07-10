@@ -66,6 +66,14 @@ map("n", "<leader>h", function()
   require("nvterm.terminal").toggle "horizontal"
 end, { desc = "toggle horizontal term" })
 
+map("n", "<leader>ih", function()
+  if vim.lsp.inlay_hint.is_enabled {} then
+    vim.lsp.inlay_hint.enable(false)
+  else
+    vim.lsp.inlay_hint.enable(true)
+  end
+end, { desc = "Toggle inlay hints" })
+
 -- neotest
 -- map("n", "<leader>ts", function()
 --   require("neotest").summary.toggle()

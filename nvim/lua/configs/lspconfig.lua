@@ -15,6 +15,9 @@ end
 
 local function on_attach(client, bufnr)
   nv_on_attach(client, bufnr)
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint.enable(true)
+  end
   -- your custom attach code
   vim.diagnostic.config {
     virtual_text = false,
@@ -171,8 +174,11 @@ mason_lspconfig.setup {
             analysis = {
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
-              diagnosticMode = "workspace",
+              -- diagnosticMode = "workspace",
               typeCheckingMode = "basic",
+              diagnosticSeverityOverrides = {
+                reportUnusedImport = "none",
+              },
             },
           },
           python = {
@@ -194,6 +200,21 @@ mason_lspconfig.setup {
         settings = {
           pylsp = {
             plugins = {
+              jedi_completion = {
+                enabled = false,
+              },
+              jedi_hover = {
+                enabled = false,
+              },
+              jedi_signature_help = {
+                enabled = false,
+              },
+              jedi_symbols = {
+                enabled = false,
+              },
+              rope_completion = {
+                enabled = false,
+              },
               autopep8 = {
                 enabled = false,
               },

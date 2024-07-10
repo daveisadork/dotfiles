@@ -164,6 +164,7 @@ return {
           require "neotest-python" {
             dap = { justMyCode = false },
             args = { "--cov", "--cov-report=html" },
+            pytest_discover_instances = false,
           },
           require "neotest-go" {
             experimental = {
