@@ -1,5 +1,5 @@
 ---@type NvPluginSpec[]
-local prettier = { "prettier", "prettierd" }
+local prettier = { "prettierd", "prettier" }
 local prettier_fts = {
   "javascript",
   "javascriptreact",
@@ -184,19 +184,19 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = require "configs.lsp_signature",
     config = function(_, opts)
       require("lsp_signature").setup(opts)
     end,
   },
   -- Install a plugin
-  {
-    "max397574/better-escape.nvim",
-    event = "InsertEnter",
-    config = function()
-      require("better_escape").setup()
-    end,
-  },
+  -- {
+  --   "max397574/better-escape.nvim",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("better_escape").setup()
+  --   end,
+  -- },
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -240,6 +240,16 @@ return {
       {
         "gi",
         "<cmd>Trouble lsp_implementations<cr>",
+        desc = "LSP Implementations",
+      },
+      {
+        "gc",
+        "<cmd>Trouble lsp_incoming_calls<cr>",
+        desc = "LSP Implementations",
+      },
+      {
+        "go",
+        "<cmd>Trouble lsp_outgoing_calls<cr>",
         desc = "LSP Implementations",
       },
       {

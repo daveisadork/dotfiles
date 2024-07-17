@@ -172,10 +172,11 @@ mason_lspconfig.setup {
           basedpyright = {
             disableOrganizeImports = true,
             analysis = {
+              autoImportCompletions = false,
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               -- diagnosticMode = "workspace",
-              typeCheckingMode = "basic",
+              typeCheckingMode = "standard",
               diagnosticSeverityOverrides = {
                 reportUnusedImport = "none",
               },
