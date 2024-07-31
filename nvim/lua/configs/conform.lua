@@ -1,21 +1,43 @@
+local prettier = { "prettierd", "prettier", stop_after_first = true }
+local prettier_fts = {
+  "javascript",
+  "javascriptreact",
+  "typescript",
+  "typescriptreact",
+  "vue",
+  "css",
+  "scss",
+  "less",
+  "html",
+  "json",
+  "jsonc",
+  "yaml",
+  "markdown",
+  "markdown.mdx",
+  "graphql",
+  "handlebars",
+}
+
 return {
   formatters_by_ft = {
     lua = { "stylua" },
-    -- css = { { "prettierd", "prettier" } },
-    -- html = { { "prettierd", "prettier" } },
-    -- javascript = { { "prettierd", "prettier" } },
-    -- python = function(bufnr)
-    --   if require("conform").get_formatter_info("ruff_format", bufnr).available then
-    --     return { "ruff_format" }
-    --   else
-    --     return { "isort", "black" }
-    --   end
-    -- end,
+    python = { "isort", "black" },
+    javascript = prettier,
+    javascriptreact = prettier,
+    typescript = prettier,
+    typescriptreact = prettier,
+    vue = prettier,
+    css = prettier,
+    scss = prettier,
+    less = prettier,
+    html = prettier,
+    json = prettier,
+    -- jsonc = { prettier },
+    -- yaml = { prettier },
+    -- markdown = { prettier },
+    -- ["markdown.mdx"] = { prettier },
+    graphql = prettier,
+    handlebars = prettier,
   },
-
-  -- format_on_save = {
-  --   -- These options will be passed to conform.format()
-  --   timeout_ms = 500,
-  --   lsp_fallback = true,
-  -- },
+  format_on_save = { timeout_ms = 500, lsp_fallback = true },
 }

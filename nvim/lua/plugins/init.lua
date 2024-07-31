@@ -1,23 +1,4 @@
----@type NvPluginSpec[]
-local prettier = { "prettierd", "prettier" }
-local prettier_fts = {
-  "javascript",
-  "javascriptreact",
-  "typescript",
-  "typescriptreact",
-  "vue",
-  "css",
-  "scss",
-  "less",
-  "html",
-  "json",
-  "jsonc",
-  "yaml",
-  "markdown",
-  "markdown.mdx",
-  "graphql",
-  "handlebars",
-}
+---@type LazySpec[]
 return {
   {
     "kkharji/sqlite.lua",
@@ -38,44 +19,16 @@ return {
         desc = "Format buffer",
       },
     },
-    opts = {
-      formatters_by_ft = {
-        lua = { "stylua" },
-        python = { "isort", "black" },
-        javascript = { prettier },
-        javascriptreact = { prettier },
-        typescript = { prettier },
-        typescriptreact = { prettier },
-        vue = { prettier },
-        css = { prettier },
-        scss = { prettier },
-        less = { prettier },
-        html = { prettier },
-        json = { prettier },
-        -- jsonc = { prettier },
-        -- yaml = { prettier },
-        -- markdown = { prettier },
-        -- ["markdown.mdx"] = { prettier },
-        graphql = { prettier },
-        handlebars = { prettier },
-      },
-      format_on_save = { timeout_ms = 500, lsp_fallback = true },
-    },
-    config = function(_, opts)
-      require("conform").setup(opts)
+    opts = function()
+      return require "configs.conform"
     end,
   },
 
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = require "configs.treesitter",
-    -- config = function(_, opts)
-    --   dofile(vim.g.base46_cache .. "syntax")
-    --   dofile(vim.g.base46_cache .. "treesitter")
-    --   require("nvim-treesitter.configs").setup(opts)
-    --   vim.treesitter.language.register("sql", "mysql")
-    --   vim.treesitter.language.register("sql", "plsql")
-    -- end,
+    opts = function()
+      return require "configs.treesitter"
+    end,
   },
 
   {
@@ -84,16 +37,12 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("tree-sitter-language-injection").setup()
-    end,
   },
 
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
-      "nvim-telescope/telescope-smart-history.nvim",
       {
         "nvim-telescope/telescope-fzy-native.nvim",
         build = "cd deps/fzy-lua-native && make all",
@@ -104,47 +53,42 @@ return {
         build = "make",
       },
     },
-    opts = require "configs.telescope",
-  },
-
-  {
-    -- "jose-elias-alvarez/null-ls.nvim",
-    "nvimtools/none-ls.nvim",
-    config = function()
-      require "configs.none-ls"
+    opts = function()
+      return require "configs.telescope"
     end,
   },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    cmd = { "LspInstall", "LspUninstall" },
-    config = function()
-      dofile(vim.g.base46_cache .. "lsp")
-      require "nvchad.lsp"
-      require "configs.lspconfig"
-    end, -- Override to setup mason-lspconfig
-  },
+
   {
     "neovim/nvim-lspconfig",
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
-    -- config = function()
-    --   require "custom.configs.mason-lspconfig"
-    --   --require "plugins.configs.lspconfig"
-    --   --require "custom.configs.lspconfig"
-    -- end, -- Override to setup mason-lspconfig
+    config = function()
+      require("configs.lspconfig").defaults()
+    end,
   },
   {
-    "jay-babu/mason-null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    "nvimtools/none-ls.nvim",
+    event = "User FilePost",
     dependencies = {
       "williamboman/mason.nvim",
-      -- "jose-elias-alvarez/null-ls.nvim",
-      "nvimtools/none-ls.nvim",
+      {
+        "jay-babu/mason-null-ls.nvim",
+        opts = function()
+          return require "configs.none-ls"
+        end,
+      },
     },
-    config = function()
-      require "configs.none-ls"
+    opts = function()
+      local null_ls = require "null-ls"
+      return {
+        sources = {
+          -- null_ls.builtins.code_actions.refactoring,
+          null_ls.builtins.hover.printenv,
+          -- null_ls.builtins.formatting.xmlformat,
+        },
+      }
     end,
   },
 
@@ -157,23 +101,21 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp-signature-help",
+      -- "hrsh7th/cmp-nvim-lsp-signature-help",
       {
         "zbirenbaum/copilot-cmp",
-        dependencies = {
-          {
-            "zbirenbaum/copilot.lua",
-            config = function()
-              require("copilot").setup {
-                suggestion = { enabled = false },
-                panel = { enabled = false },
-              }
-            end,
-          },
-        },
         config = function()
           require("copilot_cmp").setup()
         end,
+        dependencies = {
+          {
+            "zbirenbaum/copilot.lua",
+            opts = {
+              suggestion = { enabled = false },
+              panel = { enabled = false },
+            },
+          },
+        },
       },
     },
     opts = function()
@@ -184,10 +126,12 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
-    opts = require "configs.lsp_signature",
-    config = function(_, opts)
-      require("lsp_signature").setup(opts)
+    opts = function()
+      return require "configs.lsp_signature"
     end,
+    -- config = function(_, opts)
+    --   require("lsp_signature").setup(opts)
+    -- end,
   },
   -- Install a plugin
   -- {
@@ -273,6 +217,10 @@ return {
       auto_close = true,
       use_diagnostic_signs = false,
     }, -- for default options, refer to the configuration section for custom setup.
+    config = function(_, opts)
+      dofile(vim.g.base46_cache .. "trouble")
+      require("trouble").setup(opts)
+    end,
   },
   {
     "ray-x/go.nvim",
@@ -281,9 +229,6 @@ return {
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
-    config = function()
-      require("go").setup()
-    end,
     event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
     build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
@@ -328,89 +273,125 @@ return {
     "vhyrro/luarocks.nvim",
     priority = 1000,
     config = true,
+    opts = {
+      rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua" },
+    },
   },
   {
     "rest-nvim/rest.nvim",
     dependencies = {
       "luarocks.nvim",
     },
+    keys = {
+      {
+        "<leader>rq",
+        ":Rest run<CR>",
+        mode = "",
+        desc = "Run the request under the cursor",
+      },
+      {
+        "<leader>rl",
+        ":Rest log<CR>",
+        mode = "",
+        desc = "Request log",
+      },
+      {
+        "<leader>rr",
+        ":Rest last<CR>",
+        mode = "",
+        desc = "Rerun the last request",
+      },
+      {
+        "<leader>rr",
+        ":Rest last<CR>",
+        mode = "",
+        desc = "Rerun the last request",
+      },
+    },
     ft = { "http" },
     config = function()
       require("rest-nvim").setup {
-        -- Open request results in a horizontal split
-        result_split_horizontal = false,
-        -- Keep the http file buffer above|left when split horizontal|vertical
-        result_split_in_place = false,
-        -- Skip SSL verification, useful for unknown certificates
-        skip_ssl_verification = false,
-        -- Encode URL before making request
+        client = "curl",
+        env_file = ".env",
+        env_pattern = "\\.env$",
+        env_edit_command = "tabedit",
         encode_url = true,
-        -- Highlight request on run
-        highlight = {
-          enabled = true,
-          timeout = 150,
+        skip_ssl_verification = false,
+        custom_dynamic_variables = {},
+        logs = {
+          level = "info",
+          save = true,
         },
+        keybinds = {},
         result = {
-          -- toggle showing URL, HTTP info, headers at top the of result window
-          show_url = true,
-          show_http_info = true,
-          show_headers = true,
-          -- executables or functions for formatting response body [optional]
-          -- set them to false if you want to disable them
-          formatters = {
-            json = "jq",
-            html = function(body)
-              return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
-            end,
+          split = {
+            horizontal = false,
+            in_place = false,
+            stay_in_current_window_after_split = true,
+          },
+          behavior = {
+            decode_url = true,
+            show_info = {
+              url = true,
+              headers = true,
+              http_info = true,
+              curl_command = true,
+            },
+            statistics = {
+              enable = true,
+              ---@see https://curl.se/libcurl/c/curl_easy_getinfo.html
+              stats = {
+                { "total_time", title = "Time taken:" },
+                { "size_download_t", title = "Download size:" },
+              },
+            },
+            formatters = {
+              json = "jq",
+              html = function(body)
+                if vim.fn.executable "tidy" == 0 then
+                  return body, { found = false, name = "tidy" }
+                end
+                local fmt_body = vim.fn
+                  .system({
+                    "tidy",
+                    "-i",
+                    "-q",
+                    "--tidy-mark",
+                    "no",
+                    "--show-body-only",
+                    "auto",
+                    "--show-errors",
+                    "0",
+                    "--show-warnings",
+                    "0",
+                    "-",
+                  }, body)
+                  :gsub("\n$", "")
+
+                return fmt_body, { found = true, name = "tidy" }
+              end,
+            },
+          },
+          keybinds = {
+            buffer_local = true,
+            prev = "H",
+            next = "L",
           },
         },
-        -- Jump to request line on run
-        jump_to_request = false,
-        env_file = ".env",
-        custom_dynamic_variables = {},
-        yank_dry_run = true,
+        highlight = {
+          enable = true,
+          timeout = 750,
+        },
       }
     end,
   },
 
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    lazy = false,
-    dependencies = {
-      "williamboman/mason.nvim",
-      "mfussenegger/nvim-dap",
-      "theHamsta/nvim-dap-virtual-text",
+  { "folke/lazydev.nvim", ft = "lua", opts = {
+    library = {
+      "lazy.nvim",
+      "ui/nvchad_types",
     },
-    opts = function()
-      return require "configs.dap"
-    end,
-    config = function(_, opts)
-      require("mason-nvim-dap").setup(opts)
-    end,
-  },
-
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-      "nvim-neotest/nvim-nio",
-    },
-    init = function()
-      local dap, dapui = require "dap", require "dapui"
-      dapui.setup()
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
-    end,
-  },
-
-  { "folke/neodev.nvim", ft = "lua", opts = {} },
+  } },
 
   {
     "vim-airline/vim-airline",

@@ -1,7 +1,7 @@
 require "nvchad.options"
 
 -- set in init.lua
---vim.g.mapleader = ","
+-- vim.g.mapleader = " "
 vim.wo.wrap = false
 vim.opt.listchars = {
   tab = "——→",
@@ -66,10 +66,6 @@ vim.api.nvim_create_autocmd("WinEnter", {
   pattern = { "qf", "dbui", "dbout", "httpResult", "neotest-summary" },
   command = [[if winnr('$') == 1 |q|endif]],
 })
-
--- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
---   virtual_text = false,
--- })
 
 --vim.api.nvim_create_autocmd("FileType", {
 --  pattern = "python",

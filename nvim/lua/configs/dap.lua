@@ -22,5 +22,15 @@ return {
       })
       mason_nvim_dap.default_setup(config)
     end,
+    python = function(config)
+      table.insert(config.configurations, {
+        name = "Attach",
+        type = "python",
+        request = "attach",
+        host = "localhost",
+        port = 5678,
+      })
+      mason_nvim_dap.default_setup(config)
+    end,
   }, -- sets up dap in the predefined manner
 }

@@ -18,13 +18,17 @@ opts.mapping["<Tab>"] = vim.schedule_wrap(function(fallback)
 end)
 
 opts.sources = {
-  { name = "copilot", group_index = 2 },
-  -- { name = "nvim_lsp_signature_help" },
-  { name = "nvim_lsp" },
+  -- { name = "nvim_lsp_signature_help", group_index = 0 },
+  { name = "nvim_lsp", group_index = 1 },
   --{ name = "luasnip" },
-  { name = "nvim_lua" },
+  { name = "nvim_lua", group_index = 1 },
   { name = "path" },
   { name = "buffer", group_index = 2 },
+  {
+    name = "lazydev",
+    group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+  },
+  { name = "copilot", group_index = 1 },
 }
 
 return opts

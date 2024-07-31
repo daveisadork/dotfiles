@@ -1,5 +1,4 @@
 local null_ls = require "null-ls"
-local mason_null_ls = require "mason-null-ls"
 
 local h = require "null-ls.helpers"
 local u = require "null-ls.utils"
@@ -7,7 +6,7 @@ local methods = require "null-ls.methods"
 
 local FORMATTING = methods.internal.FORMATTING
 
-mason_null_ls.setup {
+return {
   ensure_installed = {
     -- -- misc
     -- "impl",
@@ -221,16 +220,5 @@ mason_null_ls.setup {
     -- 		}))
     -- 	end, types)
     -- end,
-  },
-}
-
-null_ls.setup {
-  diagnostic_config = {
-    virtual_text = false,
-  },
-  sources = {
-    -- null_ls.builtins.code_actions.refactoring,
-    null_ls.builtins.hover.printenv,
-    -- null_ls.builtins.formatting.xmlformat,
   },
 }

@@ -4,17 +4,15 @@ local M = {}
 M.base46 = {
   integrations = {
     "lspsaga",
+    "dap",
+    "trouble",
   },
+  theme = "solarized_dark",
+  hl_override = require "highlights.overrides",
+  hl_add = require "highlights.add",
 }
 
 M.ui = {
-  theme = "solarized_dark",
-
-  ---@type Base46HLGroupsList
-  hl_override = require "highlights.overrides",
-  ---@type HLTable
-  hl_add = require "highlights.add",
-
   lsp = {
     signature = false,
   },

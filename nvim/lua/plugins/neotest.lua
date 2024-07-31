@@ -84,10 +84,10 @@ local icons = {
   },
 }
 
-vim.diagnostic.config({
-  virtual_text = false,
-}, neotest_ns)
-
+-- vim.diagnostic.config({
+--   virtual_text = false,
+-- }, neotest_ns)
+--
 ---@type NvPluginSpec[]
 return {
   {

@@ -106,10 +106,10 @@ local md_icons = {
   -- },
 }
 
-vim.diagnostic.config({
-  virtual_text = false,
-}, neotest_ns)
-
+-- vim.diagnostic.config({
+--   virtual_text = false,
+-- }, neotest_ns)
+--
 return {
   highlights = {
     adapter_name = "NeotestAdapterName",
