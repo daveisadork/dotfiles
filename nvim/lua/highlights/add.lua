@@ -37,7 +37,7 @@ return {
     fg = "green",
   },
   NeotestRunning = {
-    link = "Normal"
+    link = "Normal",
   },
   -- NeotestWinSelect = {
   --   fg = "foo",

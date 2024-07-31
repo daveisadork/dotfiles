@@ -3,7 +3,6 @@ return {
   {
     "kkharji/sqlite.lua",
   },
-
   {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
@@ -549,56 +548,108 @@ return {
     ft = "plantuml",
   },
 
-  -- {
-  --   "nvimdev/lspsaga.nvim",
-  --   event = "LspAttach",
-  --   opts = {
-  --     lightbulb = {
-  --       enabled = false,
-  --       sign = false,
-  --       virtual_text = false,
-  --       enable_in_insert = false,
-  --     },
-  --     diagnostic = {
-  --       only_current = true,
-  --     },
-  --     beacon = {
-  --       enable = false,
-  --     },
-  --     ui = {
-  --       code_action = "󰛩",
-  --       -- lspSymbol("Error", "󰅚")
-  --       -- lspSymbol("Info", "󰋽")
-  --       -- lspSymbol("Hint", "")
-  --       -- lspSymbol("Warn", "")
-  --     },
-  --   },
-  --   config = function(_, opts)
-  --     require("lspsaga").setup(opts)
-  --   end,
-  --   dependencies = {
-  --     "nvim-treesitter/nvim-treesitter", -- optional
-  --     "nvim-tree/nvim-web-devicons", -- optional
-  --   },
-  --   keys = {
-  --     {
-  --       "<C-j>",
-  --       ":Lspsaga diagnostic_jump_next<CR>",
-  --       mode = "",
-  --       desc = "Diagnostic jump next",
-  --     },
-  --     {
-  --       "<C-k>",
-  --       ":Lspsaga diagnostic_jump_prev<CR>",
-  --       mode = "",
-  --       desc = "Diagnostic jump prev",
-  --     },
-  --     {
-  --       "K",
-  --       ":Lspsaga diagnostic_jump_prev<CR>",
-  --       mode = "",
-  --       desc = "Diagnostic jump prev",
-  --     },
-  --   },
-  -- },
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    opts = {
+      lightbulb = {
+        enabled = false,
+        sign = false,
+        virtual_text = false,
+        enable_in_insert = false,
+      },
+      diagnostic = {
+        only_current = true,
+      },
+      beacon = {
+        enable = false,
+      },
+      code_action = {
+        extend_gitsigns = false,
+        keys = {
+          quit = "<esc>",
+          exec = "<CR>",
+        },
+      },
+      ui = {
+        title = true,
+        border = "rounded",
+        devicon = true,
+        collapse = "",
+        expand = "",
+        code_action = " 󰛩",
+        lines = { "╰", "├", "│", "─", "╭" },
+      },
+    },
+    config = function(_, opts)
+      -- dofile(vim.g.base46_cache .. "lspsaga")
+      require("lspsaga").setup(opts)
+    end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter", -- optional
+      "nvim-tree/nvim-web-devicons", -- optional
+    },
+    keys = {
+      {
+        "<C-j>",
+        ":Lspsaga diagnostic_jump_next<CR>",
+        mode = "",
+        desc = "Diagnostic jump next",
+      },
+      {
+        "<C-k>",
+        ":Lspsaga diagnostic_jump_prev<CR>",
+        mode = "",
+        desc = "Diagnostic jump prev",
+      },
+      {
+        "K",
+        ":Lspsaga hover_doc<CR>",
+        mode = "",
+        desc = "LSP Hover",
+      },
+      {
+        "<leader>ci",
+        ":Lspsaga incoming_calls<CR>",
+        mode = "",
+        desc = "Incoming calls",
+      },
+      {
+        "<leader>ca",
+        ":Lspsaga code_action<CR>",
+        mode = "",
+        desc = "Code actions",
+      },
+    },
+  },
+  {
+    "romgrk/barbar.nvim",
+    enabled = false,
+    dependencies = {
+      "lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
+      "nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
+    },
+    event = { "BufReadPost", "BufNewFile" },
+    init = function()
+      vim.g.barbar_auto_setup = false
+    end,
+    opts = {
+      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+      -- animation = true,
+      -- insert_at_start = true,
+      -- …etc.
+      icons = {
+        preset = "slanted",
+        separator = { left = "", right = "" },
+      },
+    },
+  },
+  {
+    "akinsho/bufferline.nvim",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = function()
+      return require "configs.bufferline"
+    end,
+  },
 }

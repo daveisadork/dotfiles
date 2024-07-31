@@ -24,11 +24,7 @@ M.ui = {
   },
 
   tabufline = {
-    enabled = true,
-    lazyload = false,
-    overriden_modules = function(modules)
-      modules.buttons = ""
-    end,
+    enabled = false,
   },
 }
 

@@ -42,7 +42,7 @@ local M = {
 }
 
 M.on_attach = function(client, bufnr)
-  nvchad_lspconfig.on_attach(client, bufnr)
+  -- nvchad_lspconfig.on_attach(client, bufnr)
   if client.server_capabilities.inlayHintProvider then
     vim.lsp.inlay_hint.enable(true)
   end

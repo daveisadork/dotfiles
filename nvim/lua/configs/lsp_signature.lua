@@ -38,7 +38,7 @@ return {
   -- }
   hint_scheme = "String",
   hint_inline = function()
-    return true
+    return false
   end, -- should the hint be inline(nvim 0.10 only)?  default false
   -- return true | 'inline' to show hint inline, return 'eol' to show hint at end of line, return false to disable
   -- return 'right_align' to display hint right aligned in the current line
