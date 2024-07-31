@@ -67,6 +67,8 @@ vim.api.nvim_create_autocmd("WinEnter", {
   command = [[if winnr('$') == 1 |q|endif]],
 })
 
+vim.filetype.add { pattern = { ["Dockerfile.*"] = "dockerfile" } }
+
 --vim.api.nvim_create_autocmd("FileType", {
 --  pattern = "python",
 --  callback = function()
