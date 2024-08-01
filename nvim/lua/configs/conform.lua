@@ -38,6 +38,7 @@ return {
     -- ["markdown.mdx"] = { prettier },
     graphql = prettier,
     handlebars = prettier,
+    sql = { "sqlfluff" },
   },
   format_on_save = { timeout_ms = 500, lsp_fallback = true },
 }

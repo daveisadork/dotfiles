@@ -61,10 +61,15 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      {
+        "williamboman/mason-lspconfig.nvim",
+        opts = function()
+          return require "configs.lspconfig"
+        end,
+      },
     },
     config = function()
-      require("configs.lspconfig").defaults()
+      dofile(vim.g.base46_cache .. "lsp")
     end,
   },
   {
@@ -211,15 +216,14 @@ return {
         desc = "LSP Type Definitions",
       },
     },
-    opts = {
-      mode = "document_diagnostics",
-      auto_close = true,
-      use_diagnostic_signs = false,
-    }, -- for default options, refer to the configuration section for custom setup.
-    config = function(_, opts)
+    opts = function()
       dofile(vim.g.base46_cache .. "trouble")
-      require("trouble").setup(opts)
-    end,
+      return {
+        mode = "document_diagnostics",
+        auto_close = true,
+        use_diagnostic_signs = false,
+      }
+    end, -- for default options, refer to the configuration section for custom setup.
   },
   {
     "ray-x/go.nvim",
@@ -232,27 +236,27 @@ return {
     ft = { "go", "gomod" },
     build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
   },
-
+  {
+    "kristijanhusak/vim-dadbod-completion",
+    dependencies = {
+      "hrsh7th/nvim-cmp",
+      "tpope/vim-dadbod",
+    },
+    ft = { "sql", "mysql", "plsql" },
+    lazy = true,
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "sql,mysql,plsql",
+        callback = function()
+          require("cmp").setup.buffer { sources = { { name = "vim-dadbod-completion" } } }
+        end,
+      })
+    end,
+  },
   {
     "kristijanhusak/vim-dadbod-ui",
     dependencies = {
-      { "tpope/vim-dadbod", lazy = true },
-      {
-        "kristijanhusak/vim-dadbod-completion",
-        dependencies = {
-          "hrsh7th/nvim-cmp",
-        },
-        ft = { "sql", "mysql", "plsql" },
-        lazy = true,
-        init = function()
-          vim.api.nvim_create_autocmd("FileType", {
-            pattern = "sql,mysql,plsql",
-            callback = function()
-              require("cmp").setup.buffer { sources = { { name = "vim-dadbod-completion" } } }
-            end,
-          })
-        end,
-      },
+      "tpope/vim-dadbod",
     },
     cmd = {
       "DBUI",
@@ -551,39 +555,42 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
-    opts = {
-      lightbulb = {
-        enabled = false,
-        sign = false,
-        virtual_text = false,
-        enable_in_insert = false,
-      },
-      diagnostic = {
-        only_current = true,
-      },
-      beacon = {
-        enable = false,
-      },
-      code_action = {
-        extend_gitsigns = false,
-        keys = {
-          quit = "<esc>",
-          exec = "<CR>",
+    opts = function()
+      local lspsaga = require "lspsaga"
+      dofile(vim.g.base46_cache .. "lspsaga")
+      return {
+        breadcrumbs = {
+          enable = false,
         },
-      },
-      ui = {
-        title = true,
-        border = "rounded",
-        devicon = true,
-        collapse = "",
-        expand = "",
-        code_action = " 󰛩",
-        lines = { "╰", "├", "│", "─", "╭" },
-      },
-    },
-    config = function(_, opts)
-      -- dofile(vim.g.base46_cache .. "lspsaga")
-      require("lspsaga").setup(opts)
+        lightbulb = {
+          enabled = false,
+          sign = false,
+          virtual_text = false,
+          enable_in_insert = false,
+        },
+        diagnostic = {
+          only_current = true,
+        },
+        beacon = {
+          enable = false,
+        },
+        code_action = {
+          extend_gitsigns = false,
+          keys = {
+            quit = "<esc>",
+            exec = "<CR>",
+          },
+        },
+        ui = {
+          title = true,
+          border = "rounded",
+          devicon = true,
+          collapse = "",
+          expand = "",
+          code_action = " 󰛩",
+          lines = { "╰", "├", "│", "─", "╭" },
+        },
+      }
     end,
     dependencies = {
       "nvim-treesitter/nvim-treesitter", -- optional
@@ -602,12 +609,12 @@ return {
         mode = "",
         desc = "Diagnostic jump prev",
       },
-      {
-        "K",
-        ":Lspsaga hover_doc<CR>",
-        mode = "",
-        desc = "LSP Hover",
-      },
+      -- {
+      --   "K",
+      --   ":Lspsaga hover_doc<CR>",
+      --   mode = "",
+      --   desc = "LSP Hover",
+      -- },
       {
         "<leader>ci",
         ":Lspsaga incoming_calls<CR>",
@@ -623,33 +630,102 @@ return {
     },
   },
   {
-    "romgrk/barbar.nvim",
-    enabled = false,
-    dependencies = {
-      "lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
-      "nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
-    },
-    event = { "BufReadPost", "BufNewFile" },
-    init = function()
-      vim.g.barbar_auto_setup = false
-    end,
-    opts = {
-      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
-      -- animation = true,
-      -- insert_at_start = true,
-      -- …etc.
-      icons = {
-        preset = "slanted",
-        separator = { left = "", right = "" },
-      },
-    },
-  },
-  {
     "akinsho/bufferline.nvim",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    event = { "BufEnter" },
     opts = function()
+      -- dofile(vim.g.base46_cache .. "bufferline")
       return require "configs.bufferline"
     end,
+  },
+  {
+    "sindrets/diffview.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = {
+      "DiffviewOpen",
+      "DiffviewLog",
+      "DiffviewFileHistory",
+      "DiffviewToggleFiles",
+    },
+    opts = {},
+  },
+  {
+    "NeogitOrg/neogit",
+    cmd = "Neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
+
+      -- Only one of these is needed, not both.
+      "nvim-telescope/telescope.nvim", -- optional
+    },
+
+    keys = {
+      {
+        "<leader>g<CR>",
+        function()
+          require("neogit").open()
+        end,
+        mode = "",
+        desc = "Git status",
+      },
+      {
+        "<leader>gc",
+        function()
+          require("neogit").open { "commit" }
+        end,
+        mode = "",
+        desc = "Git commit",
+      },
+      {
+        "<leader>gs",
+        function()
+          require("neogit").open { "stash" }
+        end,
+        mode = "",
+        desc = "Git stash",
+      },
+      {
+        "<leader>gl",
+        function()
+          require("neogit").open { "log" }
+        end,
+        mode = "",
+        desc = "Git log",
+      },
+      {
+        "<leader>gd",
+        function()
+          require("neogit").open { "diff" }
+        end,
+        mode = "",
+        desc = "Git diff",
+      },
+    },
+    opts = function()
+      dofile(vim.g.base46_cache .. "neogit")
+      return {
+        integrations = {
+          telescope = true,
+          diffview = true,
+        },
+      }
+    end,
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = function()
+      return require "configs.noice"
+    end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+    },
   },
 }

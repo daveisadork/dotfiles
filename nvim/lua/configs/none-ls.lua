@@ -7,29 +7,6 @@ local methods = require "null-ls.methods"
 local FORMATTING = methods.internal.FORMATTING
 
 return {
-  ensure_installed = {
-    -- -- misc
-    -- "impl",
-    --
-    -- -- go
-    -- "gofumpt",
-    -- "goimports",
-    -- "gomodifytags",
-    -- "golangci_lint",
-    --
-    -- -- javascript
-    -- "prettierd",
-    --
-    -- -- python
-    -- -- "black",
-    -- -- "usort",
-    --
-    -- -- lua
-    -- "stylua",
-    --
-    -- -- sql
-    --"sql_formatter",
-  },
   automatic_installation = false,
   handlers = {
     darker = function()

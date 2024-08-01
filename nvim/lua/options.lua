@@ -67,7 +67,28 @@ vim.api.nvim_create_autocmd("WinEnter", {
   command = [[if winnr('$') == 1 |q|endif]],
 })
 
-vim.filetype.add { pattern = { ["Dockerfile.*"] = "dockerfile" } }
+vim.filetype.add {
+  filename = { [".sqlfluff"] = "ini" },
+  pattern = { ["Dockerfile.*"] = "dockerfile" },
+}
+
+local diagnostic_config = {
+  virtual_text = false,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "󰅚",
+      [vim.diagnostic.severity.WARN] = "",
+      [vim.diagnostic.severity.INFO] = "󰋽",
+      [vim.diagnostic.severity.HINT] = "󰛩",
+    },
+  },
+  underline = true,
+  float = { border = "single", source = true },
+}
+
+vim.diagnostic.config(diagnostic_config)
+vim.lsp.handlers["textDocument/publishDiagnostics"] =
+  vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, diagnostic_config)
 
 --vim.api.nvim_create_autocmd("FileType", {
 --  pattern = "python",

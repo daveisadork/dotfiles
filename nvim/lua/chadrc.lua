@@ -1,30 +1,33 @@
 ---@type ChadrcConfig
-local M = {}
+local M = {
 
-M.base46 = {
-  integrations = {
-    "lspsaga",
-    "dap",
-    "trouble",
+  base46 = {
+    integrations = {
+      -- "bufferline",
+      "dap",
+      "lspsaga",
+      "trouble",
+      "neogit",
+    },
+    theme = "solarized_dark",
+    hl_override = require "highlights.overrides",
+    hl_add = require "highlights.add",
   },
-  theme = "solarized_dark",
-  hl_override = require "highlights.overrides",
-  hl_add = require "highlights.add",
-}
 
-M.ui = {
   lsp = {
     signature = false,
   },
 
-  cmp = {
-    icons = true,
-    lspkind_text = true,
-    style = "default", -- default/flat_light/flat_dark/atom/atom_colored
-  },
+  ui = {
+    cmp = {
+      icons = true,
+      lspkind_text = true,
+      style = "default", -- default/flat_light/flat_dark/atom/atom_colored
+    },
 
-  tabufline = {
-    enabled = false,
+    tabufline = {
+      enabled = false,
+    },
   },
 }
 
