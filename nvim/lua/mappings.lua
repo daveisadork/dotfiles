@@ -22,6 +22,8 @@ map("n", "<leader>sw", function()
     vim.opt.list = true
   end
 end, { desc = "Toggle whitespace" })
+map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "toggle line number" })
+map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 map("v", "<S-Tab>", "<gv", { desc = "Unindent" })
 map("v", "<Tab>", ">gv", { desc = "Indent" })
 

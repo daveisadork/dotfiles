@@ -553,13 +553,50 @@ return {
   },
 
   {
+    "lewis6991/gitsigns.nvim",
+    event = "User FilePost",
+    opts = function()
+      dofile(vim.g.base46_cache .. "git")
+      return {
+        signs = {
+          add = { text = "▎" },
+          change = { text = "▎" },
+          delete = { text = " " },
+          topdelete = { text = "▔▔" },
+          changedelete = { text = "▎" },
+          untracked = { text = "┆" },
+        },
+        signs_staged = {
+          add = { text = "┃" },
+          change = { text = "┃" },
+          delete = { text = "_" },
+          topdelete = { text = "‾" },
+          changedelete = { text = "┃" },
+          untracked = { text = "┆" },
+        },
+        on_attach = function(bufnr)
+          local gs = package.loaded.gitsigns
+
+          local function opts(desc)
+            return { buffer = bufnr, desc = desc }
+          end
+
+          local map = vim.keymap.set
+
+          map("n", "<leader>rh", gs.reset_hunk, opts "Reset Hunk")
+          map("n", "<leader>ph", gs.preview_hunk, opts "Preview Hunk")
+          map("n", "<leader>gb", gs.blame_line, opts "Blame Line")
+        end,
+      }
+    end,
+  },
+  {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
     opts = function()
-      local lspsaga = require "lspsaga"
       dofile(vim.g.base46_cache .. "lspsaga")
       return {
-        breadcrumbs = {
+        symbol_in_winbar = {
           enable = false,
         },
         lightbulb = {
@@ -647,6 +684,15 @@ return {
       "DiffviewFileHistory",
       "DiffviewToggleFiles",
     },
+    keys = {
+
+      {
+        "<leader>gd",
+        ":DiffviewOpen<CR>",
+        mode = "",
+        desc = "Git diff",
+      },
+    },
     opts = {},
   },
   {
@@ -693,14 +739,6 @@ return {
         mode = "",
         desc = "Git log",
       },
-      {
-        "<leader>gd",
-        function()
-          require("neogit").open { "diff" }
-        end,
-        mode = "",
-        desc = "Git diff",
-      },
     },
     opts = function()
       dofile(vim.g.base46_cache .. "neogit")
@@ -725,7 +763,41 @@ return {
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
+      {
+        "rcarriga/nvim-notify",
+        opts = function()
+          ---@type notify.Config
+          return {
+            level = vim.log.levels.TRACE,
+            timeout = 5000,
+            ---@diagnostic disable-next-line: assign-type-mismatch
+            max_width = nil,
+            ---@diagnostic disable-next-line: assign-type-mismatch
+            max_height = nil,
+            stages = "static",
+            render = "wrapped-compact",
+            background_colour = "NotifyBackground",
+            ---@diagnostic disable-next-line: assign-type-mismatch
+            on_open = nil,
+            ---@diagnostic disable-next-line: assign-type-mismatch
+            on_close = nil,
+            minimum_width = 50,
+            fps = 30,
+            top_down = true,
+            time_formats = {
+              notification_history = "%FT%T",
+              notification = "%T",
+            },
+            icons = {
+              ERROR = "󰅚",
+              WARN = "",
+              INFO = "󰋽",
+              DEBUG = "",
+              TRACE = "",
+            },
+          }
+        end,
+      },
     },
   },
 }

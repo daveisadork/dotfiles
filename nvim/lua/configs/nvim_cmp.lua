@@ -23,7 +23,7 @@ opts.sources = {
   --{ name = "luasnip" },
   { name = "nvim_lua", group_index = 1 },
   { name = "path" },
-  { name = "buffer", group_index = 2 },
+  -- { name = "buffer", group_index = 2 },
   {
     name = "lazydev",
     group_index = 0, -- set group index to 0 to skip loading LuaLS completions

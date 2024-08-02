@@ -2,6 +2,7 @@
 return {
   cmdline = {
     enabled = true, -- enables the Noice cmdline UI
+    -- view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
     view = "cmdline", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom
     opts = {}, -- global options for the cmdline. See section on views
     format = {
@@ -100,7 +101,7 @@ return {
   },
   lsp = {
     progress = {
-      enabled = true,
+      enabled = false,
       -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
       -- See the section on formatting for more details on how to customize.
       format = "lsp_progress",
@@ -110,11 +111,11 @@ return {
     },
     override = {
       -- override the default lsp markdown formatter with Noice
-      ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
       -- override the lsp markdown formatter with Noice
-      ["vim.lsp.util.stylize_markdown"] = false,
+      ["vim.lsp.util.stylize_markdown"] = true,
       -- override cmp documentation with Noice (needs the other options to work)
-      ["cmp.entry.get_documentation"] = false,
+      ["cmp.entry.get_documentation"] = true,
     },
     hover = {
       enabled = true,
@@ -170,9 +171,9 @@ return {
   presets = {
     -- you can enable a preset by setting it to true, or a table that will override the preset config
     -- you can also add custom presets that you can enable/disable with enabled=true
-    bottom_search = false, -- use a classic bottom cmdline for search
-    command_palette = false, -- position the cmdline and popupmenu together
-    long_message_to_split = false, -- long messages will be sent to a split
+    bottom_search = true, -- use a classic bottom cmdline for search
+    command_palette = true, -- position the cmdline and popupmenu together
+    long_message_to_split = true, -- long messages will be sent to a split
     inc_rename = false, -- enables an input dialog for inc-rename.nvim
     lsp_doc_border = true, -- add a border to hover docs and signature help
     cmdline_output_to_split = false, -- send the output of a command you executed in the cmdline to a split

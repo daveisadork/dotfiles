@@ -1,5 +1,85 @@
 ---@type HLTable
 return {
+  NotifyINFOBorder = {
+    link = "DiagnosticInfo",
+  },
+  NotifyINFOIcon = {
+    link = "DiagnosticInfo",
+  },
+  NotifyINFOTitle = {
+    link = "Normal",
+  },
+  NotifyWARNBorder = {
+    link = "DiagnosticWarn",
+  },
+  NotifyWARNIcon = {
+    link = "DiagnosticWarn",
+  },
+  NotifyWARNTitle = {
+    link = "Normal",
+  },
+  NotifyDEBUGBorder = {
+    link = "DiagnosticHint",
+  },
+  NotifyDEBUGIcon = {
+    link = "DiagnosticHint",
+  },
+  NotifyDEBUGTitle = {
+    link = "Normal",
+  },
+  NotifyTRACEBorder = {
+    fg = "cyan",
+  },
+  NotifyTRACEIcon = {
+    fg = "cyan",
+  },
+  NotifyTRACETitle = {
+    link = "Normal",
+  },
+  NotifyERRORBorder = {
+    link = "DiagnosticError",
+  },
+  NotifyERRORIcon = {
+    link = "DiagnosticError",
+  },
+  NotifyERRORTitle = {
+    link = "Normal",
+  },
+  DiagnosticSignInfo = {
+    fg = "blue",
+  },
+  DiagnosticUnderlineError = {
+    undercurl = true,
+    sp = "red",
+  },
+  DiagnosticUnderlineWarn = {
+    undercurl = true,
+    sp = "yellow",
+  },
+  DiagnosticUnderlineInfo = {
+    undercurl = true,
+    sp = "blue",
+  },
+  DiagnosticUnderlineHint = {
+    undercurl = true,
+    sp = "purple",
+  },
+  GitSignsChangedelete = {
+    fg = "yellow",
+    underdouble = true,
+    sp = "red",
+  },
+  GitSignsDelete = {
+    underdouble = true,
+    sp = "red",
+  },
+  GitSignsAdd = {
+    fg = "green",
+  },
+  GitSignsTopdelete = {
+    underdouble = false,
+    fg = "red",
+  },
   NvimTreeOpenedFolderName = { fg = "green", bold = true },
   -- NeoTest
   NeotestAdapterName = {

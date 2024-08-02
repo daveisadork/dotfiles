@@ -18,7 +18,10 @@ vim.opt.showtabline = 2
 vim.opt.confirm = false
 vim.g.copilot_no_tab_map = true
 vim.o.cursorlineopt = "both"
+vim.o.relativenumber = true
 vim.opt.smartindent = false
+vim.o.signcolumn = "yes"
+vim.o.foldenable = false
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "css,eruby,html,javascript,jinja.html,json,ruby,scss,typescript,vim,yaml,zsh,typescript.tsx,javascript.jsx,typescriptreact,lua",
@@ -72,6 +75,7 @@ vim.filetype.add {
   pattern = { ["Dockerfile.*"] = "dockerfile" },
 }
 
+---@type vim.diagnostic.Opts
 local diagnostic_config = {
   virtual_text = false,
   signs = {
@@ -89,11 +93,3 @@ local diagnostic_config = {
 vim.diagnostic.config(diagnostic_config)
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
   vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, diagnostic_config)
-
---vim.api.nvim_create_autocmd("FileType", {
---  pattern = "python",
---  callback = function()
---    local pypath = vim.fn.system({"pyenv", "which", "python"})
---    vim.cmd(":PyrightSetPythonPath " .. pypath)
---  end,
---})

@@ -1,5 +1,8 @@
----@type Base46HLGroupsList
+---@type HLTable
 return {
+  DiagnosticInfo = {
+    fg = "blue",
+  },
   Visual = {
     bg = "light_bg2",
   },
