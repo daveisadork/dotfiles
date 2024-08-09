@@ -108,17 +108,12 @@ return {
       -- "hrsh7th/cmp-nvim-lsp-signature-help",
       {
         "zbirenbaum/copilot-cmp",
+        enabled = false,
         config = function()
           require("copilot_cmp").setup()
         end,
         dependencies = {
-          {
-            "zbirenbaum/copilot.lua",
-            opts = {
-              suggestion = { enabled = false },
-              panel = { enabled = false },
-            },
-          },
+          "zbirenbaum/copilot.lua",
         },
       },
     },
@@ -506,21 +501,21 @@ return {
   --   "NvChad/nvim-colorizer.lua",
   --   enabled = false
   -- },
-  -- {
-  --   "zbirenbaum/copilot.lua",
-  --   cmd = "Copilot",
-  --   event = "InsertEnter",
-  --   config = function()
-  --     require("copilot").setup {
-  --       suggestion = {
-  --         auto_trigger = true,
-  --         keymap = {
-  --           accept = "<C-e>",
-  --         },
-  --       },
-  --     }
-  --   end,
-  -- },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup {
+        suggestion = {
+          auto_trigger = true,
+          keymap = {
+            accept = "<C-e>",
+          },
+        },
+      }
+    end,
+  },
 
   {
     "jackMort/ChatGPT.nvim",
@@ -751,6 +746,12 @@ return {
     end,
   },
   {
+    "rcarriga/nvim-notify",
+    opts = function()
+      return require "configs.notify"
+    end,
+  },
+  {
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = function()
@@ -763,41 +764,7 @@ return {
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      {
-        "rcarriga/nvim-notify",
-        opts = function()
-          ---@type notify.Config
-          return {
-            level = vim.log.levels.TRACE,
-            timeout = 5000,
-            ---@diagnostic disable-next-line: assign-type-mismatch
-            max_width = nil,
-            ---@diagnostic disable-next-line: assign-type-mismatch
-            max_height = nil,
-            stages = "static",
-            render = "wrapped-compact",
-            background_colour = "NotifyBackground",
-            ---@diagnostic disable-next-line: assign-type-mismatch
-            on_open = nil,
-            ---@diagnostic disable-next-line: assign-type-mismatch
-            on_close = nil,
-            minimum_width = 50,
-            fps = 30,
-            top_down = true,
-            time_formats = {
-              notification_history = "%FT%T",
-              notification = "%T",
-            },
-            icons = {
-              ERROR = "󰅚",
-              WARN = "",
-              INFO = "󰋽",
-              DEBUG = "",
-              TRACE = "",
-            },
-          }
-        end,
-      },
+      "rcarriga/nvim-notify",
     },
   },
 }
