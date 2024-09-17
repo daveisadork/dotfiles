@@ -261,6 +261,7 @@ return {
     },
     init = function()
       -- Your DBUI configuration
+      vim.g.db_ui_hide_schemas = { "pg_catalog", "pg_toast_temp.*" }
       vim.g.db_ui_use_nerd_fonts = 1
       vim.g.db_ui_win_position = "right"
       vim.g.db_ui_winwidth = 60
