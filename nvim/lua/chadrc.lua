@@ -28,6 +28,10 @@ local M = {
     tabufline = {
       enabled = false,
     },
+    statusline = {
+      enabled = true,
+      style = "default",
+    },
   },
 }
 

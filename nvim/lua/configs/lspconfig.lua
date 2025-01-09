@@ -76,6 +76,26 @@ return {
       }
     end,
 
+    clangd = function()
+      lspconfig.clangd.setup {
+        on_attach = M.on_attach,
+        on_init = M.on_init,
+        capabilities = M.capabilities,
+        cmd = {
+          "./toolchain/current/bin/clangd",
+          "--background-index",
+          "--query-driver=**/arm-none-eabi-*",
+          "--compile-commands-dir=./build/latest",
+          "--clang-tidy",
+          "--header-insertion=never",
+          "--offset-encoding=utf-16",
+        },
+        filetypes = { "c", "cpp", "objc", "objcpp" },
+        root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
+        single_file_support = true,
+      }
+    end,
+
     yamlls = function()
       lspconfig.yamlls.setup {
         on_attach = M.on_attach,

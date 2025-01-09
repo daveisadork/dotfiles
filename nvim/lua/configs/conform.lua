@@ -1,4 +1,3 @@
-local prettier = { "prettierd", "prettier", stop_after_first = true }
 local prettier_fts = {
   "javascript",
   "javascriptreact",
@@ -18,10 +17,31 @@ local prettier_fts = {
   "handlebars",
 }
 
+---@param bufnr integer
+---@param ... string
+---@return string
+local function first(bufnr, ...)
+  local conform = require "conform"
+  for i = 1, select("#", ...) do
+    local formatter = select(i, ...)
+    if conform.get_formatter_info(formatter, bufnr).available then
+      return formatter
+    end
+  end
+  return select(1, ...)
+end
+
+local prettier = function(bufnr)
+  return { first(bufnr, "prettierd", "prettier"), "injected" }
+end
+
+-- This will provide type hinting with LuaLS
+---@module "conform"
+---@type conform.setupOpts
 return {
   formatters_by_ft = {
     lua = { "stylua" },
-    python = { "isort", "black" },
+    python = { "injected", lsp_format = "first" },
     javascript = prettier,
     javascriptreact = prettier,
     typescript = prettier,
@@ -38,7 +58,7 @@ return {
     -- ["markdown.mdx"] = { prettier },
     graphql = prettier,
     handlebars = prettier,
-    -- sql = { "sqlfluff" },
+    sql = { "sqlfluff", lsp_format = "fallback" },
   },
   format_on_save = { timeout_ms = 500, lsp_fallback = true },
 }

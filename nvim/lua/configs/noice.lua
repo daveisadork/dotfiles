@@ -109,6 +109,7 @@ return {
       throttle = 1000 / 10, -- frequency to update lsp progress message
       view = "mini",
     },
+
     override = {
       -- override the default lsp markdown formatter with Noice
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
