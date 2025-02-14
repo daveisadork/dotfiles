@@ -1,7 +1,10 @@
 require "nvchad.options"
 
 -- set in init.lua
+-- vim.keymap.set("", "<Space>", "<Nop>", { silent = true, noremap = true })
 -- vim.g.mapleader = " "
+-- vim.g.maplocalleader = " "
+
 vim.wo.wrap = false
 vim.opt.listchars = {
   tab = "——→",
