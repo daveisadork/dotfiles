@@ -42,7 +42,6 @@ plugins=(
     aws
     colored-man-pages
     command-not-found
-    direnv
     docker
     docker-compose
     dotenv

@@ -66,9 +66,9 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "williamboman/mason.nvim",
+      "mason-org/mason.nvim",
       {
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason-lspconfig.nvim",
         opts = function()
           return require "configs.lspconfig"
         end,
@@ -82,7 +82,7 @@ return {
     "nvimtools/none-ls.nvim",
     event = "User FilePost",
     dependencies = {
-      "williamboman/mason.nvim",
+      "mason-org/mason.nvim",
       {
         "jay-babu/mason-null-ls.nvim",
         opts = function()
@@ -112,16 +112,16 @@ return {
     "hrsh7th/nvim-cmp",
     dependencies = {
       -- "hrsh7th/cmp-nvim-lsp-signature-help",
-      {
-        "zbirenbaum/copilot-cmp",
-        enabled = false,
-        config = function()
-          require("copilot_cmp").setup()
-        end,
-        dependencies = {
-          "zbirenbaum/copilot.lua",
-        },
-      },
+      -- {
+      --   "zbirenbaum/copilot-cmp",
+      --   enabled = false,
+      --   config = function()
+      --     require("copilot_cmp").setup()
+      --   end,
+      --   dependencies = {
+      --     "zbirenbaum/copilot.lua",
+      --   },
+      -- },
     },
     opts = function()
       return require "configs.nvim_cmp"
@@ -512,16 +512,14 @@ return {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
-    config = function()
-      require("copilot").setup {
-        suggestion = {
-          auto_trigger = true,
-          keymap = {
-            accept = "<C-e>",
-          },
+    opts = {
+      suggestion = {
+        auto_trigger = true,
+        keymap = {
+          accept = "<C-l>",
         },
-      }
-    end,
+      },
+    },
   },
 
   {
@@ -541,7 +539,7 @@ return {
     "Vimjas/vim-python-pep8-indent",
     ft = { "python" },
   },
-
+  --
   {
     "tpope/vim-obsession",
   },
@@ -784,11 +782,55 @@ return {
     -- This is for lazy load and more performance on startup only
     cmd = { "InjectmeToggle", "InjectmeSave", "InjectmeInfo", "InjectmeLeave" },
   },
+  {
+    "olimorris/codecompanion.nvim",
+    cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
+    keys = {
+      {
+        "<C-h>",
+        "<cmd>CodeCompanionActions<CR>",
+        mode = { "n", "v" },
+        desc = "Code Companion Actions",
+      },
+    },
+    opts = {
+      display = {
+        action_palette = {
+          provider = "telescope",
+        },
+      },
+      extensions = {
+        mcphub = {
+          callback = "mcphub.extensions.codecompanion",
+          opts = {
+            make_vars = true,
+            make_slash_commands = true,
+            show_result_in_chat = true,
+          },
+        },
+      },
+      strategies = {
+        chat = {
+          adapter = "anthropic",
+        },
+        inline = {
+          adapter = "copilot",
+        },
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "hrsh7th/nvim-cmp",
+      "nvim-telescope/telescope.nvim",
+      "ravitemer/mcphub.nvim",
+    },
+  },
   -- {
   --   "yetone/avante.nvim",
   --   event = "VeryLazy",
   --   lazy = false,
-  --   version = false, -- set this if you want to always pull the latest change
+  --   version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
   --   opts = function()
   --     return require "configs.avante"
   --   end,
@@ -796,13 +838,17 @@ return {
   --   build = "make",
   --   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
   --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter",
   --     "stevearc/dressing.nvim",
   --     "nvim-lua/plenary.nvim",
   --     "MunifTanjim/nui.nvim",
   --     --- The below dependencies are optional,
+  --     "echasnovski/mini.pick", -- for file_selector provider mini.pick
+  --     "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
   --     "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+  --     "ibhagwan/fzf-lua", -- for file_selector provider fzf
   --     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-  --     "zbirenbaum/copilot.lua", -- for providers='copilot'
+  --     -- "zbirenbaum/copilot.lua", -- for providers='copilot'
   --     {
   --       -- support for image pasting
   --       "HakonHarnes/img-clip.nvim",
