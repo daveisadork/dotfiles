@@ -46,7 +46,7 @@ return {
     less = prettier,
     html = prettier,
     json = prettier,
-    -- jsonc = { prettier },
+    jsonc = prettier,
     -- yaml = { prettier },
     markdown = { "markdownlint-cli2", "injected" },
     ["markdown.mdx"] = { "markdownlint-cli2", "injected" },

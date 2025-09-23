@@ -96,3 +96,5 @@ local diagnostic_config = {
 vim.diagnostic.config(diagnostic_config)
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
   vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, diagnostic_config)
+
+vim.o.guifont = "SauceCodePro Nerd Font:h14"
