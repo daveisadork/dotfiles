@@ -11,13 +11,6 @@ compinit
 
 source $DOTFILES/zsh/private.zsh
 
-if (( $+commands[brew] )); then
-  HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-  if [ -f "$HB_CNF_HANDLER" ]; then
-    source "$HB_CNF_HANDLER";
-  fi   
-fi
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.iterm2_shell_integration.zsh ] && source ~/.iterm2_shell_integration.zsh
 [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
