@@ -11,6 +11,11 @@ compinit
 
 source $DOTFILES/zsh/private.zsh
 
+
+if ps -p $$ >/dev/null 2>&1; then
+
+  export SAFE_SHELL=1
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.iterm2_shell_integration.zsh ] && source ~/.iterm2_shell_integration.zsh
 [ -f ~/.config/op/plugins.sh ] && source ~/.config/op/plugins.sh
@@ -83,8 +88,10 @@ precmd_functions=(${precmd_functions[@]} "tmux_window_pwd")
 
 source ~/.dotfiles/zsh/shell_prompt.zsh
 
-setopt extendedglob
-# zprof
-
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export OP_ACCOUNT="my"
+else
+  export TMUX=""
+fi
+setopt extendedglob
+# zprof

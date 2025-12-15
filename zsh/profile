@@ -3,6 +3,13 @@ export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/g
 export SYS_PREFIX="/usr"
 export DOTFILES=$HOME/.dotfiles
 
+# ---- detect “safe shell” (not sandboxed) ----
+if ps -p $$ >/dev/null 2>&1; then
+  SAFE_SHELL=1
+else
+  SAFE_SHELL=0
+fi
+
 if [[ `uname` == 'Linux'  ]]
 then
   export LINUX=1
@@ -22,7 +29,20 @@ then
   fi
   if [[ -e $HOMEBREW_PREFIX/bin/brew ]]
   then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    if [ "$SAFE_SHELL" = 1 ] 
+    then
+      eval "$(/opt/homebrew/bin/brew shellenv)";
+    else
+      # Keep brew from emitting hints when not initialized
+      export HOMEBREW_NO_ENV_HINTS=1
+      export HOMEBREW_NO_AUTO_UPDATE=1
+      export HOMEBREW_NO_ANALYTICS=1
+      export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+      export HOMEBREW_REPOSITORY="/opt/homebrew";
+      eval "$(/usr/bin/env PATH_HELPER_ROOT="/opt/homebrew" /usr/libexec/path_helper -s)"
+      [ -z "${MANPATH-}" ] || export MANPATH=":${MANPATH#:}"
+      export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
+    fi
     export SYS_PREFIX="$HOMEBREW_PREFIX"
     if [[ -e $HOMEBREW_PREFIX/opt/coreutils ]]; then export PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"; fi
     if [[ -e $HOMEBREW_PREFIX/opt/gnu-tar ]]; then export PATH="$HOMEBREW_PREFIX/opt/gnu-tar/libexec/gnubin:$PATH"; fi
@@ -30,23 +50,31 @@ then
     if [[ -e $HOMEBREW_PREFIX/opt/python ]]; then export PATH="$HOMEBREW_PREFIX/opt/python/libexec/bin:$PATH"; fi
     if [[ -e $HOMEBREW_PREFIX/opt/curl ]]; then export PATH="$HOMEBREW_PREFIX/opt/curl/libexec/bin:$PATH"; fi
   fi
+
   export PYTHON_CONFIGURE_OPTS="--enable-framework"
   alias brew='arch -arm64 brew'
+  export DOTNET_ROOT="/opt/homebrew/opt/dotnet/libexec"
 else
   export OSX=
 fi
 
 export SHELL="$SYS_PREFIX/bin/zsh"
-if [[ -e "$SYS_PREFIX/bin/tmux-next" ]]
-then
-  export TMUX_PATH="$SYS_PREFIX/bin/tmux-next"
-else
-  export TMUX_PATH="$SYS_PREFIX/bin/tmux"
-fi
 
-if [[ -e "$TMUX_PATH" ]]
+if [ "$SAFE_SHELL" = 1 ]
 then
-  export TRUE_COLOR=`$TMUX_PATH info | grep Tc | grep -o true`
+  if [[ -e "$SYS_PREFIX/bin/tmux-next" ]]
+  then
+    export TMUX_PATH="$SYS_PREFIX/bin/tmux-next"
+  else
+    export TMUX_PATH="$SYS_PREFIX/bin/tmux"
+  fi
+
+  if [[ -e "$TMUX_PATH" ]]
+  then
+    export TRUE_COLOR=`$TMUX_PATH info | grep Tc | grep -o true`
+  fi
+else
+  export TMUX=""
 fi
 
 if [[ "$SSH_CONNECTION" ]]
