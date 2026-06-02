@@ -31,6 +31,8 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    build = ":TSUpdate",
     opts = function()
       return require "configs.treesitter"
     end,
@@ -278,9 +280,13 @@ return {
     "vhyrro/luarocks.nvim",
     priority = 1000,
     config = true,
+    -- opts = {
+    --   rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua", "nvim-nio" },
+    -- },
   },
   {
     "rest-nvim/rest.nvim",
+    enabled = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       opts = function(_, opts)

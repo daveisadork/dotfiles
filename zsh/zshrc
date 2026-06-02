@@ -95,3 +95,11 @@ else
 fi
 setopt extendedglob
 # zprof
+source ${HOME}/.ghcup/env
+
+# Task Master aliases added on 3/25/2026
+alias tm='task-master'
+alias taskmaster='task-master'
+
+# Claude Code deferred MCP loading (added by Taskmaster)
+export ENABLE_EXPERIMENTAL_MCP_CLI='true'
