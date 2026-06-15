@@ -96,9 +96,9 @@ vim.lsp.config("basedpyright", {
         },
       },
     },
-    python = {
-      pythonPath = M.python_path(),
-    },
+    -- python = {
+    --   pythonPath = M.python_path(),
+    -- },
   },
 })
 
@@ -114,7 +114,7 @@ vim.lsp.config("pyright", {
         diagnosticMode = "workspace",
         typeCheckingMode = "basic",
       },
-      pythonPath = M.python_path(),
+      -- pythonPath = M.python_path(),
     },
   },
 })
@@ -135,140 +135,6 @@ vim.lsp.config("yamlls", {
 
 return {
   automatic_enable = true,
-  handlers = {
-    -- The first entry (without a key) will be the default handler
-    -- and will be called for each installed server that doesn't have
-    -- a dedicated handler.
-    function(server_name) -- default handler (optional)
-      lspconfig[server_name].setup {
-        on_attach = M.on_attach,
-        on_init = M.on_init,
-        capabilities = M.capabilities,
-      }
-    end,
-
-    -- clangd = function()
-    --   lspconfig.clangd.setup {
-    --     on_attach = M.on_attach,
-    --     on_init = M.on_init,
-    --     capabilities = M.capabilities,
-    --     cmd = {
-    --       "./toolchain/current/bin/clangd",
-    --       "--background-index",
-    --       "--query-driver=**/arm-none-eabi-*",
-    --       "--compile-commands-dir=./build/latest",
-    --       "--clang-tidy",
-    --       "--header-insertion=never",
-    --       "--offset-encoding=utf-16",
-    --     },
-    --     filetypes = { "c", "cpp", "objc", "objcpp" },
-    --     root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
-    --     single_file_support = true,
-    --   }
-    -- end,
-
-    yamlls = function()
-      lspconfig.yamlls.setup {
-        on_attach = M.on_attach,
-        on_init = M.on_init,
-        capabilities = M.capabilities,
-        cmd = { "yaml-language-server", "--stdio" },
-        filetypes = { "yaml", "yaml.docker-compose" },
-        root_dir = lspconfig.util.find_git_ancestor,
-        settings = {
-          redhat = {
-            telemetry = {
-              enabled = false,
-            },
-          },
-          yaml = {
-            keyOrdering = false,
-          },
-        },
-        single_file_support = true,
-      }
-    end,
-
-    gopls = function()
-      lspconfig.gopls.setup {
-        on_attach = M.on_attach,
-        on_init = M.on_init,
-        capabilities = M.capabilities,
-        cmd = { "gopls", "-remote=auto", "-remote.listen.timeout", "5s" },
-        filetypes = { "go", "gomod", "gowork", "gotmpl" },
-        root_dir = lspconfig.util.root_pattern("go.mod", ".git"),
-        single_file_support = true,
-      }
-    end,
-
-    helm_ls = function()
-      lspconfig.helm_ls.setup {
-        on_attach = M.on_attach,
-        on_init = M.on_init,
-        capabilities = M.capabilities,
-        cmd = { "helm_ls", "serve" },
-        filetypes = { "helm" },
-        root_dir = lspconfig.util.root_pattern "Chart.yaml",
-        single_file_support = true,
-      }
-    end,
-
-    pyright = function()
-      lspconfig.pyright.setup {
-        on_attach = M.on_attach,
-        on_init = M.on_init,
-        capabilities = M.capabilities,
-        cmd = { "pyright-langserver", "--stdio" },
-        filetypes = { "python" },
-        root_dir = M.python_root,
-        single_file_support = true,
-        settings = {
-          pyright = {
-            disableOrganizeImports = true,
-          },
-          python = {
-            analysis = {
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-              diagnosticMode = "workspace",
-              typeCheckingMode = "basic",
-            },
-            pythonPath = M.python_path(),
-          },
-        },
-      }
-    end,
-
-    basedpyright = function()
-      lspconfig.basedpyright.setup {
-        on_attach = M.on_attach,
-        on_init = M.on_init,
-        capabilities = M.capabilities,
-        cmd = { "basedpyright-langserver", "--stdio" },
-        filetypes = { "python" },
-        root_dir = M.python_root,
-        single_file_support = true,
-        settings = {
-          basedpyright = {
-            disableOrganizeImports = true,
-            analysis = {
-              autoImportCompletions = true,
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-              -- diagnosticMode = "workspace",
-              typeCheckingMode = "basic",
-              diagnosticSeverityOverrides = {
-                reportUnusedImport = "none",
-              },
-            },
-          },
-          python = {
-            pythonPath = M.python_path(),
-          },
-        },
-      }
-    end,
-  },
 }
 
 -- lspconfig.nginx_ls.setup {}
