@@ -50,6 +50,7 @@ plugins=(
     helm
     kubectl
     macos
+    mise
     node
     npm
     nvm
