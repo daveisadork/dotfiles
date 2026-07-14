@@ -53,12 +53,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- M.capabilities = vim.lsp.protocol.make_client_capabilities()
--- local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
--- if ok then
---   M.capabilities = vim.tbl_deep_extend("force", M.capabilities, cmp_nvim_lsp.default_capabilities())
--- end
-
 dofile(vim.g.base46_cache .. "lsp")
 
 vim.lsp.config("basedpyright", {

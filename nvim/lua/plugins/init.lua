@@ -122,23 +122,12 @@ return {
     opts = require "configs.nvimtree",
   },
 
+  { import = "nvchad.blink.lazyspec" },
+
   {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      -- "hrsh7th/cmp-nvim-lsp-signature-help",
-      -- {
-      --   "zbirenbaum/copilot-cmp",
-      --   enabled = false,
-      --   config = function()
-      --     require("copilot_cmp").setup()
-      --   end,
-      --   dependencies = {
-      --     "zbirenbaum/copilot.lua",
-      --   },
-      -- },
-    },
+    "saghen/blink.cmp",
     opts = function()
-      return require "configs.nvim_cmp"
+      return require "configs.blink"
     end,
   },
 
@@ -254,19 +243,10 @@ return {
   {
     "kristijanhusak/vim-dadbod-completion",
     dependencies = {
-      "hrsh7th/nvim-cmp",
       "tpope/vim-dadbod",
     },
     ft = { "sql", "mysql", "plsql" },
     lazy = true,
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "sql,mysql,plsql",
-        callback = function()
-          require("cmp").setup.buffer { sources = { { name = "vim-dadbod-completion" } } }
-        end,
-      })
-    end,
   },
   {
     "kristijanhusak/vim-dadbod-ui",
