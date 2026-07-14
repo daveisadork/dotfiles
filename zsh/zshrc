@@ -33,7 +33,7 @@ if [[ -f ~/.antigen.zsh ]] then
   antigen apply
 fi
 
-zstyle ':omz:plugins:nvm' autoload yes
+# zstyle ':omz:plugins:nvm' autoload yes
 
 plugins=(
     aliases
@@ -42,9 +42,10 @@ plugins=(
     command-not-found
     docker
     docker-compose
-    dotenv
+    # dotenv
     fzf
     gitfast
+    gh
     gnu-utils
     golang
     helm
@@ -53,9 +54,10 @@ plugins=(
     mise
     node
     npm
-    nvm
+    # nvm
     pip
     poetry
+    postgres
     pyenv
     python
     rbenv
@@ -64,6 +66,7 @@ plugins=(
     sudo
     terraform
     tig
+    uv
     yarn
 )
 
@@ -104,19 +107,9 @@ alias taskmaster='task-master'
 # Claude Code deferred MCP loading (added by Taskmaster)
 export ENABLE_EXPERIMENTAL_MCP_CLI='true'
 
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
 
 if [[ -e `which ng` ]]
 then
   # Load Angular CLI autocompletion.
   source <(ng completion script)
 fi
-
-# Added by codebase-memory-mcp install
-export PATH="/Users/dave/.local/bin:$PATH"
