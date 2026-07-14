@@ -2,32 +2,12 @@ local lspconfig = require "lspconfig"
 
 local map = vim.keymap.set
 
-local M = {}
-
-M.python_root = lspconfig.util.root_pattern(
-  "pyproject.toml",
-  "setup.cfg",
-  "requirements.txt",
-  "setup.py",
-  "Pipfile",
-  "pyrightconfig.json",
-  ".git"
-)
-
-M.python_path = function()
-  return vim.fn.system(vim.fn.expand "$DOTFILES/bin/which_python.sh"):gsub("^%s*(.-)%s*$", "%1")
-end
-
 vim.lsp.handlers["client/registerCapability"] = (function(overridden)
   return function(err, res, ctx)
     local result = overridden(err, res, ctx)
     local client = vim.lsp.get_client_by_id(ctx.client_id)
     if not client then
       return
-    end
-    for bufnr, _ in pairs(client.attached_buffers) do
-      -- Call your custom on_attach logic...
-      -- my_on_attach(client, bufnr)
     end
     if client.server_capabilities.inlayHintProvider then
       vim.lsp.inlay_hint.enable(true)
@@ -131,6 +111,23 @@ vim.lsp.config("yamlls", {
     },
   },
   single_file_support = true,
+})
+
+vim.lsp.config("biome", {
+  -- hack to disable go to definition for biome, since it doesn't work properly
+  handlers = {
+    ["client/registerCapability"] = function(err, res, ctx)
+      if res and res.registrations then
+        for i, reg in ipairs(res.registrations) do
+          if reg.method ~= "textDocument/definition" then
+            table.remove(res.registrations, i)
+            break
+          end
+        end
+      end
+      return vim.lsp.handlers["client/registerCapability"](err, res, ctx)
+    end,
+  },
 })
 
 return {
