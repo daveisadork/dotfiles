@@ -100,7 +100,6 @@ return {
       "nvim-neotest/neotest-go",
       "nvim-neotest/neotest-jest",
       "nvim-neotest/neotest-plenary",
-      "nvim-neotest/neotest-vim-test",
       "marilari88/neotest-vitest",
     },
     config = function()
@@ -179,9 +178,6 @@ return {
             },
           },
           require "neotest-plenary",
-          require "neotest-vim-test" {
-            ignore_file_types = { "go", "python", "vim", "lua" },
-          },
         },
       }
     end,
