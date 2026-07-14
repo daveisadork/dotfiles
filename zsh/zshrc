@@ -117,3 +117,6 @@ then
   # Load Angular CLI autocompletion.
   source <(ng completion script)
 fi
+
+# Added by codebase-memory-mcp install
+export PATH="/Users/dave/.local/bin:$PATH"

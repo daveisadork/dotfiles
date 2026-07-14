@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+self=${0:A}
+for candidate in ${(f)"$(whence -ap claude)"}; do
+  [[ ${candidate:A} != $self ]] && { real_claude=$candidate; break; }
+done
+[[ -n $real_claude ]] || { print -u2 "claude wrapper: real claude not found on PATH"; exit 127 }
+
+for arg in "$@"; do
+  if [[ "$arg" == "--system-prompt" || "$arg" == "--system-prompt="* ]]; then
+    exec "$real_claude" "$@"
+  fi
+done
+
+exec "$real_claude" --system-prompt "$(cat ~/.dotfiles/claude/SYSTEM.md)" "$@"

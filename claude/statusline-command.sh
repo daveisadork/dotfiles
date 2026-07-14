@@ -1,25 +1,40 @@
 #!/bin/sh
+# Claude Code status line: context token count + context window percentage
+
 input=$(cat)
-total=$(echo "$input" | jq -r '.context_window.total_input_tokens // empty')
-pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 
-format_tokens() {
-  awk -v n="$1" 'BEGIN {
-    if (n >= 1000) printf "%.1fk", n/1000
-    else printf "%d", n
-  }'
-}
+total_tokens=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
+used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 
-token_color() {
-  awk -v n="$1" 'BEGIN {
-    if (n >= 100000) printf "\033[31m"
-    else if (n >= 50000) printf "\033[33m"
-    else printf "\033[32m"
-  }'
-}
+# Format token count with at most 3 significant digits
+if [ "$total_tokens" -lt 1000 ] 2>/dev/null; then
+	token_str="${total_tokens}"
+elif [ "$total_tokens" -lt 10000 ] 2>/dev/null; then
+	# e.g. 9.99k
+	token_str=$(awk "BEGIN { printf \"%.2fk\", $total_tokens/1000 }")
+elif [ "$total_tokens" -lt 100000 ] 2>/dev/null; then
+	# e.g. 99.9k
+	token_str=$(awk "BEGIN { printf \"%.1fk\", $total_tokens/1000 }")
+else
+	# e.g. 999k
+	token_str=$(awk "BEGIN { printf \"%.0fk\", $total_tokens/1000 }")
+fi
 
-if [ -n "$total" ] && [ -n "$pct" ]; then
-  printf "%s%s\033[0m \033[2m(%.0f%%)\033[0m" "$(token_color "$total")" "$(format_tokens "$total")" "$pct"
-elif [ -n "$total" ]; then
-  printf "%s%s\033[0m" "$(token_color "$total")" "$(format_tokens "$total")"
+# Choose color based on token count
+if [ "$total_tokens" -lt 50000 ] 2>/dev/null; then
+	color="\033[32m" # green
+elif [ "$total_tokens" -lt 100000 ] 2>/dev/null; then
+	color="\033[33m" # yellow
+else
+	color="\033[31m" # red
+fi
+reset="\033[0m"
+gray="\033[2;37m" # dim gray
+
+# Build output
+if [ -n "$used_pct" ]; then
+	pct_str=$(awk "BEGIN { printf \"%.1f%%\", $used_pct }")
+	printf "${color}%s${reset} ${gray}(%s)${reset}" "$token_str" "$pct_str"
+else
+	printf "${color}%s${reset}" "$token_str"
 fi

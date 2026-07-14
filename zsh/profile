@@ -53,7 +53,7 @@ then
 
   export PYTHON_CONFIGURE_OPTS="--enable-framework"
   alias brew='arch -arm64 brew'
-  export DOTNET_ROOT="/opt/homebrew/opt/dotnet/libexec"
+  # export DOTNET_ROOT="/opt/homebrew/opt/dotnet/libexec"
 else
   export OSX=
 fi
@@ -145,3 +145,5 @@ export GOPRIVATE=gitlab.sezzle.com
 
 # 1Password SSH Agent
 [ -f "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ] && export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+# Add .NET Core SDK tools
+export PATH="$PATH:$HOME/.dotnet/tools"
