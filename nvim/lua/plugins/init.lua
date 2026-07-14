@@ -773,6 +773,7 @@ return {
     dependencies = { "folke/snacks.nvim" },
     config = true,
     opts = {
+      terminal_cmd = "~/.dotfiles/claude/claude",
       terminal = {
         provider = "none",
       },

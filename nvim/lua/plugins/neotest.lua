@@ -101,6 +101,7 @@ return {
       "nvim-neotest/neotest-jest",
       "nvim-neotest/neotest-plenary",
       "nvim-neotest/neotest-vim-test",
+      "marilari88/neotest-vitest",
     },
     config = function()
       require("neotest").setup {
@@ -171,6 +172,7 @@ return {
               test_table = true,
             },
           },
+          require "neotest-vitest",
           require "neotest-jest" {
             env = {
               TZ = "UTC",
