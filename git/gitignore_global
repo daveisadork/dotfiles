@@ -655,3 +655,5 @@ tags
 
 .lazy.lua
 crap/
+
+**/.claude/settings.local.json
