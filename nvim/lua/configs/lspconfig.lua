@@ -112,12 +112,13 @@ vim.lsp.config("biome", {
   handlers = {
     ["client/registerCapability"] = function(err, res, ctx)
       if res and res.registrations then
-        for i, reg in ipairs(res.registrations) do
+        local kept = {}
+        for _, reg in ipairs(res.registrations) do
           if reg.method ~= "textDocument/definition" then
-            table.remove(res.registrations, i)
-            break
+            kept[#kept + 1] = reg
           end
         end
+        res.registrations = kept
       end
       return vim.lsp.handlers["client/registerCapability"](err, res, ctx)
     end,
