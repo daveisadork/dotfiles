@@ -7,10 +7,10 @@ local map = vim.keymap.set
 -- general
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("n", "<C-j>", function()
-  vim.diagnostic.goto_next()
+  vim.diagnostic.jump { count = 1, float = true }
 end, { desc = "Diagnostic goto next" })
 map("n", "<C-k>", function()
-  vim.diagnostic.goto_prev()
+  vim.diagnostic.jump { count = -1, float = true }
 end, { desc = "Diagnostic goto prev" })
 map("n", "<leader>b", ":DBUI<CR>", { desc = "Open DBUI" })
 map("n", "<leader>m", ":Glow<CR>", { desc = "Markdown preview" })
