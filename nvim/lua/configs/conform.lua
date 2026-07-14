@@ -38,7 +38,9 @@ end
 -- In a monorepo, a .prettierrc in a child package beats a biome.json higher up.
 local function use_biome(bufnr)
   local biome_dir = nearest_config_dir(bufnr, { "biome.json", "biome.jsonc" })
-  if not biome_dir then return false end
+  if not biome_dir then
+    return false
+  end
   local prettier_dir = nearest_config_dir(bufnr, prettier_configs)
   return not prettier_dir or #biome_dir >= #prettier_dir
 end
@@ -88,10 +90,10 @@ return {
     json = biome_or_prettier,
     jsonc = biome_or_prettier,
     -- yaml = { prettier },
-    markdown = { "markdownlint-cli2", "injected" },
-    ["markdown.mdx"] = { "markdownlint-cli2", "injected" },
+    markdown = prettier,
+    ["markdown.mdx"] = prettier,
     graphql = biome_or_prettier,
     handlebars = prettier,
-    sql = { "sqlfluff", lsp_format = "fallback" },
+    sql = { "pg_format", lsp_format = "fallback" },
   },
 }
