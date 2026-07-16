@@ -1,6 +1,15 @@
 ---@type LazySpec[]
 return {
   {
+    "nvchad/base46",
+    branch = "v3.0",
+  },
+
+  {
+    "nvchad/ui",
+    branch = "v3.0",
+  },
+  {
     "folke/snacks.nvim",
     ---@module "snacks"
     ---@type snacks.Config
