@@ -27,6 +27,24 @@ map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 map("v", "<S-Tab>", "<gv", { desc = "Unindent" })
 map("v", "<Tab>", ">gv", { desc = "Indent" })
 
+-- :q acts like :qa when closing the last window that holds a real file, so
+-- plugin sidebars (neotest, dadbod-ui, etc. — non-empty 'buftype') don't get
+-- left behind. In a sidebar, or with other file windows open, :q stays :q.
+map("ca", "q", function()
+  if vim.fn.getcmdtype() == ":" and vim.fn.getcmdline() == "q" and vim.bo.buftype == "" then
+    local file_wins = 0
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      if vim.bo[vim.api.nvim_win_get_buf(win)].buftype == "" then
+        file_wins = file_wins + 1
+      end
+    end
+    if file_wins == 1 then
+      return "qa"
+    end
+  end
+  return "q"
+end, { expr = true })
+
 -- telescope
 map("n", "<C-p>", ":Telescope find_files <CR>", { desc = "Telescope Files" })
 -- map("n", "gi", ":Telescope lsp_implementations<CR>", { desc = "LSP Implementations" })
