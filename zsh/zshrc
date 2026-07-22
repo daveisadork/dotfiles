@@ -9,12 +9,7 @@ setopt completealiases
 autoload -Uz compinit
 compinit
 
-source $DOTFILES/zsh/private.zsh
-
-
-if ps -p $$ >/dev/null 2>&1; then
-
-  export SAFE_SHELL=1
+if [[ "$SAFE_SHELL" == 1 ]]; then
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.iterm2_shell_integration.zsh ] && source ~/.iterm2_shell_integration.zsh
@@ -25,7 +20,7 @@ then
 fi
 
 [ ! -f ~/.antigen.zsh ] && curl -L git.io/antigen > ~/.antigen.zsh
-if [[ -f ~/.antigen.zsh ]] then 
+if [[ -f ~/.antigen.zsh ]] then
   source  ~/.antigen.zsh
   antigen bundle joel-porquet/zsh-dircolors-solarized.git
   antigen bundle zsh-users/zsh-autosuggestions
@@ -70,6 +65,7 @@ plugins=(
     yarn
 )
 
+export CASE_SENSITIVE="true"
 export ZSH="$HOME/.oh-my-zsh"
 [ ! -d $ZSH ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 source $ZSH/oh-my-zsh.sh

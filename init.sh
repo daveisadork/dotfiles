@@ -32,6 +32,7 @@ if [[ `uname` == 'Darwin'  ]]; then
     ~/.dotfiles/term.sh
 fi
 
+[ ! -f ~/.zshenv ] && ln -s ~/.dotfiles/zsh/zshenv ~/.zshenv
 [ ! -f ~/.zshrc ] && ln -s ~/.dotfiles/zsh/zshrc ~/.zshrc
 [ ! -f ~/.profile ] && ln -s ~/.dotfiles/zsh/profile ~/.profile
 [ ! -f ~/.zprofile ] && ln -s ~/.dotfiles/zsh/profile ~/.zprofile
